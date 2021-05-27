@@ -14,7 +14,9 @@ router.post('/inscrire', async function(req, res) {
       var token = jwt.sign({ user : result.JSON() }, "Secret");
       res.json(token);
       },function(err){
-        res.json({ message : err });
+        if( err.search('\email\g') ){
+          res.json({ message : { email : "Email déjà existe" } } );
+        }
     });
   } catch (err) {
     res.json({ message : err.message });

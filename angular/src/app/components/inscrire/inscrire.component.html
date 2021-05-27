@@ -9,21 +9,29 @@
 -->
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()">
     <h2>S'Inscrire</h2>
-    <div class="form-ligne" [ngClass]="{ 'has-error' : invalidUserName() }">
-        <input type="text" formControlName="username" name="username" id="username" [ngClass]="{ 'is-invalid' : invalidUserName() }" class="form-control input-text" placeholder="Votre nom" autocomplete="off">
-        <p *ngIf="invalidUserName()" id="username_error" class="invalid-feedback">Nom d'utilisateur invalid !</p>
+    <div class="form-ligne" [ngClass]="{ 'has-error' : invalidNomUtili() }">
+        <div>
+            <input type="text" formControlName="nomutil" name="nomutil" id="nomutil" [ngClass]="{ 'is-invalid' : invalidNomUtili() }" class="form-control input-text" placeholder="Votre nom" autocomplete="off">
+            <p class="error" [ngClass]="{ 'set' : invalidNomUtili() }">Nom d'utilisateur invalid !</p>
+        </div>
     </div>
     <div class="form-ligne" [ngClass]="{ 'has-error' : invalidEmail() }">
-        <input type="text" formControlName="email" name="email" id="email" [ngClass]="{ 'is-invalid' : invalidEmail() }" class="form-control input-text" placeholder="Votre email" autocomplete="off">
-        <p *ngIf="invalidEmail()" id="email_error" class="invalid-feedback">Email invalid !</p>
+        <div>
+            <input type="text" formControlName="email" name="email" id="email" [ngClass]="{ 'is-invalid' : invalidEmail() }" class="form-control input-text" placeholder="Votre email" autocomplete="off">
+            <p class="error" [ngClass]="{ 'set' : invalidEmail() }" >{{ this.errors.email || 'Email invalid'}}</p>
+        </div>
     </div>
     <div class="form-ligne" [ngClass]="{ 'has-error' : invalidPassword() }">
-        <input type="password" formControlName="pword" name="pword" id="pword" [ngClass]="{ 'is-invalid' : invalidPassword() }" class="form-control input-text" placeholder="Mot de passe" aria-describedby="noticepwd">
-        <p *ngIf="invalidPassword()" id="pword_error" class="invalid-feedback">mot de passe invalid !</p>
+        <div>
+            <input type="password" formControlName="pword" name="pword" id="pword" [ngClass]="{ 'is-invalid' : invalidPassword() }" class="form-control input-text" placeholder="Mot de passe">
+            <p class="error" [ngClass]="{ 'set' : invalidPassword() }">Mot de passe invalid !</p>
+        </div>
     </div>
     <div class="form-ligne" [ngClass]="{ 'has-error' : invalidConfirmePassword() }">
-        <input  formControlName="cpword" type="password" name="cpword" id="cpword" [ngClass]="{ 'has-error' : invalidConfirmePassword() }" placeholder="Confirmer le mot de passe" class="form-control input-text">
-        <p *ngIf="invalidConfirmePassword()" id="cpword_error" class="invalid-feedback">Confirmation pas valable !</p>
+        <div>
+            <input type="password" formControlName="cpword" name="cpword" id="cpword" [ngClass]="{ 'is-invalid' : invalidConfirmePassword() }" placeholder="Confirmer le mot de passe" class="form-control input-text">
+            <p class="error" [ngClass]="{ 'set' : invalidConfirmePassword() }">Confirmation pas valable !</p>
+        </div>
     </div>
     <div class="form-dern-ligne form-group has-error">
         <button type="submit" class="inscrire">Inscrire</button>

@@ -13,7 +13,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 export class InscrireComponent implements OnInit {
 
   submitted = false;
-  registered = false;
+  errors : any = {};
   userForm !: FormGroup;
 
   constructor(private formBuilder : FormBuilder,
@@ -21,14 +21,14 @@ export class InscrireComponent implements OnInit {
     private router : Router,
     private authenticationService : AuthenticationService) { }
 
-  invalidUserName()
+  invalidNomUtili()
   {
-  	return (this.submitted && this.userForm.controls.username.errors != null);
+  	return (this.submitted && (this.errors.nomutil != null || this.userForm.controls.nomutil.errors != null));
   }
 
   invalidEmail()
   {
-  	return (this.submitted && this.userForm.controls.email.errors != null);
+  	return (this.submitted && (this.errors.email != null || this.userForm.controls.email.errors != null));
   }
 
   invalidPassword()
@@ -44,7 +44,7 @@ export class InscrireComponent implements OnInit {
   ngOnInit()
   {
   	this.userForm = this.formBuilder.group({
-  		username: ['', Validators.required],
+  		nomutil: ['', Validators.required],
   		email: ['', [Validators.required, Validators.email]],
   		pword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32), Validators.pattern('([a-zA-Z0-9]*)')]],
       cpword: ['', [Validators.required]]
@@ -74,7 +74,6 @@ export class InscrireComponent implements OnInit {
 
   	if(this.userForm.invalid == true)
   	{
-      console.log(this.userForm.controls.pword.errors);
   		return;
   	}
   	else
@@ -89,13 +88,15 @@ export class InscrireComponent implements OnInit {
           obj[clef] = descriptor?.value;
         }
       }
-        this.httpClient.post("/api/v1/user/inscrire", obj).subscribe((obs) => {
-          console.log(obs)
-          //this.authenticationService.setToken(obs.toString());
-          //this.router.navigate(["/chat"]);
-          //this.httpClient.post("/api/v1/user").subscribe((obs) => {})
+        this.httpClient.post("/api/v1/user/inscrire", obj).subscribe((obs : any) => {
+          this.errors = {};
+          if(obs.message){
+            Object.assign(this.errors, obs.message);
+          } else {
+            this.authenticationService.setToken(obs.toString());
+            //this.router.navigate(["/chat"]);
+          }
         })
-  		this.registered = true;
   	}
   }
 

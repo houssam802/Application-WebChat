@@ -1,12 +1,16 @@
 <form [formGroup] = "user" (ngSubmit) = "onSubmit()">
   <h2>S'Authentifier</h2>
-  <div class="form-ligne" [ngClass]="{ 'has-error' : invalidUserName() }">
-    <input type="text" formControlName="nom" name="nom" id="nom" [ngClass]="{ 'is-invalid' : invalidUserName() }" class="form-control input-text" placeholder="Nom d'utilisateur" autocomplete="off">
-    <p *ngIf="invalidUserName()" id="username_error" class="invalid-feedback">{{ errors.nom || "Champ vide !" }}</p>
+  <div class="form-ligne" [ngClass]="{ 'has-error' : invalidNomUtili() }">
+    <div>
+      <input type="text" formControlName="nom" name="nom" id="nom" [ngClass]="{ 'is-invalid' : invalidNomUtili() }" class="form-control input-text" placeholder="Nom d'utilisateur" autocomplete="off">
+      <p class="error" [ngClass]="{ 'set' : invalidNomUtili() }">{{ errors.nom || "Champ vide !" }}</p>
+    </div> 
   </div>
   <div class="form-ligne" [ngClass]="{ 'has-error' : invalidPassword() }">
-    <input type="password" formControlName="pwd" name="pwd" id="pwd" [ngClass]="{ 'is-invalid' : invalidPassword() }" class="form-control input-text" placeholder="Mot de passe" aria-describedby="noticepwd">
-    <p *ngIf="invalidPassword()" id="pword_error" class="help-block invalid-feedback">Mot de passe incorrect !</p>
+    <div>
+      <input type="password" formControlName="pwd" name="pwd" id="pwd" [ngClass]="{ 'is-invalid' : invalidPassword() }" class="form-control input-text" placeholder="Mot de passe" aria-describedby="noticepwd">
+      <p class="error" [ngClass]="{ 'set' : invalidPassword() }">Mot de passe incorrect !</p>
+    </div>
   </div>
   <div class="form-dern-ligne">
     <button type="submit" class="auth">Authetifier</button>

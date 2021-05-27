@@ -47,7 +47,7 @@ export class AuthComponent implements OnInit {
   	return (this.submitted && (this.errors.pwd != null || this.user.controls.pwd.errors != null ));
   }
 
-  invalidUserName():boolean{
+  invalidNomUtili():boolean{
   	return (this.submitted &&  (this.errors.nom != null || this.user.controls.nom.errors != null));
   }
 

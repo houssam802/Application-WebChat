@@ -4,14 +4,20 @@ const UserModel = require('../models/model.user');
 const sqlSelect = require('../data/sqlSelect');
 
 /* create an instance of the validator */
-const userValidator = new Validator();
+const userValidator = new Validator({
+    messages : {
+        nomutil : "Nom pas valable",
+        email : "Email doit être une adresse électronique valide",
+        pword : "Mot de passe invalide"
+    }
+});
 
 /* use the same patterns as on the client to validate the request */
 const passwordPattern = /^([a-z])*([A-Z])*([0-9])*([!@#\$%\^&\*])*(?=.{8,32})/;
 
 const userSchema = {
     /*uid : { type : "string" },*/
-    username : {type : "string"},
+    nomutil : {type : "string"},
     email : {type : "email"},
     pword : {type : "string", min : 8, max : 32, pattern : passwordPattern}
 };
