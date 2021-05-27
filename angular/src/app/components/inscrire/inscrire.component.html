@@ -1,45 +1,34 @@
-<div class="container" style="border: 1px solid; padding: 1rem; width: clamp(300px,45%,45%); margin-top: 3rem;">
-    <!-- 
-        ngClass : adds and removes CSS classes on an HTML element.
-        formGroup : Tracks the value and validity state of a group of FormControl instances. (class)
-        formControlName : Syncs a FormControl in an existing FormGroup to a form control element by name. (directive)
-        ngModule : Creates a FormControl instance from a domain model and binds it to a form control element. (directive)
-                   Decorator that marks a class as an NgModule and supplies configuration metadata.
-        formBuilder : Creates an AbstractControl from a user-specified configuration.
-        AbstractControl : This is the base class for FormControl, FormGroup, and FormArray.
-    -->
-    <form [formGroup]="userForm" (ngSubmit)="onSubmit()" class="row">
-        <div class="row md-3" style="margin: 1rem;" [ngClass]="{ 'has-error' : invalidUserName() }">
-            <label for="username" class="col-md-4  form-label">Nom d'utilisateur</label>
-            <div class="col-md-8">
-                <input type="text" formControlName="username" name="username" id="username" class="form-control" autocomplete="off">
-                <p *ngIf="invalidUserName()" id="username_error" class="help-block">Nom d'utilisateur invalid !</p>
-            </div>
-        </div>
-        <div class="row md-3" style="margin: 1rem;" [ngClass]="{ 'has-error' : invalidEmail() }">
-            <label for="email" class="col-md-4 form-label">Email</label>
-            <div class="col-md-8">
-                <input type="text" formControlName="email" name="email" id="email" class="form-control" autocomplete="off">
-                <p *ngIf="invalidEmail()" id="email_error" class="help-block">Email invalid !</p>
-            </div>
-        </div>
-        <div class="row md-3" style="margin: 1rem;" [ngClass]="{ 'has-error' : invalidPassword() }">
-            <label for="pword" class="col-md-4 form-label">Mot de passe</label>
-            <div class="col-md-8">
-                <input type="password" formControlName="pword" name="pword" id="pword" class="form-control" aria-describedby="noticepwd">
-                <div *ngIf="!invalidPassword()" id="noticepwd" class="form-text">Doit comporter de 8 à 32 caractères</div>
-                <p *ngIf="invalidPassword()" id="pword_error" class="help-block">mot de passe invalid !</p>
-            </div>
-        </div>
-        <div class="row md-3" style="margin: 1rem;" [ngClass]="{ 'has-error' : invalidConfirmePassword() }">
-            <label for="cpword" class="col-md-4 form-label">Confirmer mot de passe</label>
-            <div class="col-md-8">
-                <input  formControlName="cpword" type="password" name="cpword" id="cpword" class="form-control">
-                <p *ngIf="invalidConfirmePassword()" id="cpword_error" class="help-block">Confirmation pas valable !</p>
-            </div>
-        </div>
-        <div class="col-12 form-group has-error">
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </div>
-    </form>
-</div>
+<!-- 
+    ngClass : adds and removes CSS classes on an HTML element.
+    formGroup : Tracks the value and validity state of a group of FormControl instances. (class)
+    formControlName : Syncs a FormControl in an existing FormGroup to a form control element by name. (directive)
+    ngModule : Creates a FormControl instance from a domain model and binds it to a form control element. (directive)
+            Decorator that marks a class as an NgModule and supplies configuration metadata.
+    formBuilder : Creates an AbstractControl from a user-specified configuration.
+    AbstractControl : This is the base class for FormControl, FormGroup, and FormArray.
+-->
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+    <h2>S'Inscrire</h2>
+    <div class="form-ligne" [ngClass]="{ 'has-error' : invalidUserName() }">
+        <input type="text" formControlName="username" name="username" id="username" [ngClass]="{ 'is-invalid' : invalidUserName() }" class="form-control input-text" placeholder="Votre nom" autocomplete="off">
+        <p *ngIf="invalidUserName()" id="username_error" class="invalid-feedback">Nom d'utilisateur invalid !</p>
+    </div>
+    <div class="form-ligne" [ngClass]="{ 'has-error' : invalidEmail() }">
+        <input type="text" formControlName="email" name="email" id="email" [ngClass]="{ 'is-invalid' : invalidEmail() }" class="form-control input-text" placeholder="Votre email" autocomplete="off">
+        <p *ngIf="invalidEmail()" id="email_error" class="invalid-feedback">Email invalid !</p>
+    </div>
+    <div class="form-ligne" [ngClass]="{ 'has-error' : invalidPassword() }">
+        <input type="password" formControlName="pword" name="pword" id="pword" [ngClass]="{ 'is-invalid' : invalidPassword() }" class="form-control input-text" placeholder="Mot de passe" aria-describedby="noticepwd">
+        <p *ngIf="invalidPassword()" id="pword_error" class="invalid-feedback">mot de passe invalid !</p>
+    </div>
+    <div class="form-ligne" [ngClass]="{ 'has-error' : invalidConfirmePassword() }">
+        <input  formControlName="cpword" type="password" name="cpword" id="cpword" [ngClass]="{ 'has-error' : invalidConfirmePassword() }" placeholder="Confirmer le mot de passe" class="form-control input-text">
+        <p *ngIf="invalidConfirmePassword()" id="cpword_error" class="invalid-feedback">Confirmation pas valable !</p>
+    </div>
+    <div class="form-dern-ligne form-group has-error">
+        <button type="submit" class="inscrire">Inscrire</button>
+    </div>
+    <div style="font-size: 10pt; color: gray; font-family: nunito; width: 100%; display: flex; justify-content: center;">
+        Vous avez déjà un compte ?&nbsp;<span href="#" onclick="toggle()" class="lien">S'authentifier</span>
+    </div>
+</form>
