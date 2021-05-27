@@ -1,0 +1,24 @@
+<form id="form" [formGroup] = "user" (ngSubmit) = "onSubmit()">
+    <div id="cont" class="container" style="width: 35%; padding: 1rem; margin-top: 4rem; box-shadow: 0rem 0rem 1rem .1rem rgba(0, 0, 0, .3);">
+        <div class="row">
+          <!-- <input type="text" formControlName="nom" name="nom" autocomplete="off" placeholder="Your Name"/> -->
+          <div class="row md-3" style="margin: 1rem;" [ngClass]="{ 'has-error' : invalidUserName() }">
+            <label for="username" class="col-md-4  form-label">Nom d'utilisateur</label>
+            <div class="col-md-8">
+                <input type="text" formControlName="nom" name="nom" id="nom" [ngClass]="{ 'is-invalid' : invalidUserName() }" class="form-control" autocomplete="off">
+                <p *ngIf="invalidUserName()" id="username_error" class="invalid-feedback">{{ errors.nom || "Champ vide !" }}</p>
+            </div>
+        </div>
+          <div class="row md-3" style="margin: 1rem;" [ngClass]="{ 'has-error' : invalidPassword() }">
+            <label for="pword" class="col-md-4 form-label">Mot de passe</label>
+            <div class="col-md-8">
+                <input type="password" formControlName="pwd" name="pwd" id="pwd" [ngClass]="{ 'is-invalid' : invalidPassword() }" class="form-control" aria-describedby="noticepwd">
+                <p *ngIf="invalidPassword()" id="pword_error" class="help-block invalid-feedback">Mot de passe incorrect !</p>
+            </div>
+        </div>
+        </div>
+        <div>
+          <input type="submit" value="Submit"/>
+        </div>
+    </div>
+  </form>
