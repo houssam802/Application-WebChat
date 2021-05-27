@@ -1,21 +1,20 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ChatComponent } from './components/chat/chat.component';
-import { AuthComponent } from './components/auth/auth.component';
-import { InscrireComponent } from './components/inscrire/inscrire.component';
+import { AccueilComponent } from './components/accueil/accueil.component';
 
 const routes: Routes = [
   {
-    path : "auth",
-    component: AuthComponent
+    path : "",
+    component: AccueilComponent
+  },
+  {
+    path : "acceuil",
+    component: AccueilComponent
   },
   {
     path : "chat",
     component: ChatComponent
-  },
-  {
-    path : "inscrire",
-    component: InscrireComponent
   }
 ];
 

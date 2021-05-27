@@ -1,0 +1,270 @@
+@font-face {
+    font-family: baloo;
+    src: url('./Fonts/Nunito/Nunito-Light.ttf') format('truetype');
+}
+
+body {
+    font-family: baloo;
+	width: 100%;
+	margin:  0 auto;
+	background-image: -moz-linear-gradient( 136deg, rgb(0,0,70) 0%, rgb(28,181,224) 100%);
+    background-image: -webkit-linear-gradient( 136deg, rgb(0,0,70) 0%, rgb(28,181,224) 100%);
+    background-image: -ms-linear-gradient( 136deg, rgb(0,0,70) 0%, rgb(28,181,224) 100%);
+}
+
+.form-contenu{
+    margin: 2.5rem auto;
+    width: clamp(650px, 70%, 70%);
+    height: 550px;
+    border-radius: 5px;
+	-o-border-radius: 5px;
+	-ms-border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+    background-color: mintcream;
+	position: relative;
+	display: flex;
+	display: -webkit-flex;
+}
+
+.form-contenu .form-gauche{
+    flex: 1 1 45%;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    border-top-left-radius: 5px;
+	border-bottom-left-radius: 5px;
+}
+
+.form-contenu .form-gauche .inscrire{
+    transform: translateY(0);
+    transition: 0.7s;
+    background-position: 50% 50%;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-image: url("inscrire.png");
+    background-color: #f7f7f7;
+    flex-basis: 100%;
+    flex-shrink: 0;
+    height: 100%;
+}
+
+.form-contenu .form-gauche .auth{
+    transform: translateY(0);
+    transition: 0.7s;
+    background-position: 50% 50%;
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-image: url("auth.jpg");
+    background-color: white;
+    flex-basis: 100%;
+    height: 100%;
+    flex-shrink: 0;
+}
+
+.form-contenu .form-droit{
+    flex: 1 1 55%;
+    display: flex;
+    flex-direction: column-reverse;
+    background-color: #f0f4f5;
+    overflow: hidden;
+    border-top-right-radius: 5px;
+	border-bottom-right-radius: 5px;
+    border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.form-contenu .form-droit .inscrire{
+    transform: translateY(0);
+    transition: 0.7s;
+    flex-basis: 100%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-contenu .form-droit .auth{
+    transform: translateY(0);
+    transition: 0.7s;
+    flex-basis: 100%;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.form-contenu .form-droit h2 {
+	color: #333;
+    font-size: 2rem;
+	text-align: center;
+	position: relative;
+	padding: 6px 0 0;
+	margin-bottom: 2rem;
+}
+
+.form-contenu .form-droit .form-ligne {
+    width: 100%;
+    margin-bottom: 1.7rem;
+    font-family: baloo;
+    display: flex;
+    justify-content: center;
+}
+
+.form-contenu .form-droit .form-dern-ligne {
+	text-align: center;
+}
+
+.form-contenu .form-droit input {
+	width: 75%;
+    padding: 0px .3rem .3rem .3rem;
+    font-size: 1.2rem;
+    border: 2px solid transparent;
+    background-color: transparent;
+    outline: none !important;
+    box-shadow: none !important;
+    border-bottom-color: gray;
+    font-family: baloo;
+    font-weight: 600;
+}
+.form-contenu .form-droit .form-ligne input:focus {
+	border-bottom: 2px solid #fe892a;
+}
+.form-contenu .form-droit .form-ligne .is-invalid {
+    border-color: transparent;
+	border-bottom: 2px solid #d1432a;
+}
+.form-contenu .form-droit .register {
+    font-family: baloo;
+	background: #fe892a;
+	border-radius: 6px;
+	-o-border-radius: 6px;
+	-ms-border-radius: 6px;
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+	-o-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+	-ms-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+	-moz-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+	-webkit-box-shadow: 0px 3px 10px 0px rgba(0, 0, 0, 0.15);
+	width: 160px;
+	border: none;
+	margin: 1.5rem 0 1rem 0px;
+	cursor: pointer;
+	font-family: 'Nunito', sans-serif;
+	color: #fff;
+	font-weight: 700;
+	font-size: 18px;
+    padding: .8rem .5rem;
+}
+.form-contenu .form-droit .register:hover {
+	background: #e37b27;
+}
+
+.form-contenu .form-droit span{
+    cursor: pointer;
+    color: orange;
+}
+
+/*Animation----------------------------------------------------------------------*/
+
+.form-contenu .form-gauche.active .inscrire{
+    transform: translateY(-100%);
+    transition: 0.7s;
+}
+.form-contenu .form-gauche.active .auth{
+    transform: translateY(-100%);
+    transition: 0.7s;
+}
+.form-contenu .form-droit.active .inscrire{
+    transform: translateY(100%);
+    transition: 0.7s;
+}
+.form-contenu .form-droit.active .auth{
+    transform: translateY(100%);
+    transition: 0.7s;
+}
+
+/*-------------------------------------------------------------------------------*/
+
+
+input::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+    color: #666;
+    font-size: 16px;
+  }
+  input::-moz-placeholder { /* Firefox 19+ */
+    color: #666;
+    font-size: 16px;
+  }
+  input:-ms-input-placeholder { /* IE 10+ */
+    color: #666;
+    font-size: 16px;
+  }
+  input:-moz-placeholder { /* Firefox 18- */
+    color: #666;
+    font-size: 16px;
+  }
+
+@media all and (max-width: 760px){
+    .form-contenu{
+        width: clamp(325px, 60%, 60%);
+        height: 850px;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .form-contenu .form-gauche{
+        flex: 1 1 40%;
+        flex-direction: row;
+        border-top-left-radius: 5px;
+        border-top-right-radius: 5px;
+    }
+
+    .form-contenu .form-droit{
+        flex: 1 1 60%;
+        flex-direction: row-reverse;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+    }
+    
+    .form-contenu .form-gauche .inscrire{
+        transform: translateX(0);
+        transition: 0.7s;
+    }
+
+    .form-contenu .form-gauche .auth{
+        transform: translateX(0);
+        transition: 0.7s;
+    }
+    
+    .form-contenu .form-droit .inscrire{
+        transform: translateX(0);
+        transition: 0.7s;
+    }
+
+    .form-contenu .form-droit .auth{
+        transform: translateX(0);
+        transition: 0.7s;
+    }
+
+    /*Animation----------------------------------------------------------------------*/
+
+    .form-contenu .form-gauche.active .inscrire{
+        transform: translateX(-100%);
+        transition: 0.7s;
+    }
+    .form-contenu .form-gauche.active .auth{
+        transform: translateX(-100%);
+        transition: 0.7s;
+    }
+    .form-contenu .form-droit.active .inscrire{
+        transform: translateX(100%);
+        transition: 0.7s;
+    }
+    .form-contenu .form-droit.active .auth{
+        transform: translateX(100%);
+        transition: 0.7s;
+    }
+
+    /*-------------------------------------------------------------------------------*/
+}

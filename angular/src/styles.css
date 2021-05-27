@@ -2,3 +2,9 @@
 :root{
     --connected: red;
 }
+
+*,
+*::before,
+*::after{
+    box-sizing: border-box;
+}
