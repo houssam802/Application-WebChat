@@ -12,6 +12,8 @@ import { ChatComponent } from './components/chat/chat.component';
 import { AuthComponent } from './components/auth/auth.component';
 import { InscrireComponent } from './components/inscrire/inscrire.component';
 import { AccueilComponent } from './components/accueil/accueil.component';
+import { UtilisateursComponent } from './components/Generateur_utilisateurs/utilisateurs/utilisateurs.component';
+import { UtilisateurComponent } from './components/Generateur_utilisateurs/utilisateur/utilisateur.component';
 
 
 @NgModule({
@@ -20,7 +22,9 @@ import { AccueilComponent } from './components/accueil/accueil.component';
     ChatComponent,
     AuthComponent,
     InscrireComponent,
-    AccueilComponent
+    AccueilComponent,
+    UtilisateursComponent,
+    UtilisateurComponent
   ],
   imports: [
     BrowserModule,
