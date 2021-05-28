@@ -16,9 +16,34 @@ h2 {
 	text-align: center;
 	position: relative;
 	padding: 6px 0 0;
-	margin-bottom: 2rem;
+	margin-bottom: .5rem;
     font-family: nunito;
     font-weight: 700;
+}
+
+.form-ligne .img {
+    width: 76px;
+    height: 76px;
+    background-size: cover;
+    background-position: 50% 50%;
+    background-repeat: no-repeat;
+    border-radius: 38px;
+    background-color: #fe892a;
+    border:1px solid rgba(0, 0, 0, .2);
+    margin-bottom: .5rem;
+}
+
+.fa-camera{
+    font-size: 1.1rem;
+    cursor: pointer;
+    color:  rgb(14, 126, 156);
+}
+
+label{
+    display: inline-block;
+    position: relative;
+    left: 80%;
+    top: 70%;
 }
 
 .form-ligne {
@@ -43,7 +68,7 @@ p{
 }
 
 .form-ligne input {
-	width: 100%;
+	width: 90%;
     padding: 0px .3rem .3rem .3rem;
     font-size: 1.2rem;
     border: 2px solid transparent;

@@ -7,6 +7,11 @@ const sqlinsert = require('../data/sqlinsert');
 
 
 
+router.post('/photo', async function(req, res) {
+  console.log(req.body);
+  res.send('Received');
+});
+
 router.post('/inscrire', async function(req, res) {
   try {
     var utili = await UserService.create(req.body);

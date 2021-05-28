@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
@@ -10,7 +10,7 @@ import { AuthenticationService } from '../../services/authentication.service';
   templateUrl: './inscrire.component.html',
   styleUrls: ['./inscrire.component.css']
 })
-export class InscrireComponent implements OnInit {
+export class InscrireComponent implements OnInit, AfterViewInit {
 
   submitted = false;
   errors : any = {};
@@ -44,6 +44,7 @@ export class InscrireComponent implements OnInit {
   ngOnInit()
   {
   	this.userForm = this.formBuilder.group({
+      profile: [''],
   		nomutil: ['', Validators.required],
   		email: ['', [Validators.required, Validators.email]],
   		pword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32), Validators.pattern('([a-zA-Z0-9]*)')]],
@@ -68,6 +69,21 @@ export class InscrireComponent implements OnInit {
     });
   }
 
+  ngAfterViewInit(){
+    var icon : any = document.querySelector('.img');
+    icon.style.backgroundImage = "url('../../../assets/Images/profile.png')";
+    var profile : any = document.getElementById("fileUp");
+    profile.onchange = (e : any) => {
+      var file = e.target.files[0];
+      var reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        icon.style.backgroundColor = 'transparent';
+        icon.style.backgroundImage = `url(${reader.result})`;
+      }
+    }
+  }
+
   onSubmit()
   {
   	this.submitted = true;
@@ -88,7 +104,16 @@ export class InscrireComponent implements OnInit {
           obj[clef] = descriptor?.value;
         }
       }
-        this.httpClient.post("/api/v1/user/inscrire", obj).subscribe((obs : any) => {
+      var form = document.getElementsByTagName('form')[0];
+      const formData = new FormData(form);
+      formData.forEach( (entry : any) => {
+          console.log(entry);
+      });
+      this.httpClient.post<any>("/api/v1/user/photo", formData).subscribe(
+        (res) => console.log(res),
+        (err) => console.log(err)
+      );
+        /*this.httpClient.post("/api/v1/user/inscrire", obj).subscribe((obs : any) => {
           this.errors = {};
           if(obs.message){
             Object.assign(this.errors, obs.message);
@@ -96,8 +121,18 @@ export class InscrireComponent implements OnInit {
             this.authenticationService.setToken(obs.toString());
             //this.router.navigate(["/chat"]);
           }
-        })
+        })*/
   	}
+  }
+
+  onFileSelect(event : any){
+    if (event.target.files.length > 0) {
+      const file = event.target.files[0];
+      this.userForm.patchValue({
+        profile: file
+      });
+      this.userForm.get('profile')?.updateValueAndValidity();
+    }
   }
 
 }

@@ -1,3 +1,5 @@
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
 <!-- 
     ngClass : adds and removes CSS classes on an HTML element.
     formGroup : Tracks the value and validity state of a group of FormControl instances. (class)
@@ -7,8 +9,16 @@
     formBuilder : Creates an AbstractControl from a user-specified configuration.
     AbstractControl : This is the base class for FormControl, FormGroup, and FormArray.
 -->
-<form [formGroup]="userForm" (ngSubmit)="onSubmit()">
+<form [formGroup]="userForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
     <h2>S'Inscrire</h2>
+    <div class="form-ligne">
+        <div class="img">
+            <label for="fileUp">
+                <span class="fa fa-camera"></span>
+            </label>
+            <input type="file" name="fileUp" id="fileUp" (change)="onFileSelect($event)" style="display: none;" accept="image/*">
+        </div>
+    </div>
     <div class="form-ligne" [ngClass]="{ 'has-error' : invalidNomUtili() }">
         <div>
             <input type="text" formControlName="nomutil" name="nomutil" id="nomutil" [ngClass]="{ 'is-invalid' : invalidNomUtili() }" class="form-control input-text" placeholder="Votre nom" autocomplete="off">
