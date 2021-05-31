@@ -5,23 +5,23 @@ var router = express.Router();
 var sqlSelect = require('../data/sqlSelect');
 const sqlinsert = require('../data/sqlinsert');
 
+var multer= require('multer');
+var telecharger = multer();
 
 
-router.post('/photo', async function(req, res) {
-  console.log(req.body);
-  res.send('Received');
-});
-
-router.post('/inscrire', async function(req, res) {
+router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) {
   try {
-    var utili = await UserService.create(req.body);
-    sqlinsert.insert_utilisateur(utili,function(result){
+    var utilisateur = await UserService.create(req.body);
+    var mimeType = req.file.mimetype;
+    var buffer = req.file.buffer;
+    sqlinsert.insert_utilisateur(utilisateur, mimeType, buffer, function(result){
       var token = jwt.sign({ user : result.JSON() }, "Secret");
       res.json(token);
-      },function(err){
-        if( err.search('\email\g') ){
-          res.json({ message : { email : "Email déjà existe" } } );
-        }
+    },function(err){
+      // TODO Ajouter unicité nom d'utilisateur .
+      if( err.search('\email\g') ){
+        res.json({ message : { email : "Email déjà existe" } } );
+      }
     });
   } catch (err) {
     res.json({ message : err.message });
@@ -39,15 +39,14 @@ router.post('/auth', async function(req, res) {
 });
 
 
-router.get('/', async (req, res, next) => {
-  var userFound = await UserService.retrieve(req.params.id);
-  return res.status(201).json(userFound);
-  /*try{
-    var userFound = await UserService.retrieve(req.params.id);
-    return res.status(201).json(userFound);
-  } catch( err ) {
-    return res.status(400).send(err);
-  }*/
+router.get('/:id', async (req, res, next) => {
+  var id = req.params.id;
+  console.log(id);
+  sqlSelect.select_id_util(id, (response) => {
+    res.send(response);
+  }, (error) => {
+    res.send({ message : error });
+  });
 });
 
 // Update

@@ -8,4 +8,9 @@ con = mysql.createConnection({
     debug : false
 });
 
+con.connect((err) => {
+    if(err) console.log(err.message);
+    console.log('connected');
+})
+
 module.exports = con 

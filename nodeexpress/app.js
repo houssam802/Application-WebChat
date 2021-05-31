@@ -4,8 +4,6 @@ const http = require('http');
 const httpServer = http.createServer(app);
 const socketIo = require('socket.io');
 
-
-const sqlinsert=require("./data/sqlinsert");
 const io = socketIo(httpServer, {
     cors: {
         origin: "http://localhost:4200"
@@ -13,10 +11,13 @@ const io = socketIo(httpServer, {
 }); 
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var multer = require('multer');
+var upload = multer();
 
 var user = require('./routes/user');
+var stockerFichier = require('./routes/stockerFichier');
 
-// Enable CORS for all origins .
+// Enable CORS for origin : http://localhost:4200.
 app.use( (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:4200");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -26,11 +27,17 @@ app.use( (req, res, next) => {
 } );
 
 
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json({
+    limit: '50mb'
+}));
+app.use(bodyParser.urlencoded({
+    limit: '50mb', 
+    extended: true 
+}));
 app.use(cookieParser())
 
 app.use('/api/v1/user', user);
+app.use('/api/v1/user', stockerFichier);
 
 io.use(async (socket, next) => {
     const username = socket.handshake.auth.nom;

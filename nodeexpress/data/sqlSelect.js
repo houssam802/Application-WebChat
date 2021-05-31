@@ -13,15 +13,18 @@ module.exports.getUsers = function(callback){
     });
 }
 
-module.exports.select_id_util = function(id_util,callback){
+module.exports.select_id_util = function(id_util,callback,error){
     var sql = 'SELECT * FROM utilisateurs where id = ?';
     con.query(sql,[id_util], function (err, result) {
-        if (err) throw err; 
-        callback(new UserModel(result[0].nom,result[0].email,result[0].id));
+        if (err) throw err;
+        if ( result.length === 0 ){  
+            error({ id : "Utilisateur Inexistant" });  
+        }
+        callback(result[0]);
     });
 }
 
-module.exports.verifier_user = function(nom,mdp,callback, error){
+module.exports.verifier_user = function(nom, mdp, callback, error){
     var sql = 'SELECT * FROM utilisateurs where nom = ?';
     con.query(sql,[nom], function (err, result) {
         if (err) throw err;

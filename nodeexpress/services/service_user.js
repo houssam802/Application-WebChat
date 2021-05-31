@@ -43,7 +43,7 @@ class UserService {
 			};
 		}
 
-		let user = new UserModel(data.username, data.email);
+		let user = new UserModel(data.nomutil, data.email);
         user.pwd = data.pword;
         return user;
     }

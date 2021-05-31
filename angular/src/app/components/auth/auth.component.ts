@@ -36,7 +36,7 @@ export class AuthComponent implements OnInit {
           Object.assign(this.errors, obs.message);
         } else {
           this.authenticationService.setToken(obs.toString());
-          this.router.navigate(['/chat']);
+          this.router.navigate(['/user']);
         }
       });
     }

@@ -6,11 +6,11 @@ class UserModel {
    #email
    #salt = '10ae14f3fdea2eaecbc29df91bacead2'
    #hash
-    constructor(nom, email,id = null) {
+   constructor(nom, email, id = null) {
       this.#id = id;
       this.#nom = nom;
       this.#email = email;
-    }
+   }
 
    set id(id){
       this.#id=id;
@@ -18,7 +18,7 @@ class UserModel {
    
    set pwd(mdp){
       // Hashing user's salt and password with 1000 iterations, 
-      this.#hash = crypto.pbkdf2Sync(mdp,this.#salt,1000, 64, `sha512`).toString(`hex`); 
+      this.#hash = crypto.pbkdf2Sync(mdp, this.#salt, 1000, 64, `sha512`).toString(`hex`); 
    }
 
    set hash(hash){
@@ -32,6 +32,10 @@ class UserModel {
    get email() {
       return this.#email;
    }
+
+   get pword() {
+      return this.#hash;
+   }
     
    verify(mdp){
       var hash = crypto.pbkdf2Sync(mdp,this.#salt, 1000, 64, `sha512`).toString(`hex`); 
@@ -39,7 +43,7 @@ class UserModel {
    }
 
    displayInfo(){
-      return ("('"+this.#nom+"','"+ this.#email + "','"+this.#hash+"')");
+      return this.#nom + "," + this.#email + "," + this.#hash;
    }
 
    JSON(){

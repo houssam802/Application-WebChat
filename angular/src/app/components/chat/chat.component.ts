@@ -3,7 +3,8 @@ import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/co
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { io } from 'socket.io-client';
-import { myFunc } from './ChatFonctions';
+import { myFunc, stockerFichier } from './ChatFonctions';
+import { AuthenticationService } from '../../services/authentication.service';
 
 @Component({
   selector: 'chat',
@@ -15,7 +16,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   user : any = { nom: '' }; 
 	chat !: FormGroup;
-  socket : any = io("http://localhost:3000", { autoConnect: false });
+  socket : any;
   username : any;
   messages : any;
   form : any;
@@ -24,7 +25,10 @@ export class ChatComponent implements OnInit, AfterViewInit {
   file : any;
   bufferTotal = new ArrayBuffer(0);
 
-  constructor(private formBuilder: FormBuilder, private route:ActivatedRoute, private httpClient:HttpClient)
+  constructor(private formBuilder : FormBuilder, 
+    private route : ActivatedRoute, 
+    private httpClient : HttpClient,
+    private authService : AuthenticationService)
   {
 
   }
@@ -32,14 +36,19 @@ export class ChatComponent implements OnInit, AfterViewInit {
   ngOnInit()
   {
     new Promise((resolve, reject) => {
-      this.route.params.subscribe( (data:any) => {
-        this.httpClient.get("/api/v1/user/").subscribe( obj => {
-          this.user = obj;
-          resolve(obj);
-        });
-      })
+      
     }).then(
       (res) => {
+        this.socket =  io("http://localhost:3000", { 
+          autoConnect: false,
+          transportOptions: {
+            polling: {
+              extraHeaders: {
+                'Authorization': 'Bearer ' + this.authService.getToken()
+              }
+            }
+          }
+        })
         this.socket.auth = res;
         this.socket.connect();
       }
@@ -53,7 +62,10 @@ export class ChatComponent implements OnInit, AfterViewInit {
     this.form = document.getElementById("form");
     this.input = document.getElementById("input");
     this.fileLoader = document.getElementById("fileUp");
-    this.socket.on("users", (users : any) => {
+    this.fileLoader.onchange = () => {
+      stockerFichier(this.form);
+    }
+    /*this.socket.on("users", (users : any) => {
       users.forEach((user : any) => {
         if( user.username != document.cookie.split("=")[1] ){
           this.createUser(user);
@@ -62,7 +74,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
     });
     this.socket.on("user connected", (user : any) => {
       this.createUser(user);
-    });
+    });*/
   }
 
   createUser(user : any){
