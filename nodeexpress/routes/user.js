@@ -50,6 +50,15 @@ router.get('/', async (req, res, next) => {
   }*/
 });
 
+router.get('/list', async (req, res, next) => {
+  sqlSelect.getUsers(function(result){
+    console.log(result);
+    res.json(result);
+  })
+});
+
+
+
 // Update
 router.put('/:id', async function(req, res, next) {
   var user = { username : "H" };

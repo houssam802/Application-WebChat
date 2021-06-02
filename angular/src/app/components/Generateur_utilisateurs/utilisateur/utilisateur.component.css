@@ -1,0 +1,131 @@
+body, div, span,p{
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    font: inherit;
+    vertical-align: baseline;
+}
+
+.contact .conteneur .meta .name {
+    font-weight: 600;
+    margin:0;
+}
+.contact .conteneur span.online {
+    background: #4BEA82;
+}
+.contact .conteneur span.offline {
+    background:#DB3F4F;
+}
+.contact {
+    border: 1px solid;
+    width: 100%;
+}
+.contact .conteneur{
+    width: calc(100% - 58px);
+    border: 1px solid;
+    overflow: hidden;
+    position: relative;
+}
+.contact .conteneur .meta .derniermessage{
+    width: 100%;
+    padding: 0 0 1px;
+    font-weight: 300;
+    font-size: 8pt;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    -moz-transition: 1s all ease;
+    -o-transition: 1s all ease;
+    -webkit-transition: 1s all ease;
+    transition: 1s all ease;
+}
+
+
+.contact .conteneur span {
+    position: absolute;
+    left: 7px;
+    top: 4px;
+    margin: -2px 0 0 -2px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    border: 2px solid #2c3e50;
+    background: #95a5a6;
+}
+
+.contact .conteneur img {
+    width: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.contact {
+    position: relative;
+    padding:7px 3px;
+    margin-left: 0;
+    font-size: 0.9em;
+    cursor: pointer;
+    border: solid 1px black;
+    text-align: -webkit-match-parent;
+    width: 100%;
+}
+#text_non_lue{
+    position: absolute;
+    right: 1%;
+    top:15%;
+    margin: -2px 0 0 -2px;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4BEA82;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.conteneur {
+    padding:0;
+}
+
+@media screen and (max-width: 735px) {
+    .conteneur {
+        width: calc(100% - 58px);
+        padding:0;
+    }
+    
+    .contact .conteneur img {
+      margin-right: 0px;
+    }
+    .contact .conteneur .meta {
+        padding: 5px 0 0 0;
+    }
+    .contact .conteneur .meta {
+      display: none;
+    }
+    .conteneur span {
+        position: absolute;
+        left: 0;
+        margin: -2px 0 0 -2px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        border: 2px solid #2c3e50;
+        background: #95a5a6;
+      }
+      .contact-status {
+        border: 2px solid #32465a !important;
+      }
+     .conteneur {
+        margin: 0 0;
+        position: relative;
+      }
+
+      #text_non_lue{
+        display:none;
+      }
+      .derniermessage{
+          display: none;
+      }
+  }

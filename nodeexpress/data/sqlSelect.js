@@ -7,7 +7,7 @@ module.exports.getUsers = function(callback){
     con.query(sql, function (err, result) {
         if (err) throw err;
         result.forEach(element => {
-            utils.push(new UserModel(element.nom,element.email,element.id));
+            utils.push(new UserModel(element.nom,element.email,element.id).JSON());
         });
         callback(utils);
     });
