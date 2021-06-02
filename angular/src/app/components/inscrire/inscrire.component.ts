@@ -3,6 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/authentication.service';
+import * as $ from 'jquery';
 
 
 @Component({
@@ -44,7 +45,6 @@ export class InscrireComponent implements OnInit, AfterViewInit {
   ngOnInit()
   {
   	this.userForm = this.formBuilder.group({
-      profile: [''],
   		nomutil: ['', Validators.required],
   		email: ['', [Validators.required, Validators.email]],
   		pword: ['', [Validators.required, Validators.minLength(8), Validators.maxLength(32), Validators.pattern('([a-zA-Z0-9]*)')]],
@@ -78,8 +78,8 @@ export class InscrireComponent implements OnInit, AfterViewInit {
       var reader = new FileReader();
       reader.readAsDataURL(file);
       reader.onload = () => {
-        icon.style.backgroundColor = 'transparent';
-        icon.style.backgroundImage = `url(${reader.result})`;
+      icon.style.backgroundColor = 'transparent';
+      icon.style.backgroundImage = `url(${reader.result})`;
       }
     }
   }
@@ -94,25 +94,10 @@ export class InscrireComponent implements OnInit, AfterViewInit {
   	}
   	else
   	{
-      let data : any = Object.assign(this.userForm.value);
-      // We don't need the password confirmation
-      let clefs = Object.keys(data);
-      let obj : any = {};
-      for(let clef of clefs){
-        let descriptor = Object.getOwnPropertyDescriptor(data, clef);
-        if( clef != "cpword" ){
-          obj[clef] = descriptor?.value;
-        }
-      }
       var form = document.getElementsByTagName('form')[0];
-      const formData = new FormData(form);
-      formData.forEach( (entry : any) => {
-          console.log(entry);
-      });
-      this.httpClient.post<any>("/api/v1/user/photo", formData).subscribe(
-        (res) => console.log(res),
-        (err) => console.log(err)
-      );
+      var formData = new FormData(form);
+      this.envoiForm(formData, this);
+      //form.submit();
         /*this.httpClient.post("/api/v1/user/inscrire", obj).subscribe((obs : any) => {
           this.errors = {};
           if(obs.message){
@@ -125,7 +110,7 @@ export class InscrireComponent implements OnInit, AfterViewInit {
   	}
   }
 
-  onFileSelect(event : any){
+  /*onFileSelect(event : any){
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       this.userForm.patchValue({
@@ -133,6 +118,30 @@ export class InscrireComponent implements OnInit, AfterViewInit {
       });
       this.userForm.get('profile')?.updateValueAndValidity();
     }
+  }*/
+
+  envoiForm(formData: FormData, inscrireComponent: any){
+    $.ajax({
+      url: "/api/v1/user/inscrire",
+      type: 'POST',
+      dataType: "JSON",
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function(data){
+        inscrireComponent.errors = {};
+        if(data.message){
+          Object.assign(inscrireComponent.errors, data.message);
+        } else {
+          console.log(inscrireComponent.authenticationService);
+          inscrireComponent.authenticationService.setToken(data);
+          inscrireComponent.router.navigate(["/user"]);
+        }
+      },
+      error: function(err){
+        console.log(err);
+      }
+    });
   }
 
 }

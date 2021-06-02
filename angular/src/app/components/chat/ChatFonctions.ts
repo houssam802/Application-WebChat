@@ -16,7 +16,8 @@ export function myFunc(user : any, form : any, input : any, messages : any, file
   var userPlace : any = document.getElementById("user"); 
   userPlace.innerHTML = user.split(",")[1];
   fileLoader.onchange = (event : any) => {
-    file = event.target.files[0];
+    stockerFichier(form);
+    /*file = event.target.files[0];
     var fileName = file.name;
     var reader = new FileReader();
     reader.readAsDataURL(file);
@@ -32,7 +33,7 @@ export function myFunc(user : any, form : any, input : any, messages : any, file
         pas = 100000;
       }
       socket.emit("File", pas, dataMime, fileName, user.split(",")[0]);
-    } 
+    } */
   }
   form.onsubmit = (event : any) => {
     event.preventDefault();
@@ -160,4 +161,26 @@ function download(filename : any, dataMime : any, base64 : any) {
   document.body.append(a);
   a.click();
   document.body.removeChild(a);
+}
+
+export function stockerFichier(form : HTMLFormElement){
+  let formData = new FormData(form);
+  formData.forEach((value, key) => {
+    console.log(key);
+    console.log(value);
+  })
+  $.ajax({
+    url: "/api/v1/user/stockerFichier",
+    type: 'POST',
+    dataType: "JSON",
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function(data){
+      console.log(data)
+    },
+    error: function(err){
+      console.log(err);
+    }
+  })
 }

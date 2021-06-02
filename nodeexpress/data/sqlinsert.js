@@ -1,26 +1,21 @@
 const con = require('./sqlConnection');
 const UserModel = require('../models/model.user');
 
-module.exports.insert_utilisateur = function(personnel,callback,error){
-    var sql = "INSERT INTO utilisateurs (nom,email,mdp) VALUES "+personnel.displayInfo();
-    con.query(sql, function (err, result) {
+module.exports.insert_utilisateur = function(personnel, mime, buffer, callback, error){
+    var sql = "INSERT INTO utilisateurs (nom, email, mdp, mimeType, photo) VALUES(?, ?, ?, ?, ?);";
+    var valeurs = [personnel.nom, personnel.email, personnel.pword, mime, buffer];
+    con.query(sql, valeurs, function (err, result) {
         if (err){
             error(err.message);
         }else{
             personnel.id=result.insertId;
             callback(personnel);
-        }
-        
+        }   
     });
 } 
 
 
-//var pers =new UserModel ('ni','elaich.usni@gmail.com');
-//pers.pwd='housni';
-//console.log(insert_utilisateur(pers));
-
-
-module.exports.amies=function(id_emet,id_dest){
+module.exports.amie=function(id_emet,id_dest){
     con.connect(function(err) {
         if (err) throw err;
         console.log("Connected!");
@@ -39,5 +34,16 @@ module.exports.amies=function(id_emet,id_dest){
                 console.log('Data written to file');
             });
         });
+    });
+}
+
+module.exports.insertFile = function(fileName, mimeType, buffer, resolve, error){
+    var sql = 'INSERT INTO files (fileName, mimeType, file) VALUES(?, ?, ?)';
+    con.query(sql, [fileName, mimeType, buffer], (err, result) => {
+        if (err){
+            error(err.message);
+        }else{
+            resolve(result[0]);
+        } 
     });
 }
