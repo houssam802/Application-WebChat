@@ -1,6 +1,5 @@
 import { Component, OnInit, Input ,Output } from '@angular/core';
-import { HttpClient,HttpHeaders } from '@angular/common/http';
-import { utilisateur } from '../../../utilisateur';
+import { utilisateur } from '../../models/utilisateur';
 
 @Component({
   selector: 'app-utilisateur',

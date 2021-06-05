@@ -1,28 +1,42 @@
-var express = require('express');
+var express     = require('express');
 var UserService = require('../services/service_user');
-var jwt = require('jsonwebtoken');
-var router = express.Router();
-var sqlSelect = require('../data/sqlSelect');
+var jwt         = require('jsonwebtoken');
+var router      = express.Router();
+var sqlSelect   = require('../data/sqlSelect');
 const sqlinsert = require('../data/sqlinsert');
 
-var multer= require('multer');
+var multer      = require('multer');
 var telecharger = multer();
 
+let secret = 'some_secret'; // a secret key is set here
 
 router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) {
   try {
     var utilisateur = await UserService.create(req.body);
-    var mimeType = req.file.mimetype;
-    var buffer = req.file.buffer;
-    sqlinsert.insert_utilisateur(utilisateur, mimeType, buffer, function(result){
-      var token = jwt.sign({ user : result.JSON() }, "Secret");
-      res.json(token);
-    },function(err){
-      // TODO Ajouter unicité nom d'utilisateur .
-      if( err.search('\email\g') ){
-        res.json({ message : { email : "Email déjà existe" } } );
-      }
-    });
+    // Si la photo n'est pas remplie .
+    if( !req.file ) {
+      sqlinsert.insert_utilisateur(utilisateur, function(result){
+        var token = jwt.sign({ user : result.JSON() }, "Secret");
+        res.json(token);
+      },function(err){
+        // TODO Ajouter unicité nom d'utilisateur .
+        if( err.search('\email\g') ){
+          res.json({ message : { email : "Email déjà existe" } } );
+        }
+      });
+    } else {
+      var mimeType = req.file.mimetype;
+      var buffer = req.file.buffer;
+      sqlinsert.insert_utilisateur(utilisateur, mimeType, buffer, function(result){
+        var token = jwt.sign({ user : result.JSON() }, "Secret");
+        res.json(token);
+      },function(err){
+        // TODO Ajouter unicité nom d'utilisateur .
+        if( err.search('\email\g') ){
+          res.json({ message : { email : "Email déjà existe" } } );
+        }
+      });
+    }
   } catch (err) {
     res.json({ message : err.message });
   }
@@ -30,32 +44,23 @@ router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) 
 
 
 router.post('/auth', async function(req, res) {
-  sqlSelect.verifier_user(req.body.nom,req.body.pwd, (result) => {
-    var token = jwt.sign({ user : result.JSON() }, "Secret");
-    res.json(token);
-  }, (error) => {
+  //sqlSelect.verifier_user(req.body.nom,req.body.pwd, (result) => {
+    var token = jwt.sign({ user : req.body }, secret);
+    res.json({ "token" : token});
+  /*}, (error) => {
     res.json({ message : error });
-  });
+  });*/
 });
 
 
 router.get('/:id', async (req, res, next) => {
   var id = req.params.id;
-  console.log(id);
   sqlSelect.select_id_util(id, (response) => {
     res.send(response);
   }, (error) => {
     res.send({ message : error });
   });
 });
-
-router.get('/list', async (req, res, next) => {
-  sqlSelect.getUsers(function(result){
-    console.log(result);
-    res.json(result);
-  })
-});
-
 
 
 // Update

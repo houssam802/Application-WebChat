@@ -4,7 +4,7 @@ con = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: "test_chats",
+    database: "test_chat",
     debug : false
 });
 

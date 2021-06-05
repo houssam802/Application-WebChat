@@ -1,5 +1,5 @@
 export interface utilisateur {
-    id : number;
+    id: number;
     nom: string;
     image ?:any; 
 }

@@ -2,16 +2,30 @@ const con = require('./sqlConnection');
 const UserModel = require('../models/model.user');
 
 module.exports.insert_utilisateur = function(personnel, mime, buffer, callback, error){
-    var sql = "INSERT INTO utilisateurs (nom, email, mdp, mimeType, photo) VALUES(?, ?, ?, ?, ?);";
-    var valeurs = [personnel.nom, personnel.email, personnel.pword, mime, buffer];
-    con.query(sql, valeurs, function (err, result) {
-        if (err){
-            error(err.message);
-        }else{
-            personnel.id=result.insertId;
-            callback(personnel);
-        }   
-    });
+    var sql, valeurs;
+    if( arguments.length == 5 ) {
+        sql = "INSERT INTO utilisateurs (nom, email, mdp, mimeType, photo) VALUES(?, ?, ?, ?, ?);";
+        valeurs = [personnel.nom, personnel.email, personnel.pword, mime, buffer];
+        con.query(sql, valeurs, function (err, result) {
+            if (err){
+                error(err.message);
+            }else{
+                personnel.id=result.insertId;
+                callback(personnel);
+            }   
+        });
+    } else {
+        sql = "INSERT INTO utilisateurs (nom, email, mdp) VALUES(?, ?, ?);";
+        valeurs = [personnel.nom, personnel.email, personnel.pword];
+        con.query(sql, valeurs, function (err, result) {
+            if (err){
+                buffer(err.message);
+            }else{
+                personnel.id=result.insertId;
+                mime(personnel);
+            }   
+        });
+    }
 } 
 
 

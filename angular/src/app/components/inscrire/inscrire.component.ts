@@ -97,28 +97,8 @@ export class InscrireComponent implements OnInit, AfterViewInit {
       var form = document.getElementsByTagName('form')[0];
       var formData = new FormData(form);
       this.envoiForm(formData, this);
-      //form.submit();
-        /*this.httpClient.post("/api/v1/user/inscrire", obj).subscribe((obs : any) => {
-          this.errors = {};
-          if(obs.message){
-            Object.assign(this.errors, obs.message);
-          } else {
-            this.authenticationService.setToken(obs.toString());
-            //this.router.navigate(["/chat"]);
-          }
-        })*/
   	}
   }
-
-  /*onFileSelect(event : any){
-    if (event.target.files.length > 0) {
-      const file = event.target.files[0];
-      this.userForm.patchValue({
-        profile: file
-      });
-      this.userForm.get('profile')?.updateValueAndValidity();
-    }
-  }*/
 
   envoiForm(formData: FormData, inscrireComponent: any){
     $.ajax({
@@ -133,9 +113,8 @@ export class InscrireComponent implements OnInit, AfterViewInit {
         if(data.message){
           Object.assign(inscrireComponent.errors, data.message);
         } else {
-          console.log(inscrireComponent.authenticationService);
           inscrireComponent.authenticationService.setToken(data);
-          inscrireComponent.router.navigate(["/user"]);
+          inscrireComponent.router.navigate(["/chat"]);
         }
       },
       error: function(err){

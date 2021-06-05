@@ -40,14 +40,23 @@ module.exports.verifier_user = function(nom, mdp, callback, error){
     });
 }
 
-module.exports.select_infos_amis = function(id_util,callback){
+module.exports.select_infos_amies = function(id_util,callback, error){
     var utils=[];
-    var sql = 'SELECT u.* FROM utilisateurs u,chats c where u.id = util2 and c.util1=?'+
-        'or u.id = util1 and c.util2=?';
-    con.query(sql,[id_util,id_util], function (err, result) {
-        if (err) throw err;        
+    var sql1 = "SELECT * from utilisateurs where nom IN (";
+    var sql2 = 'SELECT DISTINCT(u.nom) FROM utilisateurs u,chats c where u.id = c.util2 and c.util1=?'+
+        'or u.id = c.util1 and c.util2=?)';
+    con.query(sql1+sql2,[id_util,id_util], function (err, result) {
+        if (err) error({ message : err });        
+        if ( result.length === 0 ){  
+            error({ amie : "Communiquer avec vos amies ." });  
+        }
         result.forEach(element => {
-            utils.push(new UserModel(element.nom,element.email,element.id));
+            utils.push({
+                id: element.id,
+                nom: element.nom,
+                mime: element.mimeType,
+                photo: element.photo 
+            });
         });
         callback(utils);
     });

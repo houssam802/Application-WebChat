@@ -1,10 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { io } from 'socket.io-client';
 import { myFunc, stockerFichier } from './ChatFonctions';
 import { AuthenticationService } from '../../services/authentication.service';
+import { utilisateur } from 'src/app/models/utilisateur';
+import { UtilisateurService } from 'src/app/services/utilisateur.service';
 
 @Component({
   selector: 'chat',
@@ -14,6 +16,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class ChatComponent implements OnInit, AfterViewInit {
 
+  utils : utilisateur[] = [];
   user : any = { nom: '' }; 
 	chat !: FormGroup;
   socket : any;
@@ -28,7 +31,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
   constructor(private formBuilder : FormBuilder, 
     private route : ActivatedRoute, 
     private httpClient : HttpClient,
-    private authService : AuthenticationService)
+    private authService : AuthenticationService,
+    private utilService: UtilisateurService)
   {
 
   }
@@ -53,6 +57,31 @@ export class ChatComponent implements OnInit, AfterViewInit {
         this.socket.connect();
       }
     )
+
+    this.utilService.getUtilisateurs().subscribe((utilisateurs : any) => {
+      utilisateurs.forEach( (element: any) => {
+        var id = element.id;
+        var nom = element.nom;
+        var image = "";
+        if(element.mime != ""){
+          var buffer = element.photo.data;
+          var mimeType = "data:" + element.mime + ";base64";
+          var binary = '';
+          for (var i = 0; i < buffer.length; ++i) {
+              binary += String.fromCharCode(buffer[i]);
+          }
+          var base64 = btoa(binary);
+          image = mimeType + "," + base64;
+        }
+        var utilisateur : utilisateur = {
+          id: id,
+          nom: nom,
+          image: image
+        };
+        this.utils.push(utilisateur);
+        console.log(this.utils);
+      });
+    })
 
   }
 

@@ -30,14 +30,20 @@ export class AuthComponent implements OnInit {
 
   onSubmit(){
     if(this.user.controls.nom.errors == null){
-      this.httpClient.post("/api/v1/user/auth", this.user.value).subscribe( (obs : any) => {
-        this.errors = {};
+      this.httpClient.post("/api/v1/user/auth", this.user.value).subscribe( (response : any) => {
+        console.log(response);
+        if(response["token"]){
+          localStorage.setItem('token', response['token']);
+        }
+        /*this.errors = {};
         if(obs.message){
           Object.assign(this.errors, obs.message);
         } else {
           this.authenticationService.setToken(obs.toString());
-          this.router.navigate(['/user']);
-        }
+          this.router.navigate(['/chat']);
+        }*/
+      }, (error) => {
+        console.log(error);
       });
     }
     this.submitted=true;

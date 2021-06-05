@@ -4,7 +4,8 @@
   <div style="font-size: 1.2rem;" class="fi-pdf" >{{ user.nom }}</div>
   <div id="page" style="border-top: 1px solid gray;">
     <div id="side1">
-      <app-utilisateurs></app-utilisateurs>
+      <app-load-user *ngFor="let util of utils" [user]="util">
+      </app-load-user>
     </div>
     <div id="side2">
       <div id="user"></div>
