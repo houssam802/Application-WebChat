@@ -3,8 +3,8 @@ var UserService = require('../services/service_user');
 var jwt         = require('jsonwebtoken');
 var router      = express.Router();
 var sqlSelect   = require('../data/sqlSelect');
-const sqlinsert = require('../data/sqlinsert');
-
+var sqlinsert   = require('../data/sqlinsert');
+var service_jwt = require('../services/service_jwt');
 var multer      = require('multer');
 var telecharger = multer();
 
@@ -16,8 +16,11 @@ router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) 
     // Si la photo n'est pas remplie .
     if( !req.file ) {
       sqlinsert.insert_utilisateur(utilisateur, function(result){
-        var token = jwt.sign({ user : result.JSON() }, "Secret");
-        res.json(token);
+        res.json({
+          user : result.JSON(),
+          accessToken : service_jwt.getAccessToken(result.JSON()),
+          refreshToken : service_jwt.getRefreshToken(result.JSON()) 
+        });
       },function(err){
         // TODO Ajouter unicité nom d'utilisateur .
         if( err.search('\email\g') ){
@@ -44,12 +47,15 @@ router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) 
 
 
 router.post('/auth', async function(req, res) {
-  //sqlSelect.verifier_user(req.body.nom,req.body.pwd, (result) => {
-    var token = jwt.sign({ user : req.body }, secret);
-    res.json({ "token" : token});
-  /*}, (error) => {
+  sqlSelect.verifier_user(req.body.nom,req.body.pwd, (result) => {
+    res.json({
+      user : result.JSON(),
+      accessToken : service_jwt.getAccessToken(result.JSON()),
+      refreshToken : service_jwt.getRefreshToken(result.JSON()) 
+    });
+  }, (error) => {
     res.json({ message : error });
-  });*/
+  });
 });
 
 
@@ -61,6 +67,7 @@ router.get('/:id', async (req, res, next) => {
     res.send({ message : error });
   });
 });
+
 
 
 // Update
@@ -85,5 +92,22 @@ router.delete('/:id', async function(req, res, next) {
   }
 });
 
+
+app.post('/refresh-token', function (req, res) {
+  const refreshToken = req.body.refreshToken;
+
+  if (!refreshToken) {
+    return res.status(403).send('Access is forbidden');
+  }
+
+  try {
+    const nouveauAccessToken = service_jwt.refreshtoken(refreshToken);
+
+    res.send(nouveauAccessToken);
+  } catch (err) {
+    const message = (err && err.message) || err;
+    res.status(403).send(message);
+  }
+});
 
 module.exports = router;

@@ -4,6 +4,8 @@ import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 
+import JwtDecode from 'jwt-decode';
+
 @Component({
   selector: 'auth',
   templateUrl: './auth.component.html',
@@ -31,17 +33,22 @@ export class AuthComponent implements OnInit {
   onSubmit(){
     if(this.user.controls.nom.errors == null){
       this.httpClient.post("/api/v1/user/auth", this.user.value).subscribe( (response : any) => {
-        console.log(response);
-        if(response["token"]){
-          localStorage.setItem('token', response['token']);
-        }
-        /*this.errors = {};
-        if(obs.message){
-          Object.assign(this.errors, obs.message);
+        this.errors = {};
+        if(response.message){
+          Object.assign(this.errors, response.message);
         } else {
-          this.authenticationService.setToken(obs.toString());
-          this.router.navigate(['/chat']);
-        }*/
+          localStorage.setItem('token', response.accessToken);
+          var decode = JwtDecode(response.accessToken);
+          console.log(decode);
+          setTimeout(() => {
+            console.log(localStorage.getItem('token'));
+          }, 5000)
+          setTimeout(() => {
+            console.log(localStorage.getItem('token'));
+          }, 11000)
+          /*this.authenticationService.setToken(response.toString());
+          this.router.navigate(['/chat']);*/
+        }
       }, (error) => {
         console.log(error);
       });
