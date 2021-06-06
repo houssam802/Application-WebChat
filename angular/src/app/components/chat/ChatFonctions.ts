@@ -1,3 +1,4 @@
+import * as $ from "jquery";
 export function sendFileChunk(file : any, start : any, end : any, id : any, socket : any){
     var blob = file.slice(start, end);
     if( blob.size != 0 ){
@@ -12,19 +13,19 @@ export function sendFileChunk(file : any, start : any, end : any, id : any, sock
     }
 }
   
-export function myFunc(user : any, form : any, input : any, messages : any, fileLoader : any, file : any, bufferTotal : any, socket : any){
+export function myFunc(userDest : any, userEmet : any, form : any, input : any, messages : any, fileLoader : any, file : any, bufferTotal : any, socket : any){
   var userPlace : any = document.getElementById("user"); 
-  userPlace.innerHTML = user.split(",")[1];
+  userPlace.innerHTML = userDest.split(",")[1];
   fileLoader.onchange = (event : any) => {
     stockerFichier(form);
-    /*file = event.target.files[0];
+    file = event.target.files[0];
     var fileName = file.name;
     var reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onload = () => {
       var blob : any = reader.result;
       let dataMime = blob.split(",")[0];
-      fileSend(file.name, "emetteur", "Vous", messages);
+      fileSend(new Date().toLocaleString(), file.name, "emetteur", "Vous", messages);
       let boucle, pas;
       if( file.size > 100000 ){
         boucle = Math.round(file.size/100000);
@@ -32,21 +33,28 @@ export function myFunc(user : any, form : any, input : any, messages : any, file
       } else {
         pas = 100000;
       }
-      socket.emit("File", pas, dataMime, fileName, user.split(",")[0]);
-    } */
+      socket.emit("File", pas, dataMime, fileName, userDest.split(",")[0],userEmet.id,new Date().toLocaleString);
+    } 
   }
   form.onsubmit = (event : any) => {
     event.preventDefault();
     if( input.value ){
-        message(input.value, "emetteur", "Vous", messages);
-        socket.emit("private message", input.value, user.split(",")[0]);
+        message(new Date().toLocaleString(), input.value, "emetteur", "Vous", messages);
+        socket.emit("private message", {
+          time:new Date().toLocaleString(),
+          content : input.value,
+          ID_dest: userDest.split(",")[0],
+          ID_emet: userEmet.id
+      });
         input.value = '';
     }
   }
 
+
   socket.on("fileChunks", function(start: any, end: any, id: any) {
       sendFileChunk(file, start, end, id, socket);
   });
+
 
   socket.on("FileSent", function(fileName: any, dataMime: any, EmetteurID: any, EmetteurName: any){
     var binary = '';
@@ -59,6 +67,8 @@ export function myFunc(user : any, form : any, input : any, messages : any, file
     fileReceived(fileName, dataMime, base64, EmetteurName, messages);
   });
 
+
+
   socket.on("FileReceived", function(buffer: any) {
     console.log(buffer);
     var uint8 = new Uint8Array(buffer.byteLength + bufferTotal.byteLength);
@@ -68,9 +78,10 @@ export function myFunc(user : any, form : any, input : any, messages : any, file
   });
 
 
-  socket.on("private message", function(EmetteurID: any, EmetteurName: any,msg: any) {
-    message(msg, "destinateur", EmetteurName, messages);
+  socket.on("private message", function(time : any, EmetteurName: any,msg: any) {
+    message(time, msg, "destinateur", EmetteurName, messages);
   });
+
 
   socket.on("sendfile", function(EmetteurID: any, EmetteurName: any, fileName: any, file: any) {
     fileReceived(fileName, file, "destinateur", EmetteurName, messages);
@@ -79,12 +90,11 @@ export function myFunc(user : any, form : any, input : any, messages : any, file
 }
   
   
-function message(msg : any, partie : any, nom : any, messages : any){
-  console.log(messages);
+function message(time : any, msg : any, partie : any, nom : any, messages : any){
   var item = document.createElement('li');
   var contenu = document.createElement('div');
   var tag = document.createElement('div');
-  tag.innerText = nom;
+  tag.innerText = time + nom;
   contenu.textContent = msg;
   item.setAttribute("class", partie);
   contenu.prepend(tag);
@@ -93,11 +103,11 @@ function message(msg : any, partie : any, nom : any, messages : any){
   window.scrollTo(0, document.body.scrollHeight);
 }
   
-function fileSend(fileName : any, partie : any, nom : any, messages : any){
+function fileSend(time : any, fileName : any, partie : any, nom : any, messages : any){
   var item = document.createElement('li');
   var contenu = document.createElement('div');
   var tag = document.createElement('div');
-  tag.innerText = nom;
+  tag.innerText = time + nom;
   var fileNameTab = fileName.split(".");
   var extension = fileNameTab[fileNameTab.length -1 ];
   var icon = document.createElement("div");
@@ -176,10 +186,10 @@ export function stockerFichier(form : HTMLFormElement){
     data: formData,
     processData: false,
     contentType: false,
-    success: function(data){
+    success: function(data: any){
       console.log(data)
     },
-    error: function(err){
+    error: function(err: any){
       console.log(err);
     }
   })

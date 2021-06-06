@@ -1,5 +1,6 @@
 const con = require('./sqlConnection');
 const UserModel = require('../models/model.user');
+var Buffer = require('buffer/').Buffer;
 
 module.exports.insert_utilisateur = function(personnel, mime, buffer, callback, error){
     var sql = "INSERT INTO utilisateurs (nom, email, mdp, mimeType, photo) VALUES(?, ?, ?, ?, ?);";
@@ -15,28 +16,6 @@ module.exports.insert_utilisateur = function(personnel, mime, buffer, callback, 
 } 
 
 
-module.exports.amie=function(id_emet,id_dest){
-    con.connect(function(err) {
-        if (err) throw err;
-        console.log("Connected!");
-        let filename="./BDD/"+id_emet+"_"+id_dest+".json";
-        var sql = "INSERT INTO chats VALUES (?)";
-        var values = [id_emet,id_dest,filename];
-        var init={
-            messages: [    
-            ]
-          };
-        con.query(sql, [values], function (err, result) {
-            if (err) throw err;
-            let data = JSON.stringify(init, null, 2);
-            fs.writeFile(filename, data, (err) => {
-                if (err) throw err;
-                console.log('Data written to file');
-            });
-        });
-    });
-}
-
 module.exports.insertFile = function(fileName, mimeType, buffer, resolve, error){
     var sql = 'INSERT INTO files (fileName, mimeType, file) VALUES(?, ?, ?)';
     con.query(sql, [fileName, mimeType, buffer], (err, result) => {
@@ -46,4 +25,34 @@ module.exports.insertFile = function(fileName, mimeType, buffer, resolve, error)
             resolve(result[0]);
         } 
     });
+}
+
+
+
+module.exports.demande_amie=function(id_emet,id_dest){
+    var sql = "INSERT INTO amie (util1,util2) VALUES (?)";
+    var values = [id_emet,id_dest];
+    con.query(sql, [values], function (err, result) {
+        if (err) throw err;
+    });
+}
+
+module.exports.accept_demande_amie=function(id_emet,id_dest){
+    var init={
+        'messages': [    
+        ]
+    };
+    var sql = "UPDATE amie SET chat= ? WHERE util1=? and util2=?";
+    con.query(sql, [[Buffer.from(JSON.stringify(init))],id_emet,id_dest], function (err, result) {
+        if (err) throw err;
+        console.log('demande accepter');
+    });
+}
+
+module.exports.updateJson = function(id_emet,id_dest,json){
+    var sql = "UPDATE amie SET chat= ? WHERE util1=? and util2=? or util1=? and util2=?";
+    var values = [Buffer.from(JSON.stringify(json)),id_emet,id_dest,id_dest,id_emet];
+        con.query(sql,[values], function (err, result) {
+            if (err) throw err;
+        });
 }

@@ -1,4 +1,5 @@
 var express = require('express');
+const app = express();
 var UserService = require('../services/service_user');
 var jwt = require('jsonwebtoken');
 var router = express.Router();
@@ -7,7 +8,6 @@ const sqlinsert = require('../data/sqlinsert');
 
 var multer= require('multer');
 var telecharger = multer();
-
 
 router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) {
   try {
@@ -48,14 +48,6 @@ router.get('/:id', async (req, res, next) => {
     res.send({ message : error });
   });
 });
-
-router.get('/list', async (req, res, next) => {
-  sqlSelect.getUsers(function(result){
-    console.log(result);
-    res.json(result);
-  })
-});
-
 
 
 // Update

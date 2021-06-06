@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { io } from 'socket.io-client';
 import { myFunc, stockerFichier } from './ChatFonctions';
 import { AuthenticationService } from '../../services/authentication.service';
+import { utilisateur } from 'src/app/utilisateur';
 
 @Component({
   selector: 'chat',
@@ -14,7 +15,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 })
 export class ChatComponent implements OnInit, AfterViewInit {
 
-  user : any = { nom: '' }; 
+  user ?: utilisateur; 
 	chat !: FormGroup;
   socket : any;
   username : any;
@@ -35,11 +36,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
 
   ngOnInit()
   {
-    new Promise((resolve, reject) => {
-      
-    }).then(
-      (res) => {
-        this.socket =  io("http://localhost:3000", { 
+    this.socket =  io("http://localhost:3000", { 
           autoConnect: false,
           transportOptions: {
             polling: {
@@ -49,11 +46,8 @@ export class ChatComponent implements OnInit, AfterViewInit {
             }
           }
         })
-        this.socket.auth = res;
+        this.socket.id = this.user?.id;
         this.socket.connect();
-      }
-    )
-
   }
 
 
@@ -84,7 +78,7 @@ export class ChatComponent implements OnInit, AfterViewInit {
         utilis.style.setProperty("--connected", "green");
         utilis.setAttribute("id", user.userID + "," + user.username);
         utilis.onclick = () => {
-          myFunc(utilis.id, this.form, this.input, this.messages, this.fileLoader, this.file, this.bufferTotal, this.socket);
+          myFunc(utilis.id, this.user, this.form, this.input, this.messages, this.fileLoader, this.file, this.bufferTotal, this.socket);
         }
       }
     }

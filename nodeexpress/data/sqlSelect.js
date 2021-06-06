@@ -1,5 +1,7 @@
 const con = require('./sqlConnection');
 const UserModel = require('../models/model.user');
+var Buffer = require('buffer/').Buffer;
+
 
 module.exports.getUsers = function(callback){
     let utils=[];
@@ -48,6 +50,45 @@ module.exports.select_infos_amis = function(id_util,callback){
         if (err) throw err;        
         result.forEach(element => {
             utils.push(new UserModel(element.nom,element.email,element.id));
+        });
+        callback(utils);
+    });
+}
+
+
+module.exports.get_chat = function(util1,util2,callback){
+    var sql = 'SELECT chat FROM amie WHERE util1=? and util2=? or util1=? and util2=?';
+    values=[util1,util2,util2,util1]
+    con.query(sql,values, function (err, res) {
+        if (err) throw err;
+        callback(JSON.parse(res[0].json_file.toString()))
+    });
+
+}
+
+
+module.exports.get_all_chats = function(id_util,callback){
+    var utils={
+        'utilsateurs':[]
+    };
+    var sql = 'SELECT u.*,chat FROM utilisateurs u,chats c where u.id = util2 and c.util1=?'+
+        'or u.id = util1 and c.util2=?';
+    values=[id_util,id_util];
+    con.query(sql, [values], function (err, result) {
+        if (err) throw err;
+        result.forEach(element => {
+            let chat=JSON.parse(element.chat.toString());
+            let i=0;
+            chat.messages.forEach((elem)=>{
+                if(elem["lue"] == false && elem["id_personne"] != "_"+id_util ) i+=1;
+            });
+             let cont={
+                "util":new UserModel(element.nom,element.email,element.id),
+                "msg_non_lue":i,
+              }
+              
+              utils.utilsateurs.push(cont);
+      
         });
         callback(utils);
     });
