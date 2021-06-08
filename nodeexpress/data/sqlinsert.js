@@ -3,16 +3,30 @@ const UserModel = require('../models/model.user');
 var Buffer = require('buffer/').Buffer;
 
 module.exports.insert_utilisateur = function(personnel, mime, buffer, callback, error){
-    var sql = "INSERT INTO utilisateurs (nom, email, mdp, mimeType, photo) VALUES(?, ?, ?, ?, ?);";
-    var valeurs = [personnel.nom, personnel.email, personnel.pword, mime, buffer];
-    con.query(sql, valeurs, function (err, result) {
-        if (err){
-            error(err.message);
-        }else{
-            personnel.id=result.insertId;
-            callback(personnel);
-        }   
-    });
+    var sql, valeurs;
+    if( arguments.length == 5 ) {
+        sql = "INSERT INTO utilisateurs (nom, email, mdp, mimeType, photo) VALUES(?, ?, ?, ?, ?);";
+        valeurs = [personnel.nom, personnel.email, personnel.pword, mime, buffer];
+        con.query(sql, valeurs, function (err, result) {
+            if (err){
+                error(err.message);
+            }else{
+                personnel.id=result.insertId;
+                callback(personnel);
+            }   
+        });
+    } else {
+        sql = "INSERT INTO utilisateurs (nom, email, mdp) VALUES(?, ?, ?);";
+        valeurs = [personnel.nom, personnel.email, personnel.pword];
+        con.query(sql, valeurs, function (err, result) {
+            if (err){
+                buffer(err.message);
+            }else{
+                personnel.id=result.insertId;
+                mime(personnel);
+            }   
+        });
+    }
 } 
 
 
@@ -30,7 +44,7 @@ module.exports.insertFile = function(fileName, mimeType, buffer, resolve, error)
 
 
 module.exports.demande_amie=function(id_emet,id_dest){
-    var sql = "INSERT INTO amie (util1,util2) VALUES (?)";
+    var sql = "INSERT INTO chats (util1,util2) VALUES (?)";
     var values = [id_emet,id_dest];
     con.query(sql, [values], function (err, result) {
         if (err) throw err;
@@ -42,7 +56,7 @@ module.exports.accept_demande_amie=function(id_emet,id_dest){
         'messages': [    
         ]
     };
-    var sql = "UPDATE amie SET chat= ? WHERE util1=? and util2=?";
+    var sql = "UPDATE chats SET chat= ? WHERE util1=? and util2=?";
     con.query(sql, [[Buffer.from(JSON.stringify(init))],id_emet,id_dest], function (err, result) {
         if (err) throw err;
         console.log('demande accepter');
@@ -50,9 +64,9 @@ module.exports.accept_demande_amie=function(id_emet,id_dest){
 }
 
 module.exports.updateJson = function(id_emet,id_dest,json){
-    var sql = "UPDATE amie SET chat= ? WHERE util1=? and util2=? or util1=? and util2=?";
-    var values = [Buffer.from(JSON.stringify(json)),id_emet,id_dest,id_dest,id_emet];
-        con.query(sql,[values], function (err, result) {
+    var sql = "UPDATE chats SET chat= ? WHERE util1=? and util2=? or util1=? and util2=?";
+    var values = [[Buffer.from(JSON.stringify(json))],id_emet,id_dest,id_dest,id_emet];
+        con.query(sql,values, function (err, result) {
             if (err) throw err;
         });
 }

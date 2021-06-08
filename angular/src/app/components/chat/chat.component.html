@@ -4,28 +4,11 @@
   <div style="font-size: 1.2rem;" class="fi-pdf" >{{ user?.nom }}</div>
   <div id="page" style="border-top: 1px solid gray;">
     <div id="side1">
-      <app-utilisateurs></app-utilisateurs>
-    </div>
-    <div id="side2">
-      <div id="user"></div>
-      <ul id="messages"></ul>
-      <div style="display: flex; align-items: center; padding: .3rem;">
-        <form id="form">
-        <div id="inputHolder">
-            <div>
-              <label for="fileUp" style="border: 2px solid; padding: .2rem; position: relative; top: 20%;">File</label>
-              <input type="file" name="fileUp" id="fileUp" style="display: none;">
-            </div>
-            <div>
-                <input type="text" name="message" id="input" placeholder="Votre message ici" autocomplete="off">
-            </div>
-            <div>
-                <button id="send" style="border: none; outline: none; cursor: pointer; box-sizing: border-box;">
-                <i class="fa fa-paper-plane " style="border: none; outline: none; font-size: 1.3rem; color: whitesmoke;" aria-hidden="true"></i></button>
-            </div>
-        </div>
-        </form>
+      <div *ngIf="utils.length!=0" style="padding :0px;">
+      <app-utilisateur *ngFor="let util of utils" [user]="util" (click)="onclick(util?.id+ ',' +util?.nom)">
+      </app-utilisateur>
     </div>
     </div>
+    <app-zone-msgs *ngIf="clicked" [msgs]="msgs" [socket]="socket" [amie]="amie"></app-zone-msgs>
   </div>
 </div>

@@ -1,0 +1,26 @@
+<div id="side2">
+<div id="user">{{amie.nom}}</div>
+<ul id="messages" class='msgs'>
+    <li *ngFor="let msg of msgs">
+        {{msg.id_personne}}
+        {{msg.time}}
+        {{msg.content}}
+    </li>
+</ul>
+<div style="display: flex; align-items: center; padding: .3rem;">
+  <form id="form" [formGroup] = "send_msg!">
+  <div id="inputHolder">
+      <div>
+        <label for="fileUp" style="border: 2px solid; padding: .2rem; position: relative; top: 20%;">File</label>
+        <input type="file" name="fileUp" id="fileUp" style="display: none;">
+      </div>
+      <div>
+          <input type="text" name="message" formControlName="message" id="input" placeholder="Votre message ici" autocomplete="off">
+      </div>
+      <div>
+          <button id="send" (click)="onsend()" style="border: none; outline: none; cursor: pointer; box-sizing: border-box;">
+          <i class="fa fa-paper-plane " style="border: none; outline: none; font-size: 1.3rem; color: whitesmoke;" aria-hidden="true"></i></button>
+      </div>
+  </div>
+  </form>
+</div></div>

@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/services/authentication.service';
+import { AuthService } from 'src/app/services/auth.service';
+
+import JwtDecode from 'jwt-decode';
 
 @Component({
   selector: 'auth',
@@ -19,7 +21,7 @@ export class AuthComponent implements OnInit {
   constructor(private formBuilder : FormBuilder,
     private httpClient:HttpClient,
     private router:Router,
-    private authenticationService : AuthenticationService) { }
+    private authService : AuthService) { }
 
   ngOnInit(): void {
     this.user = this.formBuilder.group({
@@ -30,14 +32,15 @@ export class AuthComponent implements OnInit {
 
   onSubmit(){
     if(this.user.controls.nom.errors == null){
-      this.httpClient.post("/api/v1/user/auth", this.user.value).subscribe( (obs : any) => {
+      this.authService.connexion(this.user.value).subscribe( (response : any) => {
         this.errors = {};
-        if(obs.message){
-          Object.assign(this.errors, obs.message);
+        if(response.message){
+          Object.assign(this.errors, response.message);
         } else {
-          this.authenticationService.setToken(obs.toString());
-          this.router.navigate(['/user']);
+          this.router.navigate(['/chat']);
         }
+      }, (error) => {
+        console.log(error);
       });
     }
     this.submitted=true;

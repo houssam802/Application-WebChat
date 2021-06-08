@@ -18,11 +18,12 @@ body, div, span,p{
     background:#DB3F4F;
 }
 .contact {
-    border: 1px solid;
+    border: 1px solid green;
     width: 100%;
 }
 .contact .conteneur{
-    width: calc(100% - 58px);
+    width: calc(100% - 0);
+    height: 100%;
     border: 1px solid;
     overflow: hidden;
     position: relative;
@@ -66,10 +67,13 @@ body, div, span,p{
     margin-left: 0;
     font-size: 0.9em;
     cursor: pointer;
-    border: solid 1px black;
     text-align: -webkit-match-parent;
-    width: 100%;
+    display: flex;
+    border: 1px solid;
+    justify-content: space-between;
+    align-items: center;
 }
+
 #text_non_lue{
     position: absolute;
     right: 1%;

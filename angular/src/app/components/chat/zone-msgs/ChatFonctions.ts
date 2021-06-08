@@ -13,9 +13,7 @@ export function sendFileChunk(file : any, start : any, end : any, id : any, sock
     }
 }
   
-export function myFunc(userDest : any, userEmet : any, form : any, input : any, messages : any, fileLoader : any, file : any, bufferTotal : any, socket : any){
-  var userPlace : any = document.getElementById("user"); 
-  userPlace.innerHTML = userDest.split(",")[1];
+export function myFunc(userDestID : any, userEmet : any, form : any, input : any, messages : any, fileLoader : any, file : any, bufferTotal : any, socket : any){
   fileLoader.onchange = (event : any) => {
     stockerFichier(form);
     file = event.target.files[0];
@@ -33,19 +31,19 @@ export function myFunc(userDest : any, userEmet : any, form : any, input : any, 
       } else {
         pas = 100000;
       }
-      socket.emit("File", pas, dataMime, fileName, userDest.split(",")[0],userEmet.id,new Date().toLocaleString);
+      socket.emit("File", pas, dataMime, fileName, userDestID,userEmet.id,new Date().toLocaleString);
     } 
   }
   form.onsubmit = (event : any) => {
     event.preventDefault();
     if( input.value ){
-        message(new Date().toLocaleString(), input.value, "emetteur", "Vous", messages);
+      console.log(userDestID)
         socket.emit("private message", {
           time:new Date().toLocaleString(),
           content : input.value,
-          ID_dest: userDest.split(",")[0],
+          ID_dest: userDestID,
           ID_emet: userEmet.id
-      });
+        });
         input.value = '';
     }
   }

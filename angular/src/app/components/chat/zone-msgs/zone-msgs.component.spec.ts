@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { UtilisateursComponent } from './utilisateurs.component';
+import { ZoneMsgsComponent } from './zone-msgs.component';
 
-describe('UtilisateursComponent', () => {
-  let component: UtilisateursComponent;
-  let fixture: ComponentFixture<UtilisateursComponent>;
+describe('ZoneMsgsComponent', () => {
+  let component: ZoneMsgsComponent;
+  let fixture: ComponentFixture<ZoneMsgsComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ UtilisateursComponent ]
+      declarations: [ ZoneMsgsComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(UtilisateursComponent);
+    fixture = TestBed.createComponent(ZoneMsgsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });
