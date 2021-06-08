@@ -96,15 +96,9 @@ io.on("connection", (socket) => {
     });
 
     socket.on("private message", ({time, content, ID_dest,ID_emet }) => {
-        console.log(ID_dest)
        sqlSelect.get_chat(ID_emet,ID_dest,function(result){
-           console.log('222')
           if(is_user_connected(socket,ID_dest)){
-            socket.to(ID_dest).emit("private message", {
-            time:time,
-            content: content,
-            from: ID_emet,
-            });
+            socket.to(ID_dest).emit("private message",time,content,ID_emet);
           }
           let cont={
             "id_personne":ID_emet,
@@ -122,10 +116,10 @@ io.on("connection", (socket) => {
 
 
     var PAS, fName, dataType;
-    socket.on("File", ({pas, dataMime, filename,ID_dest,ID_emet,time}) => {
+    socket.on("File", ({pas, dataMime, content,ID_dest,ID_emet,time}) => {
         sqlSelect.get_chat(ID_emet,ID_dest,function(result){
             PAS = pas;
-            fName = filename;
+            fName = content;
             dataType = dataMime;
             if(is_user_connected(socket,ID_dest)){
                 socket.emit("fileChunks", 0, PAS, id);
@@ -133,7 +127,7 @@ io.on("connection", (socket) => {
             let cont={
               "id_personne":ID_emet,
               "time":time,
-              "content":filename,
+              "content":content,
               "type":"file",
               "lue" : false
             } 

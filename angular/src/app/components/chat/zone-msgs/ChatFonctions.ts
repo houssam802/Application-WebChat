@@ -14,41 +14,7 @@ export function sendFileChunk(file : any, start : any, end : any, id : any, sock
 }
   
 export function myFunc(userDestID : any, userEmet : any, form : any, input : any, messages : any, fileLoader : any, file : any, bufferTotal : any, socket : any){
-  fileLoader.onchange = (event : any) => {
-    stockerFichier(form);
-    file = event.target.files[0];
-    var fileName = file.name;
-    var reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onload = () => {
-      var blob : any = reader.result;
-      let dataMime = blob.split(",")[0];
-      fileSend(new Date().toLocaleString(), file.name, "emetteur", "Vous", messages);
-      let boucle, pas;
-      if( file.size > 100000 ){
-        boucle = Math.round(file.size/100000);
-        pas = Math.round(file.size/boucle);
-      } else {
-        pas = 100000;
-      }
-      socket.emit("File", pas, dataMime, fileName, userDestID,userEmet.id,new Date().toLocaleString);
-    } 
-  }
-  form.onsubmit = (event : any) => {
-    event.preventDefault();
-    if( input.value ){
-      console.log(userDestID)
-        socket.emit("private message", {
-          time:new Date().toLocaleString(),
-          content : input.value,
-          ID_dest: userDestID,
-          ID_emet: userEmet.id
-        });
-        input.value = '';
-    }
-  }
-
-
+ 
   socket.on("fileChunks", function(start: any, end: any, id: any) {
       sendFileChunk(file, start, end, id, socket);
   });

@@ -2,9 +2,16 @@
 <div id="user">{{amie.nom}}</div>
 <ul id="messages" class='msgs'>
     <li *ngFor="let msg of msgs">
-        {{msg.id_personne}}
-        {{msg.time}}
-        {{msg.content}}
+        <div *ngIf="msg.type == 'text'">
+            {{msg.id_personne}}
+            {{msg.time}}
+            {{msg.content}}
+        </div>
+        <div *ngIf="msg.type == 'file'">
+            {{msg.id_personne}}
+            {{msg.time}}
+            {{msg.content}}
+        </div>
     </li>
 </ul>
 <div style="display: flex; align-items: center; padding: .3rem;">
