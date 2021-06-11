@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewEncapsulation,Output} from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { io } from 'socket.io-client';
@@ -17,13 +17,20 @@ import * as $ from 'jquery';
   styleUrls: ['./chat.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ChatComponent implements OnInit {
+export class ChatComponent implements OnInit,AfterViewInit {
 
   user ?: utilisateur;
   utils : utilisateur[] = [];
+  tab_utils_temp : utilisateur[] =[];
 	chat !: FormGroup;
   socket : any;
 
+
+  ajouter_amie(nouv_amie : any) {
+    console.log(nouv_amie)
+    this.utils.push(nouv_amie)
+    this.tab_utils_temp.push(nouv_amie)
+  }
 
   clicked : boolean = false;
 
@@ -34,6 +41,8 @@ export class ChatComponent implements OnInit {
     private utilService: UtilisateurService)
   {
 
+  }
+  ngAfterViewInit(): void {
   }
 
   ngOnInit()
@@ -53,6 +62,7 @@ export class ChatComponent implements OnInit {
 
         
       this.utilService.getamies().subscribe((utilisateurs : any) => {
+        if(utilisateurs!=[]){
         utilisateurs.forEach( (element: any) => {
           var id = element.id;
           var nom = element.nom;
@@ -73,13 +83,15 @@ export class ChatComponent implements OnInit {
              der_msg:element.der_msg,
           }
           var utilisateur : utilisateur = {
-            id: id,
-            nom: nom,
+            id: element.id,
+            nom: element.nom,
             image: image,
             chat_infos : chat_infos
           };
           this.utils.push(utilisateur);
+          this.tab_utils_temp.push(utilisateur);
         });
+      }
     })
     console.log(this.utils);
 
@@ -101,4 +113,27 @@ export class ChatComponent implements OnInit {
       }
     })
   }
+
+
+
+  search : any;
+
+  test(event: any) {
+    this.tab_utils_temp=[]
+     this.utils.forEach((element : any) => {
+      if(element.nom.toLowerCase().startsWith(event.target.value.toLowerCase())){
+          this.tab_utils_temp.push(element);
+      }
+    });
+      if(event.target.value=="") this.tab_utils_temp= this.utils;
+    } 
+
+
+
+    signout(){
+      this.socket.emit("disconnected",{});
+      window.localStorage.clear();
+      window.location.reload();
+    }
+
 }

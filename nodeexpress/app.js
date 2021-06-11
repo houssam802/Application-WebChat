@@ -26,14 +26,14 @@ var sqlSelect = require('./data/sqlSelect');
 var sqlinsert = require('./data/sqlinsert');
 
 // Enable CORS for origin : http://localhost:4200.
-/*app.use( (req, res, next) => {
+/* app.use( (req, res, next) => {
     res.header("Access-Control-Allow-Origin", "http://localhost:4200");
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
     res.header("Access-Control-Allow-Credentials", "true");
     next();
-} );*/
-
+} );
+ */
 
 /* 
 sqlSelect.get_chat(29,32,function(result){
@@ -147,6 +147,11 @@ io.on("connection", (socket) => {
         socket.to(id).emit("FileSent", fName, dataType, socket.id, socket.username);
     })
 
+
+    socket.on("disconnected",() =>{
+        console.log("disconnect");
+        ///sockets.socket(users[user_id]).disconnect();
+    })
 
 
     function is_user_connected(socket,id_dest){

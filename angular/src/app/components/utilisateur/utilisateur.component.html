@@ -1,16 +1,12 @@
-<div class="contact" onclick="" id="{{user?.id+' '+user?.nom}}">
-    <div class="conteneur">
-        <div style="display: flex;">
-            <div>
-                <span class="contact-status online"></span>
-                <img src="{{user?.image}}" alt="">
-            </div>
-            <div class="meta">
-                <p class="name"> {{user?.nom}}</p>
-                <p class="derniermessage">{{user?.chat_infos?.der_msg}}</p>
-            </div>
-            <div *ngIf="user?.chat_infos?.msg_non_lue!=0 && user?.chat_infos?.msg_non_lue" id="text_non_lue">{{user?.chat_infos?.msg_non_lue}}</div>
+<li class="contact" id="{{user?.id+' '+user?.nom}}">
+    <div class="wrap">
+        <span class="contact-status online"></span>
+        <img src="{{user?.image}}" alt="" />
+        <div class="meta">
+            <p class="name"> {{user?.nom}}</p>
+            <p class="preview">{{user?.chat_infos?.der_msg}}</p>
         </div>
+        <div  *ngIf="user?.chat_infos?.msg_non_lue!=0 && user?.chat_infos?.msg_non_lue" id="text_non_lue">{{user?.chat_infos?.msg_non_lue}}</div>
     </div>
-</div>
+</li>
 

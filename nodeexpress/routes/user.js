@@ -5,6 +5,7 @@ var jwt         = require('jsonwebtoken');
 var router      = express.Router();
 var sqlSelect   = require('../data/sqlSelect');
 var sqlinsert   = require('../data/sqlinsert');
+var sqldelete   = require('../data/sqldelete')
 var service_jwt = require('../services/service_jwt');
 var multer      = require('multer');
 var telecharger = multer();
@@ -55,6 +56,29 @@ router.post('/auth', async function(req, res) {
   }, (error) => {
     res.json({ message : error });
   });
+});
+
+
+router.post('/search', async function(req, res) {
+  sqlSelect.select_infos_users_plus_demande(req.body.id,req.body.nom, (result) => {
+    res.json(result);
+  }, (error) => {
+    res.json({ message : error });
+  });
+});
+
+
+router.put('/demande_amie',async function(req, res) {
+  sqlinsert.demande_amie(req.body.id_emet,req.body.id_dest);
+});
+
+router.delete('/annule_demande_amie/:ids',async function(req,res){
+  const ids = req.params.ids.split('_');
+  sqldelete.annuler_demmande_amie(ids[0],ids[1]);
+});
+
+router.put('/accepter_demande_amie',async function(req, res) {
+  sqlinsert.accept_demande_amie(req.body.id_emet,req.body.id_dest);
 });
 
 

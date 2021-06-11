@@ -1,14 +1,34 @@
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+<app-zone-ajout-amie [user]="user"></app-zone-ajout-amie>
 
-<div id="pageGlobal">
-  <div style="font-size: 1.2rem;" class="fi-pdf" >{{ user?.nom }}</div>
-  <div id="page" style="border-top: 1px solid gray;">
-    <div id="side1">
-      <div *ngIf="utils.length!=0" style="padding :0px;">
-      <app-utilisateur *ngFor="let util of utils" [user]="util" (click)="onclick(util?.id+ ',' +util?.nom)">
-      </app-utilisateur>
+<app-zone-notification [user]="user" (nouv_amie)="ajouter_amie($event)" ></app-zone-notification>
+
+<div id="frame">
+  <div id="sidepanel">
+      <div id="profile">
+        <div class="wrap">
+          <img id="profile-img" src="http://emilcarlsson.se/assets/mikeross.png" class="online" alt="" />
+          <p>{{user?.nom}}</p>
+        </div>
+      </div>
+      <div id="search">
+        <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+        <input (keyup)="test($event)" id="search_zone"  type="text" placeholder="Search contacts..." />
+      </div>
+      <div id="contacts">
+        <ul>
+        <app-utilisateur id="{{util?.id+' '+util?.nom}}" *ngFor="let util of tab_utils_temp" [user]="util" (click)="onclick(util?.id+ ',' +util?.nom)">
+        </app-utilisateur>
+        </ul>
+      </div>
+      <div id="bottom-bar">
+        <button id="addcontact" data-toggle="modal" data-target="#Modal_ajout_amies"><i class="fa fa-user-plus fa-fw" aria-hidden="true"></i> <span>Add contact</span></button>
+        <button id="settings" data-toggle="modal" data-target="#Modal_notifications"><i class="fas fa-bell" aria-hidden="true"></i> <span>Notification</span></button>
+        <button id="settings" (click)="signout()"><i class="fa fa-sign-out" aria-hidden="true"></i> <span>Sign out</span></button>
     </div>
-    </div>
+  </div>
+
+  <div class="content">
     <app-zone-msgs *ngIf="clicked" [msgs]="msgs" [socket]="socket" [amie]="amie"></app-zone-msgs>
   </div>
+
 </div>

@@ -42,27 +42,77 @@ module.exports.verifier_user = function(nom, mdp, callback, error){
     });
 }
 
-module.exports.select_infos_amies = function(id_util,callback, error){
+function select_infos_users(id_util,nom,callback, error){
     var utils=[];
-    var sql1 = 'SELECT u.nom FROM utilisateurs u,chats c where (u.id = c.util2 and c.util1=?)'+
-        'or (u.id = c.util1 and c.util2=?)';
-    con.query(sql1,[id_util,id_util], function (err, result) {
+    var str="%"+nom+"%";
+    var sql1 = 'SELECT DISTINCT u.* FROM utilisateurs u,chats c where u.id != ? and '+
+        '(u.nom not in (SELECT DISTINCT u.nom FROM utilisateurs u,chats c where (u.id = c.util2 and c.util1=?)'+
+        'or (u.id = c.util1 and c.util2=?))) and u.nom like ?';
+    con.query(sql1,[id_util,id_util,id_util,str], function (err, result) {
         if (err) error({ message : err });        
         if ( result.length === 0 ){  
-            error({ amie : "Communiquer avec vos amies ." });  
-        }
+            callback([])
+        }else{
         result.forEach(element => {
             utils.push({
                 id: element.id,
                 nom: element.nom,
                 mime: element.mimeType,
-                photo: element.photo 
+                photo: element.photo,
+                demandes_envoyer : false 
             });
         });
         callback(utils);
+       }
     });
 }
 
+module.exports.select_infos_users_plus_demande = function(id_util,nom,callback, error){
+      select_infos_users(id_util,nom,function(res){
+        var str="%"+nom+"%";
+        var sql1 ='SELECT u.* FROM utilisateurs u,chats c where (u.id = c.util2 and c.util1=?)'+
+        ' and (u.nom like ? and c.chat ="" ) ';
+        con.query(sql1,[id_util,id_util,str], function (err, result) {
+            if (err) error({ message : err });        
+            if ( result.length === 0 ){  
+                callback(res)
+            }else{
+                result.forEach(element => {
+                    res.push({
+                        id: element.id,
+                        nom: element.nom,
+                        mime: element.mimeType,
+                        photo: element.photo,
+                        demandes_envoyer : true
+                    });
+                });
+                callback(res);
+           }
+        });
+
+      },function(err){})
+}
+
+module.exports.get_demandes_amie = function(id_util,callback){
+    var utils=[];
+    var sql1 ='SELECT u.* FROM utilisateurs u,chats c where (u.id = c.util1 and c.util2=?) and (c.chat ="" ) ';
+        con.query(sql1,[id_util,id_util], function (err, result) {
+            if (err) error({ message : err });        
+            if ( result.length === 0 ){  
+                callback([])
+            }else{
+                result.forEach(element => {
+                    utils.push({
+                        id: element.id,
+                        nom: element.nom,
+                        mime: element.mimeType,
+                        photo: element.photo
+                    });
+                });
+                callback(utils);
+           }
+        })
+}
 
 module.exports.get_chat = function(util1,util2,callback){
     var sql = 'SELECT chat FROM chats WHERE (util1=? and util2=?) or (util1=? and util2=?)';
@@ -81,33 +131,34 @@ module.exports.get_all_chats = function(id_util,callback,error){
         'or (u.id = c.util1 and c.util2=?)';
     con.query(sql1,[id_util,id_util], function (err, result) {
         if (err) error({ message : err });        
-        if ( result.length === 0 ){  
-            error({ amie : "Communiquer avec vos amies ." });  
-        }
-        result.forEach(element => {
-            let chat=JSON.parse(element.chat.toString());
-            let i=0;
-            if(chat.messages.length!=0){
-                chat.messages.forEach((elem)=>{
-                    if(elem["lue"] == false && elem["id_personne"] != id_util ) i+=1;
-                });
-                utils.push({
-                    id: element.id,
-                    nom: element.nom,
-                    mime: element.mimeType,
-                    photo: element.photo,
-                    msg_non_lue:i,
-                    der_msg:chat.messages[chat.messages.length-1].content
-                });
-            }else{
-                utils.push({
-                    id: element.id,
-                    nom: element.nom,
-                    mime: element.mimeType,
-                    photo: element.photo
-                });
+        if ( result.length !== 0 ){
+            result.forEach(element => {
+            if(element.chat.toString()!=""){
+                let chat=JSON.parse(element.chat.toString());
+                let i=0;
+                if(chat.messages.length!=0){
+                    chat.messages.forEach((elem)=>{
+                        if(elem["lue"] == false && elem["id_personne"] != id_util ) i+=1;
+                    });
+                    utils.push({
+                        id: element.id,
+                        nom: element.nom,
+                        mime: element.mimeType,
+                        photo: element.photo,
+                        msg_non_lue:i,
+                        der_msg:chat.messages[chat.messages.length-1].content
+                    });
+                }else{
+                    utils.push({
+                        id: element.id,
+                        nom: element.nom,
+                        mime: element.mimeType,
+                        photo: element.photo
+                    });
+                }
             }
-        });
+            });
+        }
         callback(utils);
     });
 }

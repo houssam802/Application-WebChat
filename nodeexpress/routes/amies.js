@@ -20,9 +20,19 @@ router.get('/list/amies/:id', JwtMiddleware ,(req, res) => {
     });
 });
 
+
 router.get('/msgs/:ids', JwtMiddleware ,(req, res) => {
     const ids = req.params.ids.split('_');
     sqlSelect.get_chat(ids[0],ids[1], (msgs) => {
+        res.json(msgs);
+    }, (error) => {
+        res.json(error);
+    });
+});
+
+
+router.get('/list_demandes_amie/:ids', JwtMiddleware ,(req, res) => {
+    sqlSelect.get_demandes_amie(req.params.ids, (msgs) => {
         res.json(msgs);
     }, (error) => {
         res.json(error);

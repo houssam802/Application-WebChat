@@ -17,6 +17,9 @@ import { UtilisateurComponent } from './components/utilisateur/utilisateur.compo
 import { LoadUserComponent } from './components/load-user/load-user.component';
 import {ZoneMsgsComponent} from './components/chat/zone-msgs/zone-msgs.component'
 import { AuthGuard } from './guards/auth.guard';
+import { ZoneAjoutAmieComponent } from './components/chat/zone-ajout-amie/zone-ajout-amie.component';
+import { UtilisateurDemandeAmieComponent } from './components/utilisateur-demande-amie/utilisateur-demande-amie.component';
+import { ZoneNotificationComponent } from './components/chat/zone-notification/zone-notification.component';
 
 
 @NgModule({
@@ -28,7 +31,10 @@ import { AuthGuard } from './guards/auth.guard';
     AccueilComponent,
     UtilisateurComponent,
     LoadUserComponent,
-    ZoneMsgsComponent
+    ZoneMsgsComponent,
+    ZoneAjoutAmieComponent,
+    UtilisateurDemandeAmieComponent,
+    ZoneNotificationComponent
   ],
   imports: [
     BrowserModule,
