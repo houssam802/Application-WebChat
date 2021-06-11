@@ -1,12 +1,12 @@
-<li class="contact" id="{{user?.id+' '+user?.nom}}">
+<li class="contact" id="{{user?.id}}">
     <div class="wrap">
-        <span class="contact-status online"></span>
-        <img src="{{user?.image}}" alt="" />
+        <span class="contact-status offline"></span>
+        <img src="{{ user?.image || '../../../assets/Images/profile.png' }}" alt="">
         <div class="meta">
             <p class="name"> {{user?.nom}}</p>
             <p class="preview">{{user?.chat_infos?.der_msg}}</p>
         </div>
-        <div  *ngIf="user?.chat_infos?.msg_non_lue!=0 && user?.chat_infos?.msg_non_lue" id="text_non_lue">{{user?.chat_infos?.msg_non_lue}}</div>
+        <div *ngIf="user?.chat_infos?.msg_non_lue!=0 && user?.chat_infos?.msg_non_lue" id="text_non_lue">{{user?.chat_infos?.msg_non_lue}}</div>
     </div>
 </li>
 

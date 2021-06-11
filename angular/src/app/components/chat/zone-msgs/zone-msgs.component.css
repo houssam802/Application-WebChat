@@ -1,0 +1,139 @@
+.emetteur{
+    position: relative;
+    display: flex;
+    justify-content: flex-start;
+    margin: 2rem 4rem;
+}
+.destinateur{
+    position: relative;
+    display: flex;
+    justify-content: flex-end;
+    margin: 2rem 5rem;
+}
+.emetteur > div{
+    border: solid 1px;
+    min-width: 10ch;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    max-width: 40ch;
+    padding: .3rem .5rem;
+    border-radius: .2rem;
+}
+.destinateur > div{
+    border: solid 1px;
+    min-width: 10ch;
+    width: fit-content;
+    display: flex;
+    align-items: center;
+    max-width: 40ch;
+    padding: .3rem .5rem;
+    border-radius: .2rem;
+}
+.emetteur > div > div:nth-child(1){
+    font-size: .8rem;
+    position: absolute;
+    top: -.5rem;
+    left: -2.5rem;
+}
+
+.destinateur > div > div:nth-child(1){
+    font-size: .8rem;
+    position: absolute;;
+    top: -.5rem;
+    right: -3rem;
+}
+
+.emetteur > div > .temps{
+    font-size: .8rem;
+    position: absolute;
+    top: 100%;
+    left: 0%;
+}
+
+.destinateur > div > .temps{
+    font-size: .8rem;
+    position: absolute;
+    top: 100%;
+    right: 0%;
+}
+
+#messages .text > span,
+#messages .file > span{
+    word-wrap: break-word;
+    max-width: 38ch;
+}
+
+#messages .file span.fa-arrow-down{
+    border: 1px solid;
+    margin-left: .6rem;
+    padding: .25rem .3rem;
+    border-radius: 30px;
+    cursor: pointer;
+}
+
+#zoneMessagerie{
+    position: relative; 
+    bottom: 0;
+    margin: 0;
+    padding: 0;
+    height: 45px;
+    width: 100%;
+    display: flex;
+}
+
+#zoneMessagerie > form{
+    width: 100%;
+    display: flex;
+    padding: 0;
+}
+
+#inputHolder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap:wrap;
+    width: 100%;
+    padding: 0;
+}
+#inputHolder input[type="text"]{
+    outline: none;
+    background:white;
+    border:none;
+    box-sizing: border-box;
+    width: 100%;
+    font-size: 1.3rem;
+    padding: .2rem;
+}
+
+#inputHolder > div:nth-child(2) {
+    width: 5%;
+    height: 100%;
+    border: solid 1px;
+    background: white;
+}
+
+#inputHolder > div:nth-child(2):hover {
+    background: rgb(207, 207, 207);
+}
+
+#inputHolder > div:nth-child(1) {
+    border: 1px solid;
+    display: flex;
+    justify-content: center;
+    width: 90%;
+    height: 100%;
+}
+#inputHolder > div:nth-child(3) {
+    width: clamp(35px,5%, 5%);
+    height: 100%;
+}
+#send{
+    border: none;
+    outline: none;
+    height: 100%;
+    width: 100%;
+    background-color: #004f55;
+    padding: .3rem;
+    margin: 0;
+}

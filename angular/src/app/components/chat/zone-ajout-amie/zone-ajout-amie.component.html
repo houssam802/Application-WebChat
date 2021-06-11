@@ -3,8 +3,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <div id="search">
-                    <label for="" (click)="chercher()" ><i class="fa fa-search" aria-hidden="true"></i></label>
-                    <input id="search_zone" type="text" [(ngModel)]="nom" placeholder="Search contacts..." />
+                    <label for=""><i class="fa fa-search" aria-hidden="true"></i></label>
+                    <input id="search_zone" type="text" (keyup)="chercher($event)" placeholder="Search contacts..." />
                   </div>
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>

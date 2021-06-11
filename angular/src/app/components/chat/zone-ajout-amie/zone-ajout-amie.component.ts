@@ -1,7 +1,7 @@
 import { Component, OnInit ,Input} from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { utilisateur } from 'src/app/models/utilisateur';
-import {AuthService} from 'src/app/services/auth.service'
+import {UtilisateurService} from 'src/app/services/utilisateurs.service'
 
 @Component({
   selector: 'app-zone-ajout-amie',
@@ -15,16 +15,16 @@ export class ZoneAjoutAmieComponent implements OnInit {
   nom :any;
   tab_utils_temp : utilisateur[]=[];
 
-  constructor(private auth:AuthService) { }
+  constructor(private util_serv:UtilisateurService) { }
 
   ngOnInit(): void {
     this.tab_utils_temp=[]
   }
 
-  chercher(){
-    console.log(this.nom)
+  chercher(nom:any){
+    console.log(this.user?.id)
     this.tab_utils_temp=[]
-    this.auth.chercher_autre_utilisateurs(this.user?.id,this.nom).subscribe((utilisateurs)=>{
+    this.util_serv.chercher_autre_utilisateurs(this.user?.id,nom.target.value).subscribe((utilisateurs)=>{
       utilisateurs.forEach( (element: any) => {
         var image = "";
         if(element.mime != ""){

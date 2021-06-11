@@ -1,211 +1,211 @@
 @font-face {
-    font-family: nova;
-    src: url('https://fonts.googleapis.com/css?family=Proxima+Nova')
+  font-family: nova;
+  src: url('https://fonts.googleapis.com/css?family=Proxima+Nova')
 }
 
 ol, ul {
-     padding-left:0;
-     margin:0;
+   padding-left:0;
+   margin:0;
 }
 
 
 #frame {
-    width: 100%;
-    min-width: 360px;
-    height: 100%;
-    min-height: 300px;
-    max-height: 720px;
-    background: #E6EAEA;
-    display: flex;
+  width: 100%;
+  min-width: 360px;
+  height: 100%;
+  min-height: 300px;
+  max-height: 720px;
+  background: #E6EAEA;
+  display: flex;
 }
 
 #frame #sidepanel {
-    float: left;
-    min-width: 280px;
-    max-width: 290px;
-    width: 40%;
-    background: #2c3e50;
-    color: #f5f5f5;
-    overflow: hidden;
-    position: relative;
+  float: left;
+  min-width: 280px;
+  max-width: 290px;
+  width: 40%;
+  background: #2c3e50;
+  color: #f5f5f5;
+  overflow: hidden;
+  position: relative;
 } 
 
 #frame #sidepanel #profile {
-    width: 80%;
-    margin: 25px auto;
+  width: 80%;
+  margin: 25px auto;
 }
 
 #frame #sidepanel #profile.expanded .wrap {
-    height: 210px;
-    line-height: initial;
+  height: 210px;
+  line-height: initial;
 }
 #frame #sidepanel #profile.expanded .wrap p {
-    margin-top: 20px;
+  margin-top: 20px;
 }
 
 
 #frame #sidepanel #profile .wrap {
-    height: 60px;
-    line-height: 60px;
-    overflow: hidden;
-    -moz-transition: 0.3s height ease;
-    -o-transition: 0.3s height ease;
-    -webkit-transition: 0.3s height ease;
-    transition: 0.3s height ease;
+  height: 60px;
+  line-height: 60px;
+  overflow: hidden;
+  -moz-transition: 0.3s height ease;
+  -o-transition: 0.3s height ease;
+  -webkit-transition: 0.3s height ease;
+  transition: 0.3s height ease;
 }
 
 
 #frame #sidepanel #profile .wrap img {
-    width: 50px;
-    border-radius: 50%;
-    padding: 3px;
-    border: 2px solid #e74c3c;
-    height: auto;
-    float: left;
-    cursor: pointer;
-    -moz-transition: 0.3s border ease;
-    -o-transition: 0.3s border ease;
-    -webkit-transition: 0.3s border ease;
-    transition: 0.3s border ease;
+  width: 50px;
+  border-radius: 50%;
+  padding: 3px;
+  border: 2px solid #e74c3c;
+  height: auto;
+  float: left;
+  cursor: pointer;
+  -moz-transition: 0.3s border ease;
+  -o-transition: 0.3s border ease;
+  -webkit-transition: 0.3s border ease;
+  transition: 0.3s border ease;
 }
 
 #frame #sidepanel #profile .wrap img.online {
-    border: 2px solid #2ecc71;
-  }
+  border: 2px solid #2ecc71;
+}
 #frame #sidepanel #profile .wrap img.offline {
-    border: 2px solid #e74c3c;
+  border: 2px solid #e74c3c;
 }
 
 
 #frame #sidepanel #profile .wrap p {
-    float: left;
-    margin-left: 15px;
+  float: left;
+  margin-left: 15px;
 }
 
 
 #frame #sidepanel #search {
-    border-top: 1px solid #32465a;
-    border-bottom: 1px solid #32465a;
-    font-weight: 300;
+  border-top: 1px solid #32465a;
+  border-bottom: 1px solid #32465a;
+  font-weight: 300;
 }
 
 
 #frame #sidepanel #search label {
-    position: absolute;
-    margin: 6px 0 0 20px;
-  }
-  #frame #sidepanel #search input {
-    font-family: nova;
-    padding: 10px 0 10px 46px;
-    width: calc(100% - 3px);
-    border: none;
-    background: #32465a;
-    color: #f5f5f5;
-    height: 35px;
-  }
-  #frame #sidepanel #search input:focus {
-    outline: none;
-    background: #435f7a;
-  }
+  position: absolute;
+  margin: 6px 0 0 20px;
+}
+#frame #sidepanel #search input {
+  font-family: nova;
+  padding: 10px 0 10px 46px;
+  width: calc(100% - 3px);
+  border: none;
+  background: #32465a;
+  color: #f5f5f5;
+  height: 35px;
+}
+#frame #sidepanel #search input:focus {
+  outline: none;
+  background: #435f7a;
+}
 
-  #frame #sidepanel #contacts {
-    height: calc(100% - 177px);
-    overflow-y: scroll;
-    overflow-x: hidden;
-  }
+#frame #sidepanel #contacts {
+  height: calc(100% - 177px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
 
 #frame #sidepanel #contacts::-webkit-scrollbar {
-  width: 8px;
-  background: #2c3e50;
+width: 8px;
+background: #2c3e50;
 }
 #frame #sidepanel #contacts::-webkit-scrollbar-thumb {
-  background-color: #243140;
+background-color: #243140;
 }
 
 
-  #frame #sidepanel #bottom-bar {
-    position: absolute;
+#frame #sidepanel #bottom-bar {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+}
+#frame #sidepanel #bottom-bar button {
+  float: left;
+  border: none;
+  height: 33px;
+  width: 50%;
+  padding: 8px 0;
+  background: #32465a;
+  color: #f5f5f5;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
+}
+
+#frame #sidepanel #bottom-bar button:focus {
+  outline: none;
+}
+#frame #sidepanel #bottom-bar button:nth-child(-n+2) {
+  border-right: 1px solid #2c3e50;
+}
+
+
+#frame #sidepanel #bottom-bar button:hover {
+  background: #435f7a;
+}
+#frame #sidepanel #bottom-bar button i {
+  margin-right: 3px;
+  font-size: 1em;
+}
+
+@media all and (max-width: 900px) {
+  #frame #sidepanel {
+    width: 58px;
+    min-width: 58px;
+  }
+
+  #frame #sidepanel #profile {
     width: 100%;
-    bottom: 0;
-    display: flex;
-  }
-  #frame #sidepanel #bottom-bar button {
-    float: left;
-    border: none;
-    height: 33px;
-    width: 50%;
-    padding: 8px 0;
+    margin: 0 auto;
+    padding: 5px 0 0 0;
     background: #32465a;
-    color: #f5f5f5;
-    cursor: pointer;
-    font-size: 0.85em;
-    font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
   }
-
-  #frame #sidepanel #bottom-bar button:focus {
-    outline: none;
+  #frame #sidepanel #profile .wrap {
+      height: 55px;
   }
-  #frame #sidepanel #bottom-bar button:nth-child(-n+2) {
-    border-right: 1px solid #2c3e50;
+  #frame #sidepanel #profile .wrap img {
+      margin-left: 0.2rem;
   }
-
-
-  #frame #sidepanel #bottom-bar button:hover {
-    background: #435f7a;
+  #frame #sidepanel #profile .wrap p {
+      display: none;
   }
-  #frame #sidepanel #bottom-bar button i {
-    margin-right: 3px;
-    font-size: 1em;
+  #frame #sidepanel #search {
+      display: none;
   }
-
-  @media all and (max-width: 900px) {
-    #frame #sidepanel {
-      width: 58px;
-      min-width: 58px;
+  #frame #sidepanel #contacts {
+      height: calc(100% - 149px);
+      overflow-y: scroll;
+      overflow-x: hidden;
     }
-  
-    #frame #sidepanel #profile {
+    #frame #sidepanel #contacts::-webkit-scrollbar {
+      display: none;
+    }
+    #frame #sidepanel #bottom-bar {
+      display: block;
+    }
+    #frame #sidepanel #bottom-bar button {
+      float: none;
       width: 100%;
-      margin: 0 auto;
-      padding: 5px 0 0 0;
-      background: #32465a;
     }
-    #frame #sidepanel #profile .wrap {
-        height: 55px;
+    #frame #sidepanel #bottom-bar button:nth-child(-n+2){
+      border-right: none;
+      border-bottom: 1px solid #2c3e50;
     }
-    #frame #sidepanel #profile .wrap img {
-        margin-left: 0.2rem;
+
+    #frame #sidepanel #bottom-bar button i {
+      font-size: 1.3em;
     }
-    #frame #sidepanel #profile .wrap p {
-        display: none;
+    #frame #sidepanel #bottom-bar button span {
+      display: none;
     }
-    #frame #sidepanel #search {
-        display: none;
-    }
-    #frame #sidepanel #contacts {
-        height: calc(100% - 149px);
-        overflow-y: scroll;
-        overflow-x: hidden;
-      }
-      #frame #sidepanel #contacts::-webkit-scrollbar {
-        display: none;
-      }
-      #frame #sidepanel #bottom-bar {
-        display: block;
-      }
-      #frame #sidepanel #bottom-bar button {
-        float: none;
-        width: 100%;
-      }
-      #frame #sidepanel #bottom-bar button:nth-child(-n+2){
-        border-right: none;
-        border-bottom: 1px solid #2c3e50;
-      }
-  
-      #frame #sidepanel #bottom-bar button i {
-        font-size: 1.3em;
-      }
-      #frame #sidepanel #bottom-bar button span {
-        display: none;
-      }
-  }
+}

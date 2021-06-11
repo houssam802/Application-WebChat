@@ -32,7 +32,6 @@ export class UtilisateurDemandeAmieComponent implements OnInit {
   }
 
   Demande_amie(){
-    console.log(this.autre_util?.id)
     this.util_serv.demande_amie(this.auth.getUtilisateur().id,this.autre_util?.id).subscribe();
     this.demande_envoyer=true;
   }

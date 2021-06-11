@@ -21,8 +21,9 @@ module.exports.select_id_util = function(id_util,callback,error){
         if (err) throw err;
         if ( result.length === 0 ){  
             error({ id : "Utilisateur Inexistant" });  
+        } else {
+            callback(result[0]);
         }
-        callback(result[0]);
     });
 }
 
@@ -41,6 +42,82 @@ module.exports.verifier_user = function(nom, mdp, callback, error){
         }
     });
 }
+
+
+module.exports.get_chat = function(util1,util2,callback){
+    var sql = 'SELECT chat FROM chats WHERE (util1=? and util2=?) or (util1=? and util2=?)';
+    values=[util1,util2,util2,util1]
+    con.query(sql,values, function (err, res) {
+        if (err) throw err;
+        callback(JSON.parse(res[0].chat.toString()))
+    });
+
+}
+
+
+
+module.exports.get_all_chats = function(id_util,callback,error){
+    var utils=[];
+    var sql1 = 'SELECT u.*,c.chat FROM utilisateurs u,chats c where (u.id = c.util2 and c.util1=?)'+
+        'or (u.id = c.util1 and c.util2=?)';
+    con.query(sql1,[id_util,id_util], function (err, result) {
+        if (err) error({ message : err });        
+        if ( result.length !== 0 ){
+            result.forEach(element => {
+            if(element.chat.toString()!=""){
+                let chat=JSON.parse(element.chat.toString());
+                let i=0;
+                if(chat.messages.length!=0){
+                    chat.messages.forEach((elem)=>{
+                        if(elem["lue"] == false && elem["id_personne"] != id_util ) i+=1;
+                    });
+                    utils.push({
+                        id: element.id,
+                        nom: element.nom,
+                        mime: element.mimeType,
+                        photo: element.photo,
+                        msg_non_lue:i,
+                        der_msg:chat.messages[chat.messages.length-1].content
+                    });
+                }else{
+                    utils.push({
+                        id: element.id,
+                        nom: element.nom,
+                        mime: element.mimeType,
+                        photo: element.photo
+                    });
+                }
+            }
+            });
+        }
+        callback(utils);
+    });
+}
+
+
+module.exports.getFichier = function( nomFichier, resolve, reject){
+    var sqlQuery = 'SELECT mimeType, file FROM files where fileName like ?';
+    con.query(sqlQuery, [nomFichier+'%'], function(err, result) {
+        if(err){
+            reject(err);
+        } else {
+            if(result.length == 0){
+                reject('Rien trouver !');
+            } else {
+                var arrayBuffer = [];
+                result.forEach( (partie) => {
+                    arrayBuffer.push(partie.file);
+                })
+                var bufferTotal = Buffer.concat(arrayBuffer);
+                var json = { mimeType : result[0].mimeType, file : bufferTotal }
+                resolve(json);
+            }
+        }
+    });
+}
+
+
+
 
 function select_infos_users(id_util,nom,callback, error){
     var utils=[];
@@ -71,8 +148,9 @@ module.exports.select_infos_users_plus_demande = function(id_util,nom,callback, 
       select_infos_users(id_util,nom,function(res){
         var str="%"+nom+"%";
         var sql1 ='SELECT u.* FROM utilisateurs u,chats c where (u.id = c.util2 and c.util1=?)'+
-        ' and (u.nom like ? and c.chat ="" ) ';
-        con.query(sql1,[id_util,id_util,str], function (err, result) {
+        ' and (u.nom like ? and c.chat like "") ';
+        con.query(sql1,[id_util,str], function (err, result) {
+            console.log(result)
             if (err) error({ message : err });        
             if ( result.length === 0 ){  
                 callback(res)
@@ -112,53 +190,4 @@ module.exports.get_demandes_amie = function(id_util,callback){
                 callback(utils);
            }
         })
-}
-
-module.exports.get_chat = function(util1,util2,callback){
-    var sql = 'SELECT chat FROM chats WHERE (util1=? and util2=?) or (util1=? and util2=?)';
-    values=[util1,util2,util2,util1]
-    con.query(sql,values, function (err, res) {
-        if (err) throw err;
-        callback(JSON.parse(res[0].chat.toString()))
-    });
-
-}
-
-
-module.exports.get_all_chats = function(id_util,callback,error){
-    var utils=[];
-    var sql1 = 'SELECT u.*,c.chat FROM utilisateurs u,chats c where (u.id = c.util2 and c.util1=?)'+
-        'or (u.id = c.util1 and c.util2=?)';
-    con.query(sql1,[id_util,id_util], function (err, result) {
-        if (err) error({ message : err });        
-        if ( result.length !== 0 ){
-            result.forEach(element => {
-            if(element.chat.toString()!=""){
-                let chat=JSON.parse(element.chat.toString());
-                let i=0;
-                if(chat.messages.length!=0){
-                    chat.messages.forEach((elem)=>{
-                        if(elem["lue"] == false && elem["id_personne"] != id_util ) i+=1;
-                    });
-                    utils.push({
-                        id: element.id,
-                        nom: element.nom,
-                        mime: element.mimeType,
-                        photo: element.photo,
-                        msg_non_lue:i,
-                        der_msg:chat.messages[chat.messages.length-1].content
-                    });
-                }else{
-                    utils.push({
-                        id: element.id,
-                        nom: element.nom,
-                        mime: element.mimeType,
-                        photo: element.photo
-                    });
-                }
-            }
-            });
-        }
-        callback(utils);
-    });
 }

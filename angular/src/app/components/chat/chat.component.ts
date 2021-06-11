@@ -1,5 +1,5 @@
 import { HttpClient } from '@angular/common/http';
-import { AfterViewInit, Component, OnInit, ViewEncapsulation,Output} from '@angular/core';
+import { AfterViewInit, Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { io } from 'socket.io-client';
@@ -17,7 +17,7 @@ import * as $ from 'jquery';
   styleUrls: ['./chat.component.css'],
   encapsulation: ViewEncapsulation.None
 })
-export class ChatComponent implements OnInit,AfterViewInit {
+export class ChatComponent implements OnInit, AfterViewInit {
 
   user ?: utilisateur;
   utils : utilisateur[] = [];
@@ -26,13 +26,14 @@ export class ChatComponent implements OnInit,AfterViewInit {
   socket : any;
 
 
+  clicked : boolean = false;
+
+
   ajouter_amie(nouv_amie : any) {
     console.log(nouv_amie)
     this.utils.push(nouv_amie)
     this.tab_utils_temp.push(nouv_amie)
   }
-
-  clicked : boolean = false;
 
   constructor(private formBuilder : FormBuilder, 
     private route : ActivatedRoute, 
@@ -42,30 +43,18 @@ export class ChatComponent implements OnInit,AfterViewInit {
   {
 
   }
-  ngAfterViewInit(): void {
-  }
 
   ngOnInit()
   {
     this.user = this.authService.getUtilisateur();
     this.socket =  io("http://localhost:3000", { 
-          autoConnect: true,
-          transportOptions: {
-            polling: {
-              extraHeaders: {
-                'Authorization': 'Bearer ' + localStorage.getItem('refreshToken')!,
-              }
-            }
-          }
-        })
-        this.socket.auth={id : this.user?.id};
-
+      autoConnect: true
+    })
+    this.socket.auth = {id : this.user?.id, username : this.user?.nom };
         
-      this.utilService.getamies().subscribe((utilisateurs : any) => {
-        if(utilisateurs!=[]){
+    this.utilService.getamies().subscribe((utilisateurs : any) => {
+      if(!utilisateurs.amie){
         utilisateurs.forEach( (element: any) => {
-          var id = element.id;
-          var nom = element.nom;
           var image = "";
           if(element.mime != ""){
             var buffer = element.photo.data;
@@ -79,8 +68,8 @@ export class ChatComponent implements OnInit,AfterViewInit {
           }
 
           var chat_infos : chat_infos = {
-             msg_non_lue:element.msg_non_lue,
-             der_msg:element.der_msg,
+              msg_non_lue:element.msg_non_lue,
+              der_msg:element.der_msg,
           }
           var utilisateur : utilisateur = {
             id: element.id,
@@ -93,47 +82,71 @@ export class ChatComponent implements OnInit,AfterViewInit {
         });
       }
     })
-    console.log(this.utils);
 
+    this.socket.on('user connected', (amieID : any) => {
+      var utilisateur: any = document.getElementById(amieID);
+      var status = utilisateur.getElementsByClassName('contact-status')[0];
+      status.classList.remove('offline');
+      status.classList.add('online');
+    })
+
+    this.socket.on('user disconnected', (amieID : any) => {
+      console.log(amieID);
+      var utilisateur: any = document.getElementById(amieID);
+      var status = utilisateur.getElementsByClassName('contact-status')[0];
+      status.classList.remove('online');
+      status.classList.add('offline');
+    })
 
   }
 
-
- msgs ?: messages[];
- amie ?: utilisateur;
-
-  onclick(elem:any){
-    let amie=elem.split(',');
-    this.utilService.getmsgs(this.user?.id,amie[0]).subscribe((msgs: any) => {
-      this.msgs=msgs['messages'];
-      this.clicked=true; 
-      this.amie={
-        nom:amie[1],
-        id:amie[0]
-      }
+  ngAfterViewInit(){
+    this.socket.on('users', (amieID: any) => {
+      console.log(amieID);
+      var utilisateur: any = document.getElementById(amieID);
+      var status = utilisateur.getElementsByClassName('contact-status')[0];
+      status.classList.remove('offline');
+      status.classList.add('online');
     })
   }
 
 
 
-  search : any;
-
-  test(event: any) {
-    this.tab_utils_temp=[]
-     this.utils.forEach((element : any) => {
-      if(element.nom.toLowerCase().startsWith(event.target.value.toLowerCase())){
-          this.tab_utils_temp.push(element);
-      }
-    });
-      if(event.target.value=="") this.tab_utils_temp= this.utils;
-    } 
-
-
-
-    signout(){
-      this.socket.emit("disconnected",{});
-      window.localStorage.clear();
-      window.location.reload();
-    }
-
+ 
+  msgs ?: messages[];
+  amie ?: utilisateur;
+ 
+   onclick(elem:any){
+     let amie=elem.split(',');
+     this.utilService.getmsgs(this.user?.id,amie[0]).subscribe((msgs: any) => {
+       this.msgs=msgs['messages'];
+       this.clicked=true; 
+       this.amie={
+         nom:amie[1],
+         id:amie[0]
+       }
+     })
+   }
+ 
+ 
+ 
+   search : any;
+ 
+   test(event: any) {
+     this.tab_utils_temp=[]
+      this.utils.forEach((element : any) => {
+       if(element.nom.toLowerCase().startsWith(event.target.value.toLowerCase())){
+           this.tab_utils_temp.push(element);
+       }
+     });
+       if(event.target.value=="") this.tab_utils_temp= this.utils;
+     } 
+ 
+ 
+ 
+     signout(){
+       this.socket.emit("disconnected",{});
+       window.localStorage.clear();
+       window.location.reload();
+     }
 }

@@ -5,7 +5,7 @@ var jwt         = require('jsonwebtoken');
 var router      = express.Router();
 var sqlSelect   = require('../data/sqlSelect');
 var sqlinsert   = require('../data/sqlinsert');
-var sqldelete   = require('../data/sqldelete')
+var sqldelete   = require('../data/sqldelete');
 var service_jwt = require('../services/service_jwt');
 var multer      = require('multer');
 var telecharger = multer();
@@ -17,9 +17,7 @@ router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) 
     if( !req.file ) {
       sqlinsert.insert_utilisateur(utilisateur, function(result){
         res.json({
-          user : result.JSON(),
-          accessToken : service_jwt.getAccessToken(result.JSON()),
-          refreshToken : service_jwt.getRefreshToken(result.JSON()) 
+          user : { nom: req.body.nomutil, pwd: req.body.pword }
         });
       },function(err){
         // TODO Ajouter unicité nom d'utilisateur .
@@ -31,8 +29,9 @@ router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) 
       var mimeType = req.file.mimetype;
       var buffer = req.file.buffer;
       sqlinsert.insert_utilisateur(utilisateur, mimeType, buffer, function(result){
-        var token = jwt.sign({ user : result.JSON() }, "Secret");
-        res.json(token);
+        res.json({
+          user : { nom: req.body.nomutil, pwd: req.body.pword } 
+        });
       },function(err){
         // TODO Ajouter unicité nom d'utilisateur .
         if( err.search('\email\g') ){
@@ -59,6 +58,7 @@ router.post('/auth', async function(req, res) {
 });
 
 
+
 router.post('/search', async function(req, res) {
   sqlSelect.select_infos_users_plus_demande(req.body.id,req.body.nom, (result) => {
     res.json(result);
@@ -80,7 +80,6 @@ router.delete('/annule_demande_amie/:ids',async function(req,res){
 router.put('/accepter_demande_amie',async function(req, res) {
   sqlinsert.accept_demande_amie(req.body.id_emet,req.body.id_dest);
 });
-
 
 router.get('/:id', async (req, res, next) => {
   var id = req.params.id;

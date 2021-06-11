@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpHeaders,HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable,of } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { utilisateur } from '../models/utilisateur';
 import { AuthService } from './auth.service';
-import { messages } from '../models/messages';
 
 @Injectable({
   providedIn: 'root'
@@ -28,8 +27,13 @@ export class UtilisateurService {
     return this.http.get<JSON>('/api/v1/user/msgs/' + id_emet+"_"+id_dest);
   }
 
-  demande_amie(id_emet :any,id_dest :any){
-    return this.http.put('/api/v1/user/demande_amie',{id_emet : id_emet,id_dest : id_dest});
+  chercher_autre_utilisateurs(id: any,nom : string): Observable<utilisateur[]>{
+    return this.http.post<utilisateur[]>('/api/v1/user/search',{id:id,nom:nom});
+   }
+
+  demande_amie(id_emet :any,id_dest :any): Observable<any>{
+    console.log(id_emet + ' :: ');
+    return this.http.put('/api/v1/user/demande_amie', {id_emet : id_emet,id_dest : id_dest});
   }
 
   annule_demande_amie(id_emet :any,id_dest :any){

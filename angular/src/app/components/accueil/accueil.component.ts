@@ -18,9 +18,8 @@ export class AccueilComponent implements OnInit, AfterViewInit {
     var authImage : any = document.querySelector('.form-contenu .form-gauche .auth');
     authImage.style.backgroundImage = "url('../../../assets/Images/auth.jpg')";
     var spans : any = document.getElementsByClassName("lien");
-    for(  let span of spans ) {
+    for( let span of spans ) {
       span.onclick = () => { this.toggle() };
-      span.tabIndex = -1;
     }
   }
 

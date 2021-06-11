@@ -67,16 +67,6 @@ export class AuthService {
         return this.utilisateur;
     }
 
-
-    
-    chercher_autre_utilisateurs(id: any,nom : string): Observable<utilisateur[]>{
-        var image = "";
-        return this.httpClient.post<utilisateur[]>('/api/v1/user/search',{id:id,nom:nom});
-    }
-
-
-    
-
     refreshToken(): Observable<{accessToken: string}> {
         const refreshToken = localStorage.getItem('refreshToken');
         console.log(refreshToken)

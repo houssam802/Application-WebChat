@@ -1,116 +1,116 @@
 .contact {
-    position: relative;
-    padding: 10px 0 15px 0;
-    font-size: 0.9em;
-    cursor: pointer;
+  position: relative;
+  padding: 10px 0 15px 0;
+  font-size: 0.9em;
+  cursor: pointer;
 }
 
 p {
-    margin:0;
+  margin:0;
 }
 
 
-  .contact:hover {
-    background: #32465a;
-  }
-  .contact.active {
-    background: #32465a;
-    border-right: 5px solid #435f7a;
-  }
-  .contact.active span.contact-status {
-    border: 2px solid #32465a !important;
-  }
-  .contact .wrap {
-    width: 88%;
-    margin: 0 auto;
-    position: relative;
-  }
-  .contact .wrap span {
-    position: absolute;
-    left: 0;
-    margin: -2px 0 0 -2px;
-    width: 10px;
-    height: 10px;
-    border-radius: 50%;
-    border: 2px solid #2c3e50;
-    background: #95a5a6;
-  }
-  .contact .wrap span.online {
-    background: #2ecc71;
-  }
-  .contact .wrap span.away {
-    background: #f1c40f;
-  }
-  .contact .wrap span.busy {
-    background: #e74c3c;
-  }
-  .contact .wrap img {
-    width: 40px;
-    border-radius: 50%;
-    float: left;
-    margin-right: 10px;
-  }
-  .contact .wrap .meta {
-    padding:0;
-  }
-  .contact .wrap .meta .name {
-    font-weight: 600;
-    height: 15px;
-  }
-  .contact .wrap .meta .preview {
-    margin: 4px 0 0 0;
-    padding: 0 0 1px;
-    font-weight: 300;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -moz-transition: 1s all ease;
-    -o-transition: 1s all ease;
-    -webkit-transition: 1s all ease;
-    transition: 1s all ease;
-    height:19px;
-  }
-  .contact .wrap .meta .preview span {
-    position: initial;
-    border-radius: initial;
-    background: none;
-    border: none;
-    padding: 0 2px 0 0;
-    margin: 0 0 0 1px;
-    opacity: .5;
-  }
+.contact:hover {
+  background: #32465a;
+}
+.contact.active {
+  background: #32465a;
+  border-right: 5px solid #435f7a;
+}
+.contact.active span.contact-status {
+  border: 2px solid #32465a !important;
+}
+.contact .wrap {
+  width: 88%;
+  margin: 0 auto;
+  position: relative;
+}
+.contact .wrap span {
+  position: absolute;
+  left: 0;
+  margin: -2px 0 0 -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #2c3e50;
+  background: #95a5a6;
+}
+.contact .wrap span.online {
+  background: #2ecc71;
+}
+.contact .wrap span.away {
+  background: #f1c40f;
+}
+.contact .wrap span.busy {
+  background: #e74c3c;
+}
+.contact .wrap img {
+  width: 40px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+}
+.contact .wrap .meta {
+  padding:0;
+}
+.contact .wrap .meta .name {
+  font-weight: 600;
+  height: 15px;
+}
+.contact .wrap .meta .preview {
+  margin: 4px 0 0 0;
+  padding: 0 0 1px;
+  font-weight: 300;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -moz-transition: 1s all ease;
+  -o-transition: 1s all ease;
+  -webkit-transition: 1s all ease;
+  transition: 1s all ease;
+  height:19px;
+}
+.contact .wrap .meta .preview span {
+  position: initial;
+  border-radius: initial;
+  background: none;
+  border: none;
+  padding: 0 2px 0 0;
+  margin: 0 0 0 1px;
+  opacity: .5;
+}
 
-  #text_non_lue{
-    position: absolute;
-    right: 1%;
-    top:25%;
-    margin: -2px 0 0 -2px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #4BEA82;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+#text_non_lue{
+  position: absolute;
+  right: 1%;
+  top:25%;
+  margin: -2px 0 0 -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4BEA82;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 @media all and (max-width: 900px) {
-    .contact {
-      padding: 6px 0 46px 8px;
-    }
-    .contact .wrap {
-      width: 100%;
-    }
-    .contact .wrap img {
-      margin-right: 0px;
-    }
-    .contact .wrap .meta {
-      display: none;
-    }
+  .contact {
+    padding: 6px 0 46px 8px;
+  }
+  .contact .wrap {
+    width: 100%;
+  }
+  .contact .wrap img {
+    margin-right: 0px;
+  }
+  .contact .wrap .meta {
+    display: none;
+  }
 
-    #text_non_lue{
-      display: none;
-    }
-    
+  #text_non_lue{
+    display: none;
+  }
+  
 }
