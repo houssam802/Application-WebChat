@@ -1,183 +1,211 @@
-html{
+@font-face {
+  font-family: nova;
+  src: url('https://fonts.googleapis.com/css?family=Proxima+Nova')
+}
+
+ol, ul {
+   padding-left:0;
+   margin:0;
+}
+
+
+#frame {
+  width: 100%;
+  min-width: 360px;
+  height: 100%;
+  min-height: 300px;
+  max-height: 720px;
+  background: #E6EAEA;
+  display: flex;
+}
+
+#frame #sidepanel {
+  float: left;
+  min-width: 280px;
+  max-width: 290px;
+  width: 40%;
+  background: #2c3e50;
+  color: #f5f5f5;
+  overflow: hidden;
+  position: relative;
+} 
+
+#frame #sidepanel #profile {
+  width: 80%;
+  margin: 25px auto;
+}
+
+#frame #sidepanel #profile.expanded .wrap {
+  height: 210px;
+  line-height: initial;
+}
+#frame #sidepanel #profile.expanded .wrap p {
+  margin-top: 20px;
+}
+
+
+#frame #sidepanel #profile .wrap {
+  height: 60px;
+  line-height: 60px;
+  overflow: hidden;
+  -moz-transition: 0.3s height ease;
+  -o-transition: 0.3s height ease;
+  -webkit-transition: 0.3s height ease;
+  transition: 0.3s height ease;
+}
+
+
+#frame #sidepanel #profile .wrap img {
+  width: 50px;
+  border-radius: 50%;
+  padding: 3px;
+  border: 2px solid #e74c3c;
+  height: auto;
+  float: left;
+  cursor: pointer;
+  -moz-transition: 0.3s border ease;
+  -o-transition: 0.3s border ease;
+  -webkit-transition: 0.3s border ease;
+  transition: 0.3s border ease;
+}
+
+#frame #sidepanel #profile .wrap img.online {
+  border: 2px solid #2ecc71;
+}
+#frame #sidepanel #profile .wrap img.offline {
+  border: 2px solid #e74c3c;
+}
+
+
+#frame #sidepanel #profile .wrap p {
+  float: left;
+  margin-left: 15px;
+}
+
+
+#frame #sidepanel #search {
+  border-top: 1px solid #32465a;
+  border-bottom: 1px solid #32465a;
+  font-weight: 300;
+}
+
+
+#frame #sidepanel #search label {
+  position: absolute;
+  margin: 6px 0 0 20px;
+}
+#frame #sidepanel #search input {
+  font-family: nova;
+  padding: 10px 0 10px 46px;
+  width: calc(100% - 3px);
+  border: none;
+  background: #32465a;
+  color: #f5f5f5;
+  height: 35px;
+}
+#frame #sidepanel #search input:focus {
+  outline: none;
+  background: #435f7a;
+}
+
+#frame #sidepanel #contacts {
+  height: calc(100% - 177px);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#frame #sidepanel #contacts::-webkit-scrollbar {
+width: 8px;
+background: #2c3e50;
+}
+#frame #sidepanel #contacts::-webkit-scrollbar-thumb {
+background-color: #243140;
+}
+
+
+#frame #sidepanel #bottom-bar {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  display: flex;
+}
+#frame #sidepanel #bottom-bar button {
+  float: left;
+  border: none;
+  height: 33px;
+  width: 50%;
+  padding: 8px 0;
+  background: #32465a;
+  color: #f5f5f5;
+  cursor: pointer;
+  font-size: 0.85em;
+  font-family: "proxima-nova",  "Source Sans Pro", sans-serif;
+}
+
+#frame #sidepanel #bottom-bar button:focus {
+  outline: none;
+}
+#frame #sidepanel #bottom-bar button:nth-child(-n+2) {
+  border-right: 1px solid #2c3e50;
+}
+
+
+#frame #sidepanel #bottom-bar button:hover {
+  background: #435f7a;
+}
+#frame #sidepanel #bottom-bar button i {
+  margin-right: 3px;
+  font-size: 1em;
+}
+
+@media all and (max-width: 900px) {
+  #frame #sidepanel {
+    width: 58px;
+    min-width: 58px;
+  }
+
+  #frame #sidepanel #profile {
     width: 100%;
-    height: 100%;
-    font-size: 100%;
-}
-*,
-*::after,
-*::before{
-    box-sizing: border-box;
-}
+    margin: 0 auto;
+    padding: 5px 0 0 0;
+    background: #32465a;
+  }
+  #frame #sidepanel #profile .wrap {
+      height: 55px;
+  }
+  #frame #sidepanel #profile .wrap img {
+      margin-left: 0.2rem;
+  }
+  #frame #sidepanel #profile .wrap p {
+      display: none;
+  }
+  #frame #sidepanel #search {
+      display: none;
+  }
+  #frame #sidepanel #contacts {
+      height: calc(100% - 149px);
+      overflow-y: scroll;
+      overflow-x: hidden;
+    }
+    #frame #sidepanel #contacts::-webkit-scrollbar {
+      display: none;
+    }
+    #frame #sidepanel #bottom-bar {
+      display: block;
+    }
+    #frame #sidepanel #bottom-bar button {
+      float: none;
+      width: 100%;
+    }
+    #frame #sidepanel #bottom-bar button:nth-child(-n+2){
+      border-right: none;
+      border-bottom: 1px solid #2c3e50;
+    }
 
-body { margin: 0; padding-bottom: 3rem; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
-
-#input { border: none; padding: 0 1rem; flex-grow: 1; border-radius: 2rem; margin: 0.25rem; }
-#input:focus { outline: none; }
-#form > button { background: #333; border: none; padding: 0 1rem; margin: 0.25rem; border-radius: 3px; outline: none; color: #fff; }
-
-#messages { list-style-type: none; margin: 0; padding: 0; }
-
-.emetteur{
-    position: relative;
-    display: flex;
-    justify-content: flex-start;
-    margin: 1.5rem 3rem;
-}
-.destinateur{
-    position: relative;
-    display: flex;
-    justify-content: flex-end;
-    margin: 1.5rem 3rem;
-}
-.emetteur > div{
-    border: solid 1px;
-    min-width: 10ch;
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    max-width: 40ch;
-    padding: .5rem .65rem;
-}
-.destinateur > div{
-    border: solid 1px;
-    min-width: 10ch;
-    width: fit-content;
-    display: flex;
-    align-items: center;
-    max-width: 40ch;
-    padding: .5rem .65rem;
-}
-.emetteur > div > div:nth-child(1){
-    font-size: .8rem;
-    position: absolute;
-    top:-1.2rem;
-    left: 0%;
-}
-
-.destinateur > div > div:nth-child(1){
-    font-size: .8rem;
-    position: absolute;
-    top:-1.2rem;
-    right: 0%;
-}
-
-button{
-    background-color: transparent;
-    width: fit-content;
-    border: none;
-    outline: none;
-}
-
-.fa-arrow-down{
-    font-size: .8rem;
-    margin-left: .5rem;
-    cursor: pointer;
-    padding: .25rem;
-    border: solid 1px;
-    border-radius: 1.6rem;
-}
-
-#pageGlobal{
-    position: absolute;
-    height: 100%; 
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-}
-
-#page{
-    height: 100%; 
-    width: 100%;
-    display: flex;
-}
-#side1{
-    flex: 1 1 20%;
-    border: 1px solid transparent;
-    border-right-color: black;
-    max-width: 300px;
-}
-/*#side1 > div{
-    font-size: 1.5rem;
-    display: flex;
-    border: 1px solid;
-    cursor: pointer;
-    justify-content: space-between;
-    align-items: center;
-    padding: .5rem ;
-}
-#side1 > div::after{
-    content: '';
-    display: inline-block;
-    margin-top: .5rem;
-    width: 10px;
-    height: 10px;
-    background-color: var(--connected);
-    border-radius: 5px;
-}*/
-#side2{
-    flex: 1 1 80%;
-}
-#side2 > ul{
-    height: 85%;
-}
-#side2 > div:nth-child(1){
-    font-size: 1.7rem;
-    padding: .5rem;
-    border-bottom: 3px solid;
-}
-#side2 > div:nth-child(3){
-    position: fixed; 
-    bottom: 0;
-    right: 0;
-    left: 20%;
-    display: flex;
-    margin: 0;
-    justify-content: center;
-}
-
-#side2 > div:nth-child(3) > form{
-    width: 100%;
-    border: solid 1px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-#inputHolder{
-    display: flex;
-    width: 80%;
-}
-#inputHolder input[type="text"]{
-    outline: none;
-    background:none;
-    border:none;
-    box-sizing: border-box;
-    width: 100%;
-    font-size: 1.3rem;
-}
-
-#inputHolder > div:nth-child(1) {
-    width: 5%;
-    margin: 0 .6rem;
-}
-#inputHolder > div:nth-child(2) {
-    border: 1px solid;
-    border-radius: 3px;
-    padding: .1rem .2rem;
-    margin: 0 .6rem;
-    width: 88%;
-}
-#inputHolder > div:nth-child(3) {
-    width: clamp(35px,5%, 5%);
-    margin: 0 .3rem;
-}
-#send{
-    border: none;
-    outline: none;
-    height: 100%;
-    width: 100%;
-    border-radius: 3px;
-    background-color: #004f55;
-    padding: .3rem;
-    margin: 0;
+    #frame #sidepanel #bottom-bar button i {
+      font-size: 1.3em;
+    }
+    #frame #sidepanel #bottom-bar button span {
+      display: none;
+    }
 }

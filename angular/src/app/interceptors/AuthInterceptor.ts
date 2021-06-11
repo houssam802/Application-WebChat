@@ -44,13 +44,7 @@ export class AuthInterceptor implements HttpInterceptor{
         
                 // in case of 403 http error (refresh token failed)
                 if (err instanceof HttpErrorResponse && err.status === 403) {
-                    const refreshToken = localStorage.getItem('refreshToken');
-        
-                    // if there are tokens then send refresh token request
-                    if (refreshToken) {
-                        return this.refreshToken(request, next);
-                    }
-
+                    
                     return this.logoutAndRedirect(err);
 
                 }

@@ -35,20 +35,6 @@ var sqlinsert = require('./data/sqlinsert');
 } );*/
 
 
-/* 
-sqlSelect.get_chat(29,32,function(result){
-    let cont={
-      "id_personne":29,
-      "time":"07/06/2021",
-      "content":"Test2_29",
-      "type":"text",
-      "lue" : false
-    } 
-    result.messages.push(cont);
-    sqlinsert.updateJson(29,32,result);
-
- }) */
-
 app.use(cors());
 app.options('http://localhost:4200', cors());
 
@@ -67,38 +53,50 @@ app.use('/api/v1/user', stockerFichier);
 app.use('/api/v1/user', amies);
 
 
-io.use(async (socket, next) => {
-    const username = socket.handshake.auth.nom;
-    socket.username = username;
-    next();
-});
 
 io.on("connect_error", (err) => {
     console.log(`connect_error due to ${err.message}`);
 });
 
 
-
-
 io.on("connection", (socket) => {
-    //socket.id=socket.handshake.auth.id;
-    const users = [];
-    for (let [id, socket] of io.of("/").sockets) {
-      users.push({
-        userID: id,
-        username: socket.username
-      });
-    }
-    socket.emit("users", users);
-    socket.broadcast.emit("user connected", {
-        userID: socket.id,
-        username: socket.username
-    });
+    /* Une fois l'utilisateur est connecter, il sera informer par les amies connectées. */
+    new Promise((resolve, reject) => {
+        resolve(socket.handshake.auth.id);
+    }).then(
+        result => {
+            sqlSelect.get_all_chats(result, (amies) => {
+                for(let amie of amies){
+                    if( is_user_connected(socket, amie.id) ){
+                        socket.emit('users', amie.id);
+                    }
+                }
+            }, (error) => {
+            });
+        }
+    )
+    /* -------------------------------------------------------------------------------- */
 
+    /* Informer les utilisateurs en revlation avec, qu'il est en ligne . */
+    new Promise((resolve, reject) => {
+        resolve(socket.handshake.auth.id);
+    }).then(
+        res => {
+            sqlSelect.get_all_chats(res, (amies) => {
+                for(let amie of amies){
+                    if( is_user_connected(socket, amie.id) ){
+                        socket.to(get_socket_id(socket, amie.id)).emit('user connected', res);
+                    }
+                }
+            }, (error) => {
+            });
+        }
+    )
+    /*--------------------------------------------------------------------*/
     socket.on("private message", ({time, content, ID_dest,ID_emet }) => {
        sqlSelect.get_chat(ID_emet,ID_dest,function(result){
           if(is_user_connected(socket,ID_dest)){
-            socket.to(ID_dest).emit("private message",time,content,ID_emet);
+              socket.to(get_socket_id(socket,ID_dest)).emit("private message",{time  : time, content : content ,ID_emet : ID_emet});
           }
           let cont={
             "id_personne":ID_emet,
@@ -109,20 +107,15 @@ io.on("connection", (socket) => {
           } 
           result.messages.push(cont);
           sqlinsert.updateJson(ID_emet,ID_dest,result);
-
        })
     });
 
 
 
-    var PAS, fName, dataType;
-    socket.on("File", ({pas, dataMime, content,ID_dest,ID_emet,time}) => {
+    socket.on("File", ({content, ID_dest, ID_emet, time}) => {
         sqlSelect.get_chat(ID_emet,ID_dest,function(result){
-            PAS = pas;
-            fName = content;
-            dataType = dataMime;
             if(is_user_connected(socket,ID_dest)){
-                socket.emit("fileChunks", 0, PAS, id);
+                socket.to(get_socket_id(socket,ID_dest)).emit("File", content, time, ID_emet);
             }
             let cont={
               "id_personne":ID_emet,
@@ -133,35 +126,46 @@ io.on("connection", (socket) => {
             } 
             result.messages.push(cont);
             sqlinsert.updateJson(ID_emet,ID_dest,result);
-  
-         })
+        })
     });
 
-
-
-    socket.on("fileChunks", (buffer, next, id) => {
-        socket.to(id).emit("FileReceived", buffer);
-        socket.emit("fileChunks", next, next + PAS, id);
-    });
-    socket.on("FileSent", (id) => {
-        socket.to(id).emit("FileSent", fName, dataType, socket.id, socket.username);
-    })
-
-
-
-    function is_user_connected(socket,id_dest){
-        if(socket.username!=null){
-          for (let [id, socket] of io.of("/").sockets) {
-            if(id_dest == socket.id){
-              return true;
+    socket.on('disconnect',function(){
+        console.log(socket.handshake.auth.username + " disconnected");
+        sqlSelect.get_all_chats(socket.handshake.auth.id, (amies) => {
+            for(let amie of amies){
+                if( is_user_connected(socket, amie.id) ){
+                    socket.to(get_socket_id(socket, amie.id)).emit('user disconnected', socket.handshake.auth.id);
+                }
             }
-          }
-        }
-        return false;
-    }
-
+        }, (error) => {
+        });
+    });
 
 });
+
+function is_user_connected(socket,id_dest){
+    if(socket.handshake.auth.username!=null){
+      for (let [id,socket] of io.of("/").sockets) {
+        if(id_dest == socket.handshake.auth.id){
+            return true;
+        }
+      }
+    }
+    return false;
+}
+
+
+function get_socket_id(socket,id_dest){
+    if(socket.handshake.auth.username!=null){
+      for (let [id, socket] of io.of("/").sockets) {
+        if(id_dest == socket.handshake.auth.id){
+          return socket.id;
+        }
+      }
+    }
+    return null;
+}
+
 /*--------------------------------------------------------------------------------- */
 
 var expressJWT = require('express-jwt');
@@ -181,11 +185,6 @@ app.use(expressJWT({ secret: process.env.ACCESS_TOKEN_SECRET, algorithms: ['HS25
 
 
 
-
-
 httpServer.listen(3000, () => {
     console.log("listening to 3000");
 });
-
-
-

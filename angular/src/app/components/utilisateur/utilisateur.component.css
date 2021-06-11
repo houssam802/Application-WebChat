@@ -1,135 +1,116 @@
-body, div, span,p{
-    margin: 0;
-    padding: 0;
-    border: 0;
-    font-size: 100%;
-    font: inherit;
-    vertical-align: baseline;
-}
-
-.contact .conteneur .meta .name {
-    font-weight: 600;
-    margin:0;
-}
-.contact .conteneur span.online {
-    background: #4BEA82;
-}
-.contact .conteneur span.offline {
-    background:#DB3F4F;
-}
 .contact {
-    border: 1px solid green;
-    width: 100%;
+  position: relative;
+  padding: 10px 0 15px 0;
+  font-size: 0.9em;
+  cursor: pointer;
 }
-.contact .conteneur{
-    width: calc(100% - 0);
-    height: 100%;
-    border: 1px solid;
-    overflow: hidden;
-    position: relative;
-}
-.contact .conteneur .meta .derniermessage{
-    width: 100%;
-    padding: 0 0 1px;
-    font-weight: 300;
-    font-size: 8pt;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    -moz-transition: 1s all ease;
-    -o-transition: 1s all ease;
-    -webkit-transition: 1s all ease;
-    transition: 1s all ease;
+
+p {
+  margin:0;
 }
 
 
-.contact .conteneur span {
-    position: absolute;
-    left: 7px;
-    top: 4px;
-    margin: -2px 0 0 -2px;
-    width: 14px;
-    height: 14px;
-    border-radius: 50%;
-    border: 2px solid #2c3e50;
-    background: #95a5a6;
+.contact:hover {
+  background: #32465a;
 }
-
-.contact .conteneur img {
-    width: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
+.contact.active {
+  background: #32465a;
+  border-right: 5px solid #435f7a;
 }
-
-.contact {
-    position: relative;
-    padding:7px 3px;
-    margin-left: 0;
-    font-size: 0.9em;
-    cursor: pointer;
-    text-align: -webkit-match-parent;
-    display: flex;
-    border: 1px solid;
-    justify-content: space-between;
-    align-items: center;
+.contact.active span.contact-status {
+  border: 2px solid #32465a !important;
+}
+.contact .wrap {
+  width: 88%;
+  margin: 0 auto;
+  position: relative;
+}
+.contact .wrap span {
+  position: absolute;
+  left: 0;
+  margin: -2px 0 0 -2px;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid #2c3e50;
+  background: #95a5a6;
+}
+.contact .wrap span.online {
+  background: #2ecc71;
+}
+.contact .wrap span.away {
+  background: #f1c40f;
+}
+.contact .wrap span.busy {
+  background: #e74c3c;
+}
+.contact .wrap img {
+  width: 40px;
+  border-radius: 50%;
+  float: left;
+  margin-right: 10px;
+}
+.contact .wrap .meta {
+  padding:0;
+}
+.contact .wrap .meta .name {
+  font-weight: 600;
+  height: 15px;
+}
+.contact .wrap .meta .preview {
+  margin: 4px 0 0 0;
+  padding: 0 0 1px;
+  font-weight: 300;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -moz-transition: 1s all ease;
+  -o-transition: 1s all ease;
+  -webkit-transition: 1s all ease;
+  transition: 1s all ease;
+  height:19px;
+}
+.contact .wrap .meta .preview span {
+  position: initial;
+  border-radius: initial;
+  background: none;
+  border: none;
+  padding: 0 2px 0 0;
+  margin: 0 0 0 1px;
+  opacity: .5;
 }
 
 #text_non_lue{
-    position: absolute;
-    right: 1%;
-    top:15%;
-    margin: -2px 0 0 -2px;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    background: #4BEA82;
-    padding: 0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  position: absolute;
+  right: 1%;
+  top:25%;
+  margin: -2px 0 0 -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4BEA82;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.conteneur {
-    padding:0;
-}
-
-@media screen and (max-width: 735px) {
-    .conteneur {
-        width: calc(100% - 58px);
-        padding:0;
-    }
-    
-    .contact .conteneur img {
-      margin-right: 0px;
-    }
-    .contact .conteneur .meta {
-        padding: 5px 0 0 0;
-    }
-    .contact .conteneur .meta {
-      display: none;
-    }
-    .conteneur span {
-        position: absolute;
-        left: 0;
-        margin: -2px 0 0 -2px;
-        width: 10px;
-        height: 10px;
-        border-radius: 50%;
-        border: 2px solid #2c3e50;
-        background: #95a5a6;
-      }
-      .contact-status {
-        border: 2px solid #32465a !important;
-      }
-     .conteneur {
-        margin: 0 0;
-        position: relative;
-      }
-
-      #text_non_lue{
-        display:none;
-      }
-      .derniermessage{
-          display: none;
-      }
+@media all and (max-width: 900px) {
+  .contact {
+    padding: 6px 0 46px 8px;
   }
+  .contact .wrap {
+    width: 100%;
+  }
+  .contact .wrap img {
+    margin-right: 0px;
+  }
+  .contact .wrap .meta {
+    display: none;
+  }
+
+  #text_non_lue{
+    display: none;
+  }
+  
+}

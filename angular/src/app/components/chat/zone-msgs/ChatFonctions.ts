@@ -6,51 +6,12 @@ export function sendFileChunk(file : any, start : any, end : any, id : any, sock
       reader.readAsArrayBuffer(blob);
       reader.onload = () => {
         var buffer = reader.result;
+        console.log(buffer);
         socket.emit("fileChunks", buffer, end, id);
       }
     } else {
       socket.emit("FileSent", id);
     }
-}
-  
-export function myFunc(userDestID : any, userEmet : any, form : any, input : any, messages : any, fileLoader : any, file : any, bufferTotal : any, socket : any){
- 
-  socket.on("fileChunks", function(start: any, end: any, id: any) {
-      sendFileChunk(file, start, end, id, socket);
-  });
-
-
-  socket.on("FileSent", function(fileName: any, dataMime: any, EmetteurID: any, EmetteurName: any){
-    var binary = '';
-    var uint8 = new Uint8Array(bufferTotal);
-    console.log(bufferTotal);
-    for(var i = 0; i<uint8.byteLength; i++ ){ 
-      binary += String.fromCharCode( uint8[ i ] );
-    }
-    var base64 = btoa(binary);
-    fileReceived(fileName, dataMime, base64, EmetteurName, messages);
-  });
-
-
-
-  socket.on("FileReceived", function(buffer: any) {
-    console.log(buffer);
-    var uint8 = new Uint8Array(buffer.byteLength + bufferTotal.byteLength);
-    uint8.set(new Uint8Array(bufferTotal), 0);
-    uint8.set(new Uint8Array(buffer), bufferTotal.byteLength);
-    bufferTotal = uint8.buffer;
-  });
-
-
-  socket.on("private message", function(time : any, EmetteurName: any,msg: any) {
-    message(time, msg, "destinateur", EmetteurName, messages);
-  });
-
-
-  socket.on("sendfile", function(EmetteurID: any, EmetteurName: any, fileName: any, file: any) {
-    fileReceived(fileName, file, "destinateur", EmetteurName, messages);
-  });
-
 }
   
   
@@ -147,6 +108,9 @@ export function stockerFichier(form : HTMLFormElement){
     url: "/api/v1/user/stockerFichier",
     type: 'POST',
     dataType: "JSON",
+    headers: {
+      "Authorization" : "Bearer " + localStorage.getItem('token')
+    },
     data: formData,
     processData: false,
     contentType: false,

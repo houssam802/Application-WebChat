@@ -30,7 +30,7 @@ module.exports.insert_utilisateur = function(personnel, mime, buffer, callback, 
 } 
 
 
-module.exports.insertFile = function(fileName, mimeType, buffer, resolve, error){
+module.exports.insertFichiers = function(fileName, mimeType, buffer, resolve, error){
     var sql = 'INSERT INTO files (fileName, mimeType, file) VALUES(?, ?, ?)';
     con.query(sql, [fileName, mimeType, buffer], (err, result) => {
         if (err){

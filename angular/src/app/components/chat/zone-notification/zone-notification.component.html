@@ -1,0 +1,16 @@
+<div id="Modal_notifications" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body contacts">
+                <ul>
+            <app-utilisateur-demande-amie id="{{util?.id+' '+util?.nom}}" 
+                *ngFor="let util of tab_utils_temp" [autre_util]="util" [notification]="true" (Accepter_demande)="ajouter_amie($event)">
+                </app-utilisateur-demande-amie>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>

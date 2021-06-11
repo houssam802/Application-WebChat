@@ -2,7 +2,8 @@ import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import {messages} from 'src/app/models/messages'
 import { AuthService } from 'src/app/services/auth.service';
-import { myFunc, stockerFichier } from './ChatFonctions';
+import { TelechargerService } from 'src/app/services/telecharger.service';
+import { sendFileChunk, stockerFichier } from './ChatFonctions';
 
 
 @Component({
@@ -25,13 +26,14 @@ export class ZoneMsgsComponent implements OnInit,AfterViewInit {
   file : any;
   bufferTotal = new ArrayBuffer(0);
   
-  constructor(private formBuilder : FormBuilder, private authService : AuthService) { }
+  constructor(private formBuilder : FormBuilder,
+     private authService : AuthService,
+     private telechargerService : TelechargerService) { }
 
   ngOnInit(): void {
     this.send_msg =this.formBuilder.group({
       message : [''],
     });
-    console.log(this.socket)
   }
 
 
@@ -39,87 +41,84 @@ export class ZoneMsgsComponent implements OnInit,AfterViewInit {
 
   onsend(){
     if(this.send_msg?.value.message!=""){
-      this.msgs?.push(envoiMessage("text", this.send_msg?.value.message));
+      var idEmetteur = this.authService.getUtilisateur().id;
+      this.msgs?.push(envoiMessage(idEmetteur, "text", this.send_msg?.value.message));
       this.socket.emit("private message", {
         time:new Date().toLocaleString(),
-        content : this.input.value,
+        content : this.send_msg?.value.message,
         ID_dest: this.amie.id,
-        ID_emet: this.authService.getUtilisateur().id
+        ID_emet: idEmetteur
       });
       this.input = '';
+      this.send_msg?.get('message')?.setValue('');
+      $('#messages').scrollTop($('#messages')[0].scrollHeight);
     }
   }
 
   
 
   ngAfterViewInit(){
-      this.messages = document.getElementById("messages");
-      this.form = document.getElementById("form");
-      this.input = document.getElementById("input");
-      this.fileLoader = document.getElementById("fileUp");
-      this.fileLoader.onchange = (event:any) => {
+    $('#messages').scrollTop($('#messages')[0].scrollHeight);
+    this.messages = document.getElementById("messages");
+    this.form = document.getElementById("form");
+    this.input = document.getElementById("input");
+    this.fileLoader = document.getElementById("fileUp");
+    this.fileLoader.onchange = (event:any) => {
         stockerFichier(this.form);
-          this.file = event.target.files[0];
+        this.file = event.target.files[0];
+        if(this.file){
           var fileName = this.file.name;
-          var reader = new FileReader();
-          reader.readAsDataURL(this.file);
-          reader.onload = () => {
-          var blob : any = reader.result;
-          let dataMime = blob.split(",")[0];
-          this.msgs?.push(envoiMessage("file", fileName));
-          let boucle, pas;
-          if( this.file.size > 100000 ){
-            boucle = Math.round(this.file.size/100000);
-            pas = Math.round(this.file.size/boucle);
-          } else {
-            pas = 100000;
-          }
+          var idEmetteur = this.authService.getUtilisateur().id;
+          this.msgs?.push(envoiMessage(idEmetteur, "file", fileName));
           this.socket?.emit("File",{
-            pas: pas,
-            dataMime: dataMime,
             content : fileName,
             ID_dest: this.amie.id,
-            ID_emet: this.authService.getUtilisateur().id,
+            ID_emet: idEmetteur,
             time:new Date().toLocaleString()
           });
-
         }
+    }
+    this.socket.on("private message", ({time,content,ID_emet}:any) => {
+      if(this.amie.id==ID_emet){
+        console.log(content);
+        this.msgs?.push(envoiMessage(ID_emet, "text", content, time));
+        $('#messages').scrollTop($('#messages')[0].scrollHeight);
       }
-      this.socket.on("private message", (time : any,ID_emet:any,content: any) => {
-        this.msgs?.push(envoiMessage("text",content));
-      });
-      /*this.socket.on("users", (users : any) => {
-        users.forEach((user : any) => {
-          if( user.username != document.cookie.split("=")[1] ){
-            this.createUser(user);
-          }
-        });
-      });
-      this.socket.on("user connected", (user : any) => {
-        this.createUser(user);
-      });*/
-      //myFunc(this.amie.id, this.authService.getUtilisateur(), this.form, this.input, this.messages, this.fileLoader, this.file, this.bufferTotal, this.socket); 
+    });
+
+    this.socket.on("File", (fileName: any, time: any, ID_emet: any) => {
+      if(this.amie.id==ID_emet){
+        this.msgs?.push(envoiMessage(ID_emet, "file", fileName, time));
+      }
+    });
+    
   }
 
+  isEmetteur(id: any){
+    return this.amie.id != id;
+  }
 
-  /*createUser(user : any){
-    var divUser : any = document.querySelectorAll("#side1 > div");
-    for( let utilis of divUser ){
-      if(utilis.innerText === user.username){
-        utilis.style.setProperty("--connected", "green");
-        utilis.setAttribute("id", user.userID + "," + user.username);
-        utilis.onclick = () => {
-          //myFunc(utilis.id, this.user, this.form, this.input, this.messages, this.fileLoader, this.file, this.bufferTotal, this.socket);
-        }
+  telecharger(event: any){
+    var nomFichier = event.target.id;
+    this.telechargerService.telechargerFichier(nomFichier).subscribe( (response: any) => {
+      if(!response.message){
+        var a = document.createElement("a");
+        a.setAttribute("href", response);
+        a.setAttribute("download", nomFichier);
+        a.style.display = "none";
+        document.body.append(a);
+        a.click();
+        document.body.removeChild(a);
       }
-    }
-  }*/
+    });
+  }
 
 }
 
-function envoiMessage(type: string, content: string){
+function envoiMessage(idOWner:string, type: string, content: string, time?: string){
   var msg : messages = {};
-  msg.time=new Date().toLocaleString();
+  msg.id_personne = Number(idOWner);
+  msg.time= time || new Date().toLocaleString();
   msg.content = content;
   msg.type=type;
   return msg;

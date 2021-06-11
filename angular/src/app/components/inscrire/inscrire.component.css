@@ -100,6 +100,7 @@ p{
 	-moz-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
 	-webkit-box-shadow: 0px 0px 10px 1px rgba(0, 0, 0, 0.15);
 	border: none;
+    outline: none;
 	margin: 1.3rem 0rem 1rem 0rem;
 	cursor: pointer;
 	color: #fff;
@@ -107,7 +108,8 @@ p{
 	font-size: 1.1rem;
     padding: .6rem 1rem;
 }
-.inscrire:hover {
+.inscrire:hover,
+.inscrire:focus{
 	background: #e37b27;
 }
 

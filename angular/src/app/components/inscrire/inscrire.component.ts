@@ -2,8 +2,8 @@ import { AfterViewInit, Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../services/authentication.service';
 import * as $ from 'jquery';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -20,7 +20,7 @@ export class InscrireComponent implements OnInit, AfterViewInit {
   constructor(private formBuilder : FormBuilder,
     private httpClient : HttpClient, 
     private router : Router,
-    private authenticationService : AuthenticationService) { }
+    private authService : AuthService) { }
 
   invalidNomUtili()
   {
@@ -110,12 +110,12 @@ export class InscrireComponent implements OnInit, AfterViewInit {
       contentType: false,
       success: function(data){
         inscrireComponent.errors = {};
-        console.log(data)
         if(data.message){
           Object.assign(inscrireComponent.errors, data.message);
         } else {
-          inscrireComponent.authenticationService.setToken(data);
-          inscrireComponent.router.navigate(["/chat"]);
+          inscrireComponent.authService.connexion(data.user).subscribe( (response : any) => {
+            inscrireComponent.router.navigate(['/chat']);
+          });
         }
       },
       error: function(err){

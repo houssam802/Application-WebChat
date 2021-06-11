@@ -1,0 +1,13 @@
+<li class="contact" id="{{autre_util?.id+' '+autre_util?.nom}}">
+    <div class="wrap">
+        <img src="{{autre_util?.image}}" alt="" />
+        <div class="meta">
+            <p class="name"> {{autre_util?.nom}}</p>
+        </div>
+        <button *ngIf="!demande_envoyer && !notification" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Demande_amie()" id="add_btn">Ajout</button>
+        <button *ngIf="demande_envoyer && !notification" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Annuler_Demande_amie()" id="add_btn">Annuler</button>
+        <button *ngIf="notification && !gerer" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Accepter_demande_amie()" id="add_btn" style="right:23%;">Accepter</button>
+        <button *ngIf="notification && !gerer" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Refuser_Demande_amie()" id="add_btn" style="right: 1%;">Refuser</button>
+    </div>
+</li>
+

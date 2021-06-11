@@ -3,6 +3,7 @@ export interface utilisateur {
     nom : string;
     image ?: any; 
     chat_infos ?: chat_infos;
+    demandes_amies_envoyer ?: boolean; 
 }
 
 export class chat_infos {
