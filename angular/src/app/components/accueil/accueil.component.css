@@ -2,6 +2,7 @@
     width: 100%;
     height: 100%;
     display: flex;
+    flex-direction: column;
     background: linear-gradient( 136deg, rgb(0,0,70) 0%, rgb(28,181,224) 100%);
 	background: -moz-linear-gradient( 136deg, rgb(0,0,70) 0%, rgb(28,181,224) 100%);
     background: -webkit-linear-gradient( 136deg, rgb(0,0,70) 0%, rgb(28,181,224) 100%);
@@ -9,9 +10,9 @@
 }
 
 .form-contenu{
-    margin: 2rem auto;
+    margin: 1rem auto;
     width: clamp(650px, 70%, 70%);
-    height: 550px;
+    height: 525px;
     border-radius: 5px;
 	-o-border-radius: 5px;
 	-ms-border-radius: 5px;

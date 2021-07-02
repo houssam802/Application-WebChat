@@ -1,21 +1,23 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
 import * as $ from 'jquery';
 import { AuthService } from 'src/app/services/auth.service';
-
+import { utilisateur } from 'src/app/models/utilisateur';
 
 @Component({
-  selector: 'app-inscrire',
-  templateUrl: './inscrire.component.html',
-  styleUrls: ['./inscrire.component.css']
+  selector: 'app-modification-compte',
+  templateUrl: './modification-compte.component.html',
+  styleUrls: ['./modification-compte.component.css']
 })
-export class InscrireComponent implements OnInit, AfterViewInit {
+export class ModificationCompteComponent implements OnInit {
 
   submitted = false;
   errors : any = {};
   userForm !: FormGroup;
+
+  @Input() user ?: utilisateur;
 
   constructor(private formBuilder : FormBuilder,
     private httpClient : HttpClient, 
@@ -70,8 +72,17 @@ export class InscrireComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(){
+    setTimeout(() => {
+      if(this.user?.image != ""){
+        icon.style.backgroundColor = 'transparent';
+        icon.style.backgroundImage = `url(${this.user?.image})`;
+      } else { 
+        icon.style.backgroundImage = "url('../../../assets/Images/profile.png')";
+      }
+      this.userForm.controls["nomutil"].setValue(this.user?.nom)
+      this.userForm.controls["email"].setValue(this.user?.email)
+    }, 500);
     var icon : any = document.querySelector('.img');
-    icon.style.backgroundImage = "url('../../../assets/Images/profile.png')";
     var profile : any = document.getElementById("fileUp");
     profile.onchange = (e : any) => {
       var file = e.target.files[0];
@@ -94,16 +105,17 @@ export class InscrireComponent implements OnInit, AfterViewInit {
   	}
   	else
   	{
-      var form = document.getElementsByTagName('form')[1];
+      var form = document.getElementsByTagName('form')[0];
       var formData = new FormData(form);
+      formData.append('id', this.user?.id.toString()!);
       this.envoiForm(formData, this);
   	}
   }
 
   envoiForm(formData: FormData, inscrireComponent: any){
     $.ajax({
-      url: "/api/v1/user/inscrire",
-      type: 'POST',
+      url: "/api/v1/user/"+this.user?.id,
+      type: 'PUT',
       dataType: "JSON",
       data: formData,
       processData: false,
@@ -113,15 +125,17 @@ export class InscrireComponent implements OnInit, AfterViewInit {
         if(data.message){
           Object.assign(inscrireComponent.errors, data.message);
         } else {
-          inscrireComponent.authService.connexion(data.user).subscribe( (response : any) => {
-            inscrireComponent.router.navigate(['/chat']);
-          });
+          inscrireComponent.signout();
         }
       },
       error: function(err){
         console.log(err);
       }
     });
+  }
+  signout(){
+    window.localStorage.clear();
+    window.location.reload();
   }
 
 }

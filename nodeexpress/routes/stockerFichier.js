@@ -10,22 +10,22 @@ router.post('/stockerFichier', JwtMiddleware, telecharger.single("fileUp"), (req
     var fileName = req.file.originalname;
     var mimeType = req.file.mimetype;
     var buffer = req.file.buffer;
-    boucle = Math.round(buffer.length/900000);
+    boucle = Math.round(buffer.length/1000000);
     if(boucle != 0){
         pas = Math.round(buffer.length/boucle);
         for(let i = 1, next = 0; i <= boucle; i++ ){
-            sqlinsert.insertFichiers(fileName+i, mimeType, buffer.slice(next, next+=pas), (resultat) => {
-                console.log(resultat);
-            }, (erreur) => {
-                console.log(erreur);
-            })
+            sqlinsert.insertFichiers(fileName + i, mimeType, buffer.slice(next, next+=pas), (resultat) => {
+            }, (error) => {
+                console.log(error);
+            });
         }
+        return res.json({ message : "DONE" });
     } else {
         sqlinsert.insertFichiers(fileName, mimeType, buffer, (resultat) => {
-            console.log(resultat);
-        }, (erreur) => {
-            console.log(erreur);
+        }, (error) => {
+            console.log(error);
         })
+        return res.json({ message : "DONE" });
     }
 });
 

@@ -1,6 +1,6 @@
 .contact {
   position: relative;
-  padding: 10px 0 15px 0;
+  padding: 10px 0;
   font-size: 0.9em;
   cursor: pointer;
 }
@@ -29,36 +29,33 @@ p {
   position: absolute;
   left: 0;
   margin: -2px 0 0 -2px;
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
   border-radius: 50%;
   border: 2px solid #2c3e50;
-  background: #95a5a6;
+  background: #e74c3c;
 }
 .contact .wrap span.online {
   background: #2ecc71;
 }
-.contact .wrap span.away {
-  background: #f1c40f;
-}
-.contact .wrap span.busy {
-  background: #e74c3c;
-}
+
 .contact .wrap img {
   width: 40px;
   border-radius: 50%;
   float: left;
   margin-right: 10px;
+  background-color: rgb(253 253 253 / 48%);
 }
 .contact .wrap .meta {
   padding:0;
+  font-family: nunito;
 }
 .contact .wrap .meta .name {
-  font-weight: 600;
   height: 15px;
+  font-size: 1.075rem;
 }
 .contact .wrap .meta .preview {
-  margin: 4px 0 0 0;
+  margin: 6px 0 0 0;
   padding: 0 0 1px;
   font-weight: 300;
   white-space: nowrap;
@@ -69,6 +66,7 @@ p {
   -webkit-transition: 1s all ease;
   transition: 1s all ease;
   height:19px;
+  color: rgb(145, 145, 145);
 }
 .contact .wrap .meta .preview span {
   position: initial;
@@ -105,8 +103,15 @@ p {
   .contact .wrap img {
     margin-right: 0px;
   }
-  .contact .wrap .meta {
+  .contact .wrap .meta .preview{
     display: none;
+  }
+
+  .contact .wrap .meta .name{
+    height: 15px;
+    width: 30px;
+    font-size: 0.85rem;
+    text-overflow: ellipsis;
   }
 
   #text_non_lue{

@@ -1,4 +1,4 @@
-<li class="contact" id="{{user?.id}}">
+<li class="contact" id="{{user?.id}}" (click)="onclick(user?.id)">
     <div class="wrap">
         <span class="contact-status offline"></span>
         <img src="{{ user?.image || '../../../assets/Images/profile.png' }}" alt="">

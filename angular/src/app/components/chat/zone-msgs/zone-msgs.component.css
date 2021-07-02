@@ -3,15 +3,17 @@
     display: flex;
     justify-content: flex-start;
     margin: 2rem 4rem;
+    font-family: nunito;
 }
 .destinateur{
     position: relative;
     display: flex;
     justify-content: flex-end;
     margin: 2rem 5rem;
+    font-family: nunito;
 }
+
 .emetteur > div{
-    border: solid 1px;
     min-width: 10ch;
     width: fit-content;
     display: flex;
@@ -19,9 +21,15 @@
     max-width: 40ch;
     padding: .3rem .5rem;
     border-radius: .2rem;
+    background: #2c3e50bd;
+    position: relative;
+}
+
+.emetteur > div > span {
+  color: white;
 }
 .destinateur > div{
-    border: solid 1px;
+    border: solid 1px gray;
     min-width: 10ch;
     width: fit-content;
     display: flex;
@@ -29,19 +37,24 @@
     max-width: 40ch;
     padding: .3rem .5rem;
     border-radius: .2rem;
+    background: whitesmoke;
+    position: relative;
 }
 .emetteur > div > div:nth-child(1){
-    font-size: .8rem;
+    font-size: .85rem;
     position: absolute;
-    top: -.5rem;
+    top: -.7rem;
     left: -2.5rem;
 }
 
 .destinateur > div > div:nth-child(1){
-    font-size: .8rem;
-    position: absolute;;
-    top: -.5rem;
-    right: -3rem;
+    font-size: .85rem;
+    position: absolute;
+    top: -.7rem;
+    max-width: 10ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    left: calc(100% + .5rem);
 }
 
 .emetteur > div > .temps{
@@ -49,6 +62,7 @@
     position: absolute;
     top: 100%;
     left: 0%;
+    width: max-content;
 }
 
 .destinateur > div > .temps{
@@ -56,20 +70,63 @@
     position: absolute;
     top: 100%;
     right: 0%;
+    width: max-content;
 }
 
 #messages .text > span,
 #messages .file > span{
     word-wrap: break-word;
     max-width: 38ch;
+    display: block;
+}
+
+#messages .file > span{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 #messages .file span.fa-arrow-down{
-    border: 1px solid;
+    border: 1px solid gray;
     margin-left: .6rem;
     padding: .25rem .3rem;
     border-radius: 30px;
+    font-size: .85rem;
     cursor: pointer;
+}
+
+.emetteur .file span.fa-arrow-down{
+  border-color: white !important;
+}
+
+.emetteur .file span.fa-arrow-down:hover{
+  background-color: rgba(0, 0, 0, 0.2);
+}
+
+
+@keyframes spinner {
+  to {transform: rotate(360deg);}
+}
+ 
+.spinner:before {
+  content: '';
+  box-sizing: border-box;
+  display: inline-block;
+  width: 22px;
+  height: 22px;
+  margin-left: .7rem;
+  border-radius: 50%;
+  border-top: 2px solid rgb(127 124 124);
+  border-right: 2px solid transparent;
+  animation: spinner .6s linear infinite;
+}
+
+.emetteur .file .spinner:before{
+  border-color: white !important;
+}
+
+.destinateur .file span.fa-arrow-down:hover{
+    background: rgb(235, 235, 235);
 }
 
 #zoneMessagerie{
@@ -90,9 +147,8 @@
 
 #inputHolder{
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     justify-content: center;
-    flex-wrap:wrap;
     width: 100%;
     padding: 0;
 }
@@ -103,29 +159,33 @@
     box-sizing: border-box;
     width: 100%;
     font-size: 1.3rem;
-    padding: .2rem;
+    padding: .2rem .5rem .2rem 0;
+    font-family: nunito;
 }
 
-#inputHolder > div:nth-child(2) {
+#inputHolder > div:nth-child(2){
     width: 5%;
+    min-width: 40px;
     height: 100%;
-    border: solid 1px;
+    border: solid 1px gray;
     background: white;
+    color: rgb(99 99 99);
 }
 
-#inputHolder > div:nth-child(2):hover {
-    background: rgb(207, 207, 207);
+#inputHolder > div:nth-child(2):hover{
+    background: rgba(0, 0, 0, 0.1);
 }
 
 #inputHolder > div:nth-child(1) {
-    border: 1px solid;
+    border: 1px solid gray;
     display: flex;
     justify-content: center;
     width: 90%;
     height: 100%;
 }
 #inputHolder > div:nth-child(3) {
-    width: clamp(35px,5%, 5%);
+    width: clamp(40px,5%, 5%);
+    min-width: 40px;
     height: 100%;
 }
 #send{
@@ -136,4 +196,144 @@
     background-color: #004f55;
     padding: .3rem;
     margin: 0;
+}
+
+#frame .content {
+    float: right;
+    width: 60%;
+    overflow: hidden;
+    position: relative;
+  }
+  @media screen and (min-width: 900px) {
+    #frame .content {
+      width: calc(100% - 340px);
+    }
+  }
+
+  @media all and (max-width: 900px){
+    #messages .text > span,
+    #messages .file > span{
+        word-wrap: break-word;
+        max-width: 26ch;
+    }
+  }
+  
+  #frame .content .contact-profile {
+    width: 100%;
+    height: 60px;
+    line-height: 60px;
+    background: #f5f5f5;
+  }
+  #frame .content .contact-profile img {
+    width: 40px;
+    border-radius: 50%;
+    float: left;
+    margin: 9px 12px 0 9px;
+  }
+  #frame .content .contact-profile p {
+    float: left;
+  }
+  
+  #frame .content .messages {
+    height: auto;
+    min-height: calc(100% - 93px);
+    max-height: calc(100% - 93px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+  }
+  
+  #frame .content .messages::-webkit-scrollbar {
+    width: 8px;
+    background: transparent;
+  }
+  #frame .content .messages::-webkit-scrollbar-thumb {
+    background-color: rgba(0, 0, 0, 0.3);
+  }  
+  
+  @media all and (max-width: 900px) {
+    #frame .content {
+      width: calc(100% - 58px);
+      min-width: 300px !important;
+    }
+    #frame .content .messages {
+        max-height: calc(100% - 105px);
+    }
+  }
+
+/* Pop up message ------------------------------------------- */
+
+#zoneMessagerie > div:nth-child(1){
+  position: absolute;
+  top: -2rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#zoneMessagerie > div:nth-child(1) > div{
+  padding: .5rem;
+  background-color: rgb(224, 172, 109);
+  border-radius: 5px;
+  transition: .7s;
+  transform: translateY(100px);
+  opacity: 0;
+}
+
+#zoneMessagerie > div:nth-child(1) > div.show{
+  transform: translateY(-10px);
+  opacity: 1;
+}
+
+#zoneMessagerie > div:nth-child(1) > div.hide{
+  transform: translateY(-200px);
+  opacity: 0;
+}
+
+
+@media all and (max-width: 500px) {
+  .emetteur{
+    margin: 2rem 2.5rem;
+  }
+  .destinateur{
+    margin: 2rem 3rem;
+  }
+  .emetteur > div > div:nth-child(1){
+    left: -2rem !important;
+  }
+
+  .destinateur > div > div:nth-child(1){
+    max-width: 10ch;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    left: calc(100% + .4rem) !important;
+  }
+  #messages .text > span,
+  #messages .file > span{
+      word-wrap: break-word;
+      max-width: 12ch;
+      font-size: .8rem;
+  }
+  #messages .file span.fa-arrow-down{
+    padding: .2rem .25rem;
+    border-radius: 30px;
+    font-size: .75rem;
+    cursor: pointer;
+  }
+
+  #inputHolder input[type="text"]{
+    font-size: .9rem !important;
+    padding: .1rem .3rem .1rem 0 !important;
+  }
+  #messages .file .fi-size-xs{
+    width: 18px;
+    height: 23px;
+    min-width: 18px;
+  }
+  #inputHolder > div{
+    height: 70% !important;
+  }
+  #inputHolder > div span,
+  #inputHolder > div i{
+    font-size: .9rem !important;
+  }
 }

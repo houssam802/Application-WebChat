@@ -6,6 +6,7 @@ var router      = express.Router();
 var sqlSelect   = require('../data/sqlSelect');
 var sqlinsert   = require('../data/sqlinsert');
 var sqldelete   = require('../data/sqldelete');
+var sqlupdate = require('../data/sqlupdate');
 var service_jwt = require('../services/service_jwt');
 var multer      = require('multer');
 var telecharger = multer();
@@ -17,11 +18,15 @@ router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) 
     if( !req.file ) {
       sqlinsert.insert_utilisateur(utilisateur, function(result){
         res.json({
-          user : { nom: req.body.nomutil, pwd: req.body.pword }
+          user : { nom: req.body.nomutil, pwd: req.body.pword },
+          accessToken : service_jwt.getAccessToken(result.JSON()),
+          refreshToken : service_jwt.getRefreshToken(result.JSON())
         });
       },function(err){
-        // TODO Ajouter unicité nom d'utilisateur .
-        if( err.search('\email\g') ){
+        if( err.search("nom") != -1 ){
+          res.json({ message : { nom : "Nom déjà existe" } } );
+        }
+        if( err.search("email") != -1 ){
           res.json({ message : { email : "Email déjà existe" } } );
         }
       });
@@ -30,11 +35,15 @@ router.post('/inscrire', telecharger.single('fileUp'), async function(req, res) 
       var buffer = req.file.buffer;
       sqlinsert.insert_utilisateur(utilisateur, mimeType, buffer, function(result){
         res.json({
-          user : { nom: req.body.nomutil, pwd: req.body.pword } 
+          user : { nom: req.body.nomutil, pwd: req.body.pword },
+          accessToken : service_jwt.getAccessToken(result.JSON()),
+          refreshToken : service_jwt.getRefreshToken(result.JSON())
         });
       },function(err){
-        // TODO Ajouter unicité nom d'utilisateur .
-        if( err.search('\email\g') ){
+        if( err.search("nom") != 1 ){
+          res.json({ message : { nom : "Nom déjà existe" } } );
+        }
+        if( err.search("email") != -1 ){
           res.json({ message : { email : "Email déjà existe" } } );
         }
       });
@@ -78,7 +87,7 @@ router.delete('/annule_demande_amie/:ids',async function(req,res){
 });
 
 router.put('/accepter_demande_amie',async function(req, res) {
-  sqlinsert.accept_demande_amie(req.body.id_emet,req.body.id_dest);
+  sqlupdate.accept_demande_amie(req.body.id_emet,req.body.id_dest);
 });
 
 router.get('/:id', async (req, res, next) => {
@@ -92,15 +101,43 @@ router.get('/:id', async (req, res, next) => {
 
 
 // Update
-router.put('/:id', async function(req, res, next) {
-  var user = { username : "H" };
+router.put('/:id', telecharger.single('fileUp'), async function(req, res, next) {
   try {
-    await UserService.update(req.params.id, user);
-    var newuser = await UserService.retrieve(req.params.id);
-    return res.status(201).json(newuser);
-  }  catch( err ) {
-    return res.status(400).send(err);
+    var utilisateur = await UserService.create(req.body);
+    // Si la photo n'est pas remplie .
+    if( !req.file ) {
+      sqlupdate.updateProfile(utilisateur, req.body.id, function(result){
+        res.json({
+          user : { nom: req.body.nomutil, pwd: req.body.pword }
+        });
+      },function(err){
+        if( err.search("nom") != -1 ){
+          res.json({ message : { nom : "Nom déjà existe" } } );
+        }
+        if( err.search("email") != -1 ){
+          res.json({ message : { email : "Email déjà existe" } } );
+        }
+      });
+    } else {
+      var mimeType = req.file.mimetype;
+      var buffer = req.file.buffer;
+      sqlupdate.updateProfile(utilisateur, req.body.id, mimeType, buffer, function(result){
+        res.json({
+          user : { nom: req.body.nomutil, pwd: req.body.pword }
+        });
+      },function(err){
+        if( err.search("nom") != 1 ){
+          res.json({ message : { nom : "Nom déjà existe" } } );
+        }
+        if( err.search("email") != -1 ){
+          res.json({ message : { email : "Email déjà existe" } } );
+        }
+      });
+    }
+  } catch (err) {
+    res.json({ message : err.message });
   }
+
 });
 
 

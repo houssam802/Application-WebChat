@@ -23,16 +23,7 @@ var amies        = require('./routes/amies');
 
 
 var sqlSelect = require('./data/sqlSelect');
-var sqlinsert = require('./data/sqlinsert');
-
-// Enable CORS for origin : http://localhost:4200.
-/*app.use( (req, res, next) => {
-    res.header("Access-Control-Allow-Origin", "http://localhost:4200");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    res.header("Access-Control-Allow-Methods", "OPTIONS, GET, POST, PUT, DELETE");
-    res.header("Access-Control-Allow-Credentials", "true");
-    next();
-} );*/
+var sqlupdate = require('./data/sqlupdate');
 
 
 app.use(cors());
@@ -65,12 +56,14 @@ io.on("connection", (socket) => {
         resolve(socket.handshake.auth.id);
     }).then(
         result => {
+            var list_conn_users=[];
             sqlSelect.get_all_chats(result, (amies) => {
                 for(let amie of amies){
                     if( is_user_connected(socket, amie.id) ){
-                        socket.emit('users', amie.id);
+                        list_conn_users.push(amie.id);
                     }
                 }
+            socket.emit('users',list_conn_users);
             }, (error) => {
             });
         }
@@ -96,7 +89,8 @@ io.on("connection", (socket) => {
     socket.on("private message", ({time, content, ID_dest,ID_emet }) => {
        sqlSelect.get_chat(ID_emet,ID_dest,function(result){
           if(is_user_connected(socket,ID_dest)){
-              socket.to(get_socket_id(socket,ID_dest)).emit("private message",{time  : time, content : content ,ID_emet : ID_emet});
+              console.log('connected')
+              socket.to(get_socket_id(socket,ID_dest)).emit("private message",{time  : time, content : content ,ID_emet : ID_emet,ID_dest : ID_dest});
           }
           let cont={
             "id_personne":ID_emet,
@@ -106,16 +100,26 @@ io.on("connection", (socket) => {
             "lue" : false
           } 
           result.messages.push(cont);
-          sqlinsert.updateJson(ID_emet,ID_dest,result);
+          sqlupdate.updateJson(ID_emet,ID_dest,result);
        })
     });
 
 
+    socket.on("message_lue", ({time, content, ID_dest,ID_emet }) => {
+        console.log(ID_emet+": "+ID_dest)
+        sqlSelect.get_chat(ID_emet,ID_dest,function(result){
+           result.messages[result.messages.length-1].lue=true;
+           sqlupdate.updateJson(ID_emet,ID_dest,result);
+        })
+     });
+
+
 
     socket.on("File", ({content, ID_dest, ID_emet, time}) => {
+        console.log(ID_dest+" : "+ID_emet)
         sqlSelect.get_chat(ID_emet,ID_dest,function(result){
             if(is_user_connected(socket,ID_dest)){
-                socket.to(get_socket_id(socket,ID_dest)).emit("File", content, time, ID_emet);
+                socket.to(get_socket_id(socket,ID_dest)).emit("File", content, time, ID_emet,ID_dest);
             }
             let cont={
               "id_personne":ID_emet,
@@ -125,7 +129,7 @@ io.on("connection", (socket) => {
               "lue" : false
             } 
             result.messages.push(cont);
-            sqlinsert.updateJson(ID_emet,ID_dest,result);
+            sqlupdate.updateJson(ID_emet,ID_dest,result);
         })
     });
 

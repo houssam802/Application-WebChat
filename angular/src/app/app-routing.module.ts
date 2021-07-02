@@ -4,6 +4,7 @@ import { ChatComponent } from './components/chat/chat.component';
 import { AccueilComponent } from './components/accueil/accueil.component';
 import { AuthGuard } from './guards/auth.guard';
 import {ZoneMsgsComponent} from './components/chat/zone-msgs/zone-msgs.component'
+import { PageNonTrouveComponent } from './components/page-non-trouve/page-non-trouve.component';
 
 const routes: Routes = [
   {
@@ -24,6 +25,14 @@ const routes: Routes = [
   {
     path : "chat/msgs",
     component: ZoneMsgsComponent
+  },
+  {
+    path : '404',
+    component: PageNonTrouveComponent
+  },
+  {
+    path : '**',
+    component: PageNonTrouveComponent
   }
 ];
 

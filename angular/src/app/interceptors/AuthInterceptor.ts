@@ -30,7 +30,6 @@ export class AuthInterceptor implements HttpInterceptor{
             catchError( err => {
                 if (err instanceof HttpErrorResponse && err.status === 401) {
                     // get refresh tokens
-                    console.log("401");
                     const refreshToken = localStorage.getItem('refreshToken');
         
                     // if there are tokens then send refresh token request

@@ -1,0 +1,51 @@
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+
+<div id="Modal_modifier_util" class="modal fade" tabindex="-1" style="padding: 0 !important;">
+    <div class="modal-dialog">
+        <div class="modal-content" style="border: none !important; background-color: white; margin: 0 auto;">
+            <div class="modal-header" style="padding: 0; border: none;">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body">
+            <form [formGroup]="userForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
+                <h2>Modifier vos infos</h2>
+                <div class="form-ligne">
+                    <div class="img">
+                        <label for="fileUp">
+                            <span class="fa fa-camera"></span>
+                        </label>
+                        <input type="file" name="fileUp" id="fileUp" style="display: none;" accept="image/*">
+                    </div>
+                </div>
+                <div class="form-ligne" [ngClass]="{ 'has-error' : invalidNomUtili() }">
+                    <div>
+                        <input type="text" formControlName="nomutil" name="nomutil" id="nomutil" [ngClass]="{ 'is-invalid' : invalidNomUtili() }" class="form-control input-text" placeholder="Votre nom" autocomplete="off">
+                        <p class="error" [ngClass]="{ 'set' : invalidNomUtili() }">{{ this.errors.nom || "Nom d'utilisateur invalid !" }}</p>
+                    </div>
+                </div>
+                <div class="form-ligne" [ngClass]="{ 'has-error' : invalidEmail() }">
+                    <div>
+                        <input type="text" formControlName="email" name="email" id="email" [ngClass]="{ 'is-invalid' : invalidEmail() }" class="form-control input-text" placeholder="Votre email" autocomplete="off">
+                        <p class="error" [ngClass]="{ 'set' : invalidEmail() }" >{{ this.errors.email || 'Email invalid'}}</p>
+                    </div>
+                </div>
+                <div class="form-ligne" [ngClass]="{ 'has-error' : invalidPassword() }">
+                    <div>
+                        <input type="password" formControlName="pword" name="pword" id="pword" [ngClass]="{ 'is-invalid' : invalidPassword() }" class="form-control input-text" placeholder="Nouveau Mot de passe">
+                        <p class="error" [ngClass]="{ 'set' : invalidPassword() }">Mot de passe invalid !</p>
+                    </div>
+                </div>
+                <div class="form-ligne" [ngClass]="{ 'has-error' : invalidConfirmePassword() }">
+                    <div>
+                        <input type="password" formControlName="cpword" name="cpword" id="cpword" [ngClass]="{ 'is-invalid' : invalidConfirmePassword() }" placeholder="Confirmer le mot de passe" class="form-control input-text">
+                        <p class="error" [ngClass]="{ 'set' : invalidConfirmePassword() }">Confirmation pas valable !</p>
+                    </div>
+                </div>
+                <div class="form-dern-ligne form-group has-error" style="margin: 0 !important;">
+                    <button type="submit" class="modifier">Modifier</button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>

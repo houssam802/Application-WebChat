@@ -1,22 +1,30 @@
-.modal-content{
-    background: #435f7a;
+@font-face {
+  font-family: nova;
+  src: url('https://fonts.googleapis.com/css?family=Proxima+Nova')
+}
+
+
+.modal.show .modal-dialog {
+  transform: none;
+  width: 100%;
+  margin: 100px auto;
 }
 
 .modal-header{
-    padding:0 1rem 0.5rem 0;
+  padding:0 0.7rem 0 0;
 }
-
 
 
 .contacts {
   max-height: 320px;
   overflow-y: scroll;
   overflow-x: hidden;
+  background: rgba(253, 250, 250, 0.1);
 }
 
 .contacts::-webkit-scrollbar {
-width: 8px;
-background: #435f7a;
+  width: 8px;
+  background: rgba(253, 250, 250, 0.1);
 }
 
 .contacts::-webkit-scrollbar-thumb {
@@ -31,4 +39,34 @@ li {
 }
 ol, ul {
   list-style: none;
+}
+
+
+#search {width: 80%;
+  font-weight: 300;
+  padding: 0;
+}
+
+.close:not(:disabled):not(.disabled) {
+  cursor: pointer;
+  padding: 0 18px 8px 0;
+  font-size: 22pt;
+  position: absolute;
+  color: white;
+  font-size: 2.2rem;
+  left: 96%;
+  top: -22px;
+}
+
+#Modal_notifications .modal-dialog .modal-content{
+  margin: 0 auto;
+}
+
+@media all and (max-width: 600px) {
+  #Modal_notifications .modal-dialog .modal-content{
+    width: 95%;
+  }
+  .close:not(:disabled):not(.disabled) {
+    left: 95%;
+  }
 }

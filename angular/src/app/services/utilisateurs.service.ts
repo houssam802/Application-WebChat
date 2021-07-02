@@ -27,6 +27,10 @@ export class UtilisateurService {
     return this.http.get<JSON>('/api/v1/user/msgs/' + id_emet+"_"+id_dest);
   }
 
+  updatemsgs(id_emet :any ,id_dest : any,msgs : any) : Observable<any>{
+    return this.http.put('/api/v1/user/read_msgs/' + id_emet+"_"+id_dest,msgs);
+  }
+
   chercher_autre_utilisateurs(id: any,nom : string): Observable<utilisateur[]>{
     return this.http.post<utilisateur[]>('/api/v1/user/search',{id:id,nom:nom});
    }

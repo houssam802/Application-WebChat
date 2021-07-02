@@ -1,5 +1,6 @@
-import { Component, OnInit, Input  } from '@angular/core';
-import { utilisateur } from '../../models/utilisateur';
+import { Component, OnInit, Input, Output,EventEmitter  } from '@angular/core';
+import { UtilisateurService } from 'src/app/services/utilisateurs.service';
+import { chat_infos, utilisateur } from '../../models/utilisateur';
 
 @Component({
   selector: 'app-utilisateur',
@@ -10,13 +11,15 @@ export class UtilisateurComponent implements OnInit {
 
   @Input() user ?: utilisateur;
 
-  constructor() { }
+  constructor(private utilServ : UtilisateurService) { }
 
   ngOnInit(): void {
-
   }
 
-  getID(){
+  @Output() infos = new EventEmitter < utilisateur > (); 
+
+  onclick(elem:any){
+    this.infos.emit(this.user);  
   }
 
 }

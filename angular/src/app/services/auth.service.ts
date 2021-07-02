@@ -18,7 +18,7 @@ interface ReponseInscrAuth {
 
 export class AuthService {
 
-    utilisateur !: any;
+    utilisateur : any = {};
 
     constructor(private httpClient : HttpClient){}
 
@@ -44,13 +44,14 @@ export class AuthService {
     }
 
     getUtilisateur(): any{
-        let obj:any=jwtDecode(localStorage.getItem('token')!)
-        this.utilisateur=obj
-        return this.chercherUtilisateur(obj?.id);
+        let obj:any=jwtDecode(localStorage.getItem('token')!);
+        this.utilisateur.id = obj.id;
+        this.utilisateur.nom = obj.nom;
+        this.chercherUtilisateur(obj?.id, this.utilisateur);
+        return this.utilisateur;
     }
 
-    chercherUtilisateur(id: any): utilisateur{
-        var image = "";
+    chercherUtilisateur(id: any, user: any){
         this.httpClient.get('/api/v1/user/' + id).subscribe((response: any) => {
             if(response.mimeType!=""){
                 var buffer = response.photo.data;
@@ -60,16 +61,16 @@ export class AuthService {
                     binary += String.fromCharCode(buffer[i]);
                 }
                 var base64 = btoa(binary);
-                image = mimeType + "," + base64;
+                Object.defineProperty(user, "image", { value : mimeType + "," + base64 });
+            } else {
+                Object.defineProperty(user, "image", { value : "" } );
             }
+            Object.defineProperty(user, "email", { value : response.email });
         })
-        this.utilisateur['image'] = image;
-        return this.utilisateur;
     }
 
     refreshToken(): Observable<{accessToken: string}> {
         const refreshToken = localStorage.getItem('refreshToken');
-        console.log(refreshToken)
         return this.httpClient.post<{accessToken: string}>(
           '/api/v1/user/refresh-token',{ refreshToken }).pipe(
             tap(response => {

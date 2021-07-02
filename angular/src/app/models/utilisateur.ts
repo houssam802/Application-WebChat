@@ -1,6 +1,7 @@
 export interface utilisateur {
     id : number;
     nom : string;
+    email : string;
     image ?: any; 
     chat_infos ?: chat_infos;
     demandes_amies_envoyer ?: boolean; 

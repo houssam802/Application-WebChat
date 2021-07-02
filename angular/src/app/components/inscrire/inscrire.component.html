@@ -1,14 +1,5 @@
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
-<!-- 
-    ngClass : adds and removes CSS classes on an HTML element.
-    formGroup : Tracks the value and validity state of a group of FormControl instances. (class)
-    formControlName : Syncs a FormControl in an existing FormGroup to a form control element by name. (directive)
-    ngModule : Creates a FormControl instance from a domain model and binds it to a form control element. (directive)
-            Decorator that marks a class as an NgModule and supplies configuration metadata.
-    formBuilder : Creates an AbstractControl from a user-specified configuration.
-    AbstractControl : This is the base class for FormControl, FormGroup, and FormArray.
--->
 <form [formGroup]="userForm" (ngSubmit)="onSubmit()" enctype="multipart/form-data">
     <h2>S'Inscrire</h2>
     <div class="form-ligne">
@@ -22,7 +13,7 @@
     <div class="form-ligne" [ngClass]="{ 'has-error' : invalidNomUtili() }">
         <div>
             <input type="text" formControlName="nomutil" name="nomutil" id="nomutil" [ngClass]="{ 'is-invalid' : invalidNomUtili() }" class="form-control input-text" placeholder="Votre nom" autocomplete="off">
-            <p class="error" [ngClass]="{ 'set' : invalidNomUtili() }">Nom d'utilisateur invalid !</p>
+            <p class="error" [ngClass]="{ 'set' : invalidNomUtili() }">{{ this.errors.nom || "Nom d'utilisateur invalid !" }}</p>
         </div>
     </div>
     <div class="form-ligne" [ngClass]="{ 'has-error' : invalidEmail() }">
@@ -43,7 +34,7 @@
             <p class="error" [ngClass]="{ 'set' : invalidConfirmePassword() }">Confirmation pas valable !</p>
         </div>
     </div>
-    <div class="form-dern-ligne form-group has-error">
+    <div class="form-dern-ligne form-group has-error" style="margin: 0 !important;">
         <button type="submit" class="inscrire">Inscrire</button>
     </div>
     <div style="font-size: 10pt; color: gray; font-family: nunito; width: 100%; display: flex; justify-content: center;">

@@ -48,10 +48,11 @@ export class ZoneNotificationComponent implements OnInit {
             var utilisateur : utilisateur = {
               id: element.id,
               nom: element.nom,
+              email: element.email,
               image: image,
               demandes_amies_envoyer : element.demandes_envoyer
             };
-            this.tab_utils_temp.push(utilisateur);
+              this.tab_utils_temp.push(utilisateur);
           })
         }
     })

@@ -1,8 +1,7 @@
-<div id="user" style="border-bottom: 1px solid; font-size: 16pt; height: 40px; display: flex; align-items: center; padding-left: .5rem;">{{amie.nom}}</div>
-<ul id="messages" class='msgs' style="height: calc(100% - 85px); width: 100%; overflow-y: auto;">
+<div *ngIf="amie" id="user" class="contact-profile" style="border-bottom: 1px solid; font-size: 16pt; height: 40px; display: flex; align-items: center; padding-left: .5rem;">{{amie.nom}}</div>
+<ul id="messages" class='msgs messages' style="width: 100%; overflow-y: auto;">
     <li *ngFor="let msg of msgs" [ngClass] = "{ 'emetteur' : isEmetteur(msg.id_personne), 'destinateur' : !isEmetteur(msg.id_personne) }">
         <div *ngIf="msg.type == 'text'" class="text">
-            {{msg.id_personne}}
             <div *ngIf="isEmetteur(msg.id_personne)">Vous</div>
             <div *ngIf="!isEmetteur(msg.id_personne)">{{amie.nom}}</div>
             <span>{{msg.content}}</span>
@@ -11,35 +10,48 @@
         <div *ngIf="msg.type == 'file'" class="file">
             <div *ngIf="isEmetteur(msg.id_personne)">Vous</div>
             <div *ngIf="!isEmetteur(msg.id_personne)">{{amie.nom}}</div>
-            <div class="{{ 'fi fi-' + msg.content!.split('.')[1] + ' fi-size-xs' }}" style="margin-right: .4rem;">
-                <div class="fi-content">{{msg.content!.split('.')[1]}}</div>
+            <div class="{{ 'fi fi-' + msg.content!.split('.')[msg.content!.split('.').length - 1] + ' fi-size-xs' }}" style="margin-right: .4rem;">
+                <div class="fi-content">{{msg.content!.split('.')[msg.content!.split('.').length - 1 ]}}</div>
             </div>
             <span>
                 {{msg.content}}
             </span>
-            <span class="fa fa-arrow-down" id="{{msg.content}}" (click)="telecharger($event)">
+            <span class="fa fa-arrow-down"  id="{{msg.content}}" (click)="telecharger($event)">
 
             </span>
             <div class="temps">{{msg.time}}</div>
         </div>
     </li>
 </ul>
-<div id="zoneMessagerie">
+<div *ngIf="amie" id="zoneMessagerie" class="message-input">
+  <div><div>{{confirmation}}</div></div>
   <form id="form" [formGroup] = "send_msg!">
-  <div id="inputHolder">
-      <div>
-          <input type="text" name="message" formControlName="message" id="input" placeholder="Votre message ici" autocomplete="off">
-      </div>
-      <div>
+  <div id="inputHolder" >
+        <div>
+            <input type="text" name="message" formControlName="message" id="input" placeholder="Votre message ici" autocomplete="off">
+        </div>
+        <div>
         <label for="fileUp" style="width: 100%; height: 100%; cursor: pointer; display: flex; justify-content: center; align-items: center;">
             <span class="fa fa-paperclip fa-lg"></span>
         </label>
-        <input type="file" name="fileUp" id="fileUp" style="display: none;">
-      </div>
-      <div>
-          <button id="send" (click)="onsend()" style="border: none; outline: none; cursor: pointer; box-sizing: border-box;">
-          <i class="fa fa-paper-plane " style="border: none; outline: none; font-size: 1.3rem; color: whitesmoke;" aria-hidden="true"></i></button>
-      </div>
+        <input type="file" name="fileUp" (change)="file_up($event)" id="fileUp" style="display: none;">
+        </div>
+        <div>
+            <button id="send" (click)="onsend()" style="border: none; outline: none; cursor: pointer; box-sizing: border-box;">
+            <i class="fa fa-paper-plane " style="border: none; outline: none; font-size: 1.3rem; color: whitesmoke;" aria-hidden="true"></i>
+            </button>
+        </div>
   </div>
   </form>
 </div>
+
+
+<div *ngIf="!amie" style="display: flex; justify-content: center; align-items: center;">
+
+    <div style="font-size: 2rem; font-family: nunito; color: #6d6d6d;">
+        <i class="fa fa-comment" aria-hidden="true" style="font-size: 1.3rem;"></i> Chat
+    </div>
+
+</div>
+
+

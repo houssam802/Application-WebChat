@@ -1,14 +1,17 @@
-<div id="Modal_notifications" class="modal fade" tabindex="-1">
+<div id="Modal_notifications" class="modal fade" tabindex="-1" style="padding: 0 !important;">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
+        <div class="modal-content" style="border: none !important; background-color: white;">
+            <div class="modal-header" style="padding: 0; border: none;">
                 <button type="button" class="close" data-dismiss="modal">&times;</button>
             </div>
             <div class="modal-body contacts">
-                <ul>
-            <app-utilisateur-demande-amie id="{{util?.id+' '+util?.nom}}" 
-                *ngFor="let util of tab_utils_temp" [autre_util]="util" [notification]="true" (Accepter_demande)="ajouter_amie($event)">
+                <ul *ngIf="tab_utils_temp.length != 0">
+                <app-utilisateur-demande-amie id="{{util?.id+' '+util?.nom}}" 
+                    *ngFor="let util of tab_utils_temp" [autre_util]="util" [notification]="true" (Accepter_demande)="ajouter_amie($event)">
                 </app-utilisateur-demande-amie>
+                </ul>
+                <ul *ngIf="tab_utils_temp.length == 0">
+                    Il n'y a aucune notification
                 </ul>
             </div>
         </div>
