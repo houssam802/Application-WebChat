@@ -50,7 +50,6 @@ io.on("connect_error", (err) => {
 });
 
 
-
 io.on("connection", (socket) => {
     /* Une fois l'utilisateur est connecter, il sera informer par les amies connectées. */
     new Promise((resolve, reject) => {

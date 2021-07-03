@@ -10,7 +10,7 @@ router.post('/stockerFichier', JwtMiddleware, telecharger.single("fileUp"), (req
     var fileName = req.file.originalname;
     var mimeType = req.file.mimetype;
     var buffer = req.file.buffer;
-    boucle = Math.round(buffer.length/1000000);
+    boucle = Math.round(buffer.length/700000);
     if(boucle != 0){
         pas = Math.round(buffer.length/boucle);
         for(let i = 1, next = 0; i <= boucle; i++ ){
