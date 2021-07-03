@@ -51,7 +51,7 @@
     font-size: .85rem;
     position: absolute;
     top: -.7rem;
-    max-width: 10ch;
+    max-width: 8ch;
     overflow: hidden;
     text-overflow: ellipsis;
     left: calc(100% + .5rem);
@@ -159,7 +159,7 @@
     box-sizing: border-box;
     width: 100%;
     font-size: 1.3rem;
-    padding: .2rem .5rem .2rem 0;
+    padding: .2rem .5rem .2rem .4rem;
     font-family: nunito;
 }
 
@@ -295,23 +295,24 @@
     margin: 2rem 2.5rem;
   }
   .destinateur{
-    margin: 2rem 3rem;
+    margin: 2rem 3.5rem;
   }
   .emetteur > div > div:nth-child(1){
     left: -2rem !important;
   }
 
   .destinateur > div > div:nth-child(1){
-    max-width: 10ch;
+    max-width: 6ch;
     overflow: hidden;
     text-overflow: ellipsis;
-    left: calc(100% + .4rem) !important;
+    left: calc(100% + .1rem) !important;
   }
   #messages .text > span,
   #messages .file > span{
       word-wrap: break-word;
       max-width: 12ch;
       font-size: .8rem;
+      display: block;
   }
   #messages .file span.fa-arrow-down{
     padding: .2rem .25rem;
@@ -321,8 +322,8 @@
   }
 
   #inputHolder input[type="text"]{
-    font-size: .9rem !important;
-    padding: .1rem .3rem .1rem 0 !important;
+    font-size: 1rem !important;
+    padding: .2rem .3rem .2rem .3rem !important;
   }
   #messages .file .fi-size-xs{
     width: 18px;
@@ -330,7 +331,7 @@
     min-width: 18px;
   }
   #inputHolder > div{
-    height: 70% !important;
+    height: 80% !important;
   }
   #inputHolder > div span,
   #inputHolder > div i{

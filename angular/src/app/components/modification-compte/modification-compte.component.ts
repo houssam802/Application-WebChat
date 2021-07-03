@@ -81,9 +81,10 @@ export class ModificationCompteComponent implements OnInit {
       }
       this.userForm.controls["nomutil"].setValue(this.user?.nom)
       this.userForm.controls["email"].setValue(this.user?.email)
+
     }, 500);
     var icon : any = document.querySelector('.img');
-    var profile : any = document.getElementById("fileUp");
+    var profile : any = document.getElementById("fileUp1");
     profile.onchange = (e : any) => {
       var file = e.target.files[0];
       var reader = new FileReader();

@@ -101,7 +101,7 @@ router.get('/:id', async (req, res, next) => {
 
 
 // Update
-router.put('/:id', telecharger.single('fileUp'), async function(req, res, next) {
+router.put('/:id', telecharger.single('fileUp1'), async function(req, res, next) {
   try {
     var utilisateur = await UserService.create(req.body);
     // Si la photo n'est pas remplie .

@@ -5,7 +5,7 @@
             <p class="name"> {{autre_util?.nom}}</p>
         </div>
         <div style="display: flex; align-items: center;">
-            <button *ngIf="!demande_envoyer && !notification" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Demande_amie()" id="add_btn">Ajout</button>
+            <button *ngIf="!demande_envoyer && !notification" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Demande_amie()" id="add_btn">Ajouter</button>
             <button *ngIf="demande_envoyer && !notification" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Annuler_Demande_amie()">Annuler</button>
             <button *ngIf="notification && !gerer" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Accepter_demande_amie()" id="accepter_btn" style="right:23%;">Accepter</button>
             <button *ngIf="notification && !gerer" type="button" class="btn mb-2 mb-md-0 btn-outline-primary" (click)="Refuser_Demande_amie()"  style="right: 1%;">Refuser</button>

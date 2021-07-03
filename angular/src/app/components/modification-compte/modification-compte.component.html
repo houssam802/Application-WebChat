@@ -11,10 +11,10 @@
                 <h2>Modifier vos infos</h2>
                 <div class="form-ligne">
                     <div class="img">
-                        <label for="fileUp">
+                        <label for="fileUp1">
                             <span class="fa fa-camera"></span>
                         </label>
-                        <input type="file" name="fileUp" id="fileUp" style="display: none;" accept="image/*">
+                        <input type="file" name="fileUp1" id="fileUp1" style="display: none;" accept="image/*">
                     </div>
                 </div>
                 <div class="form-ligne" [ngClass]="{ 'has-error' : invalidNomUtili() }">
@@ -25,7 +25,7 @@
                 </div>
                 <div class="form-ligne" [ngClass]="{ 'has-error' : invalidEmail() }">
                     <div>
-                        <input type="text" formControlName="email" name="email" id="email" [ngClass]="{ 'is-invalid' : invalidEmail() }" class="form-control input-text" placeholder="Votre email" autocomplete="off">
+                        <input type="text" formControlName="email" name="email" id="email" [ngClass]="{ 'is-invalid' : invalidEmail() }" class="form-control input-text" placeholder="Votre email" autocomplete="off" readonly>
                         <p class="error" [ngClass]="{ 'set' : invalidEmail() }" >{{ this.errors.email || 'Email invalid'}}</p>
                     </div>
                 </div>

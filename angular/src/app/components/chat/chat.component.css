@@ -86,6 +86,8 @@ ol, ul {
   padding: 0;
   font-family: nunito;  
   font-size: 1.2rem;
+  overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 

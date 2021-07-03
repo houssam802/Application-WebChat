@@ -23,10 +23,6 @@ const routes: Routes = [
     ]
   },
   {
-    path : "chat/msgs",
-    component: ZoneMsgsComponent
-  },
-  {
     path : '404',
     component: PageNonTrouveComponent
   },

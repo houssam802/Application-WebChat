@@ -41,9 +41,11 @@ p {
 
 .contact .wrap img {
   width: 40px;
+  height: 40px;
   border-radius: 50%;
   float: left;
   margin-right: 10px;
+  border: 1px solid #4e4e4e;
   background-color: rgb(253 253 253 / 48%);
 }
 .contact .wrap .meta {
@@ -52,7 +54,7 @@ p {
 }
 .contact .wrap .meta .name {
   height: 15px;
-  font-size: 1.075rem;
+  font-size: 1rem;
 }
 .contact .wrap .meta .preview {
   margin: 6px 0 0 0;
@@ -66,6 +68,7 @@ p {
   -webkit-transition: 1s all ease;
   transition: 1s all ease;
   height:19px;
+  width: 75%;
   color: rgb(145, 145, 145);
 }
 .contact .wrap .meta .preview span {
@@ -81,21 +84,22 @@ p {
 #text_non_lue{
   position: absolute;
   right: 1%;
-  top:25%;
+  top: 27%;
   margin: -2px 0 0 -2px;
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   border-radius: 50%;
   background: #4BEA82;
   padding: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  color: black;
 }
 
 @media all and (max-width: 900px) {
   .contact {
-    padding: 6px 0 46px 8px;
+    padding: 6px 0 8px 8px;
   }
   .contact .wrap {
     width: 100%;
@@ -109,13 +113,20 @@ p {
 
   .contact .wrap .meta .name{
     height: 15px;
-    width: 30px;
+    width: 80%;
+    overflow: hidden;
     font-size: 0.85rem;
     text-overflow: ellipsis;
   }
 
   #text_non_lue{
-    display: none;
+    position: absolute;
+    top: 1.7rem;
+    right: .25rem;
+    font-size: .7rem;
+    width: 15px !important;
+    height: 15px !important;
+    color: #060606;
   }
   
 }
